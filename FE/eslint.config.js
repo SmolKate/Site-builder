@@ -4,8 +4,7 @@ import tseslint from "typescript-eslint";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import pluginPrettier from "eslint-plugin-prettier";
-import importPlugin from 'eslint-plugin-import';
-import prettierConfig from "eslint-config-prettier";
+import importPlugin from "eslint-plugin-import";
 
 export default [
   { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
@@ -14,6 +13,15 @@ export default [
 
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
+
+  {
+    settings: {
+      "import/resolver": {
+        typescript: true,
+        node: true,
+      },
+    },
+  },
 
   {
     plugins: {
@@ -27,16 +35,15 @@ export default [
   {
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
-      indent: ["error", 4],
+      indent: ["error", 2],
       semi: [2, "always"],
       "space-before-function-paren": ["error", "never"],
       quotes: ["error", "double", { allowTemplateLiterals: true }],
-      "max-len": ["error", { "code": 100 }],
+      "max-len": ["error", { code: 100 }],
       "no-console": "error",
-      ...prettierConfig.rules,
-      "prettier/prettier": "error",
+      "linebreak-style": ["error", "unix"],
       ...importPlugin.configs.recommended.rules,
-      "import/no-cycle": "error"
-    },
-  },
+      "import/no-cycle": "error",
+    }
+  }
 ];
