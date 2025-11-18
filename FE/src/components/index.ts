@@ -1,1 +1,1 @@
-export { Header } from "./Header";
+// экспорт общих компонент
