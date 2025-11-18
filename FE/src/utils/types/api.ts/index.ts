@@ -1,1 +1,1 @@
-// типизация ответов от апи
+export * from "./site.types.ts";
