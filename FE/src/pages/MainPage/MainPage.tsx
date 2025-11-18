@@ -1,1 +1,3 @@
-// компонента MainPage
+export const MainPage = () => {
+  return "MainPage";
+};
