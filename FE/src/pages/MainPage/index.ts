@@ -1,1 +1,1 @@
-// экспорт MainPage
+export { MainPage } from "./MainPage";
