@@ -1,4 +1,4 @@
-import globals, { jest } from "globals";
+import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
 import reactHooks from "eslint-plugin-react-hooks";

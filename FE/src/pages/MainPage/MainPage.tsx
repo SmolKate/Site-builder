@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState, useEffect } from "react";
 import {
   collection,
@@ -15,7 +16,7 @@ export function MainPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
 
-  const fetchSites = async () => {
+  const fetchSites = async() => {
     try {
       setLoading(true);
       const querySnapshot = await getDocs(collection(db, "sites"));
@@ -31,7 +32,7 @@ export function MainPage() {
     }
   };
 
-  const addNewSite = async () => {
+  const addNewSite = async() => {
     if (!newTitle.trim()) return;
 
     try {
@@ -50,7 +51,7 @@ export function MainPage() {
     }
   };
 
-  const deleteSite = async (siteId: string) => {
+  const deleteSite = async(siteId: string) => {
     try {
       await deleteDoc(doc(db, "sites", siteId));
       fetchSites();
