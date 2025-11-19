@@ -16,6 +16,7 @@ if (
   !firebaseConfig.projectId ||
   !firebaseConfig.appId
 ) {
+  // eslint-disable-next-line no-console
   console.error("Проблема с конфигурацией Firebase");
 }
 
