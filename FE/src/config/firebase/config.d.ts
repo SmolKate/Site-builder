@@ -1,3 +1,3 @@
-import { Firestore } from 'firebase/firestore';
+import { Firestore } from "firebase/firestore";
 
 export declare const db: Firestore;
