@@ -5,3 +5,7 @@ export interface ISiteDTO {
   createdAt: string;
   published: boolean;
 }
+
+export interface IAuthState {
+  isAuthenticated: boolean;
+}

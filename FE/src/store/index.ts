@@ -6,18 +6,19 @@ import {
   type TypedUseSelectorHook,
 } from "react-redux";
 import sitesReducer, { sitesMiddleware, sitesReducerPath } from "./sites";
+import authReducer from "./auth";
 
 export const rootReducer = combineReducers({
   [sitesReducerPath]: sitesReducer,
+  auth: authReducer,
 });
 
 export const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     devTools: true,
-    middleware: getDefaultMiddleware => getDefaultMiddleware().concat([
-      sitesMiddleware
-    ]),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat([sitesMiddleware]),
     preloadedState,
   });
 };
