@@ -1,71 +1,41 @@
 /* eslint-disable no-console */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  doc
-} from "firebase/firestore";
-import type { ISiteDTO } from "../../utils/types";
-import { db } from "../../config";
+  useFetchSitesQuery,
+  useAddSiteMutation,
+  useDeleteSiteMutation,
+} from "@/store/sites";
+import type { ISiteDTO } from "@/utils/types";
 
 export function MainPage() {
-  const [sites, setSites] = useState<ISiteDTO[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { data: sites, isLoading } = useFetchSitesQuery();
+  const [addSite] = useAddSiteMutation();
+  const [deleteSite] = useDeleteSiteMutation();
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
 
-  const fetchSites = async() => {
-    try {
-      setLoading(true);
-      const querySnapshot = await getDocs(collection(db, "sites"));
-      const sitesData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data()
-      })) as ISiteDTO[];
-      setSites(sitesData);
-    } catch (error) {
-      console.error("Ошибка получения данных о сайтах:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const addNewSite = async() => {
+  const handleAddSite = () => {
     if (!newTitle.trim()) return;
 
-    try {
-      const newSite: Omit<ISiteDTO, "id"> = {
-        title: newTitle,
-        description: newDescription,
-        createdAt: new Date().toISOString(),
-        published: false
-      };
-      await addDoc(collection(db, "sites"), newSite);
-      setNewTitle("");
-      setNewDescription("");
-      fetchSites();
-    } catch (error) {
-      console.error("Упс, ошибка создания сайта:", error);
-    }
+    const newSite: Omit<ISiteDTO, "id"> = {
+      title: newTitle,
+      description: newDescription,
+      createdAt: new Date().toISOString(),
+      published: false,
+    };
+
+    setNewTitle("");
+    setNewDescription("");
+
+    addSite(newSite);
   };
 
-  const deleteSite = async(siteId: string) => {
-    try {
-      await deleteDoc(doc(db, "sites", siteId));
-      fetchSites();
-    } catch (error) {
-      console.error("Ошибка удаления сайта:", error);
-    }
+  const handleDeleteSite = (siteId: string) => {
+    deleteSite(siteId);
   };
 
   const createdAt = (site: ISiteDTO) =>
     new Date(site.createdAt).toLocaleDateString("ru-RU");
-
-  useEffect(() => {
-    fetchSites();
-  }, []);
 
   return (
     <div className="app">
@@ -90,7 +60,7 @@ export function MainPage() {
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
             />
-            <button onClick={addNewSite} disabled={!newTitle.trim()}>
+            <button onClick={handleAddSite} disabled={!newTitle.trim()}>
               Добавить сайт
             </button>
           </div>
@@ -99,16 +69,15 @@ export function MainPage() {
         <div className="card">
           <div className="sites-header">
             <h2>Мои сайты</h2>
-            <button onClick={fetchSites} disabled={loading}>
-              {loading ? "Загрузка..." : "Обновить"}
-            </button>
           </div>
 
-          {sites.length === 0 ? (
+          {isLoading ? (
+            <h2>Загрузка...</h2>
+          ) : sites?.length === 0 ? (
             <p className="no-sites">Нет сайтов для отображения</p>
           ) : (
             <div className="sites-list">
-              {sites.map((site) => (
+              {sites?.map((site) => (
                 <div key={site.id} className="site-item">
                   <div className="site-info">
                     <h3>{site.title}</h3>
@@ -123,7 +92,7 @@ export function MainPage() {
                     </div>
                   </div>
                   <button
-                    onClick={() => deleteSite(site.id)}
+                    onClick={() => handleDeleteSite(site.id)}
                     className="delete-btn"
                   >
                     Удалить
