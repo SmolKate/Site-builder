@@ -27,7 +27,9 @@ export default [
     settings: {
       "import/resolver": {
         typescript: true,
-        node: true,
+        node: {
+          extensions: [".js", ".jsx", ".ts", ".tsx", ".svg"],
+        },
       },
     },
   },

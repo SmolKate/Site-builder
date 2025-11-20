@@ -7,7 +7,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "@/config";
-import type { ISiteDTO } from "@utils/types";
+import type { ISiteDTO } from "@/utils/types";
 
 export const sitesApiSlice = createApi({
   reducerPath: "sitesApi",
