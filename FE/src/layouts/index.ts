@@ -1,1 +1,1 @@
-// экспорт шаблонов для роутера
+export { ProtectedLayout } from "./ProtectedLayout";
