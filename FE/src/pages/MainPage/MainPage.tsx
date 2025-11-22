@@ -1,5 +1,6 @@
- 
-import { useState } from "react";
+/* eslint-disable no-console */
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   useFetchSitesQuery,
   useAddSiteMutation,
@@ -8,29 +9,42 @@ import {
 import type { ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
 import { RaDialog } from "@/components/Dialog";
+import { siteSchema, type SiteFormData } from "@/utils/helpers";
 import "./styles.scss";
 
 export function MainPage() {
   const { data: sites, isLoading } = useFetchSitesQuery();
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
-  const [newTitle, setNewTitle] = useState("");
-  const [newDescription, setNewDescription] = useState("");
 
-  const handleAddSite = () => {
-    if (!newTitle.trim()) return;
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<SiteFormData>({
+    resolver: yupResolver(siteSchema),
+    mode: "onChange",
+    defaultValues: {
+      title: "",
+      description: "",
+    },
+  });
 
+  const handleAddSite = async({ title, description }: SiteFormData) => {
     const newSite: Omit<ISiteDTO, "id"> = {
-      title: newTitle,
-      description: newDescription,
+      title,
+      description,
       createdAt: new Date().toISOString(),
       published: false,
     };
 
-    setNewTitle("");
-    setNewDescription("");
-
-    addSite(newSite);
+    try {
+      await addSite(newSite).unwrap();
+      reset();
+    } catch (error) {
+      console.error("Не удалось добавить сайт", error);
+    }
   };
 
   const handleDeleteSite = (siteId: string) => {
@@ -53,29 +67,37 @@ export function MainPage() {
       <main className="main-page__content">
         <div className="create-card">
           <h2 className="create-card__title">Создать новый сайт</h2>
-          <div className="create-card__form">
-            <input
-              type="text"
-              className="ui-input"
-              placeholder="Название проекта"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-            />
-            <input
-              type="text"
-              className="ui-input"
-              placeholder="Краткое описание"
-              value={newDescription}
-              onChange={(e) => setNewDescription(e.target.value)}
-            />
+          <form className="create-card__form" onSubmit={handleSubmit(handleAddSite)}>
+            <label>
+              <input
+                type="text"
+                className="ui-input"
+                placeholder="Название проекта"
+                {...register("title")}
+              />
+              {errors.title && (
+                <span className="form-error">{errors.title.message}</span>
+              )}
+            </label>
+            <label>
+              <input
+                type="text"
+                className="ui-input"
+                placeholder="Краткое описание"
+                {...register("description")}
+              />
+              {errors.description && (
+                <span className="form-error">{errors.description.message}</span>
+              )}
+            </label>
             <button
               className="ui-btn ui-btn--primary"
-              onClick={handleAddSite}
-              disabled={!newTitle.trim()}
+              type="submit"
+              disabled={!isValid || isSubmitting}
             >
               Создать сайт
             </button>
-          </div>
+          </form>
         </div>
 
         <div className="sites-section">
