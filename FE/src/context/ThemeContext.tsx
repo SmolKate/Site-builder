@@ -1,5 +1,5 @@
-import { THEME_ENUM } from "@utils/constants";
-import type { ThemeValue } from "@utils/types/theme";
+import { THEME_ENUM } from "@/utils/constants";
+import type { ThemeValue } from "@/utils/types/theme";
 
 import {
   createContext,
