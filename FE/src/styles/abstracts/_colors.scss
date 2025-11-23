@@ -10,12 +10,14 @@
     rgba(255, 255, 255, 0.15) 0%,
     rgba(243, 243, 243, 0.1) 100%
   );
+  --bg-form-secondary: #{$purple-light};
 
   // --- Текст ---
   --text-primary: #{$black-text};
   --text-secondary: #{rgba($black-text, 0.7)};
   --text-inverse: #{$white};
   --text-on-primary: #{$white};
+  --text-form-secondary: #{$brand-purple-border};
 
   // --- Градиентная обводка (для миксина) ---
   --border-glass-gradient: linear-gradient(
@@ -23,6 +25,12 @@
     rgba(124, 159, 255, 0.15),
     rgba(175, 228, 255, 0.05)
   );
+  --border-blue-gradient: linear-gradient(
+    90deg,
+    #{$brand-purple-light},
+    #{$brand-purple-border}
+  );
+
   // --- Обводки ---
   --border-color-default: #{$brand-purple-border};
   --border-color-btn: rgba(127, 141, 209, 0.2);
@@ -74,6 +82,7 @@
 
   // Тень для поверхности (Surface)
   --shadow-surface: 0 4px 24px -1px rgba(0, 0, 0, 0.1);
+  --shadow-form-secondary: 0 4px 14px 0 #{rgba($brand-purple-border, 0.4)};
 }
 
 html[data-theme="dark"] {
@@ -111,4 +120,5 @@ html[data-theme="dark"] {
   --shadow-sm: 0 4px 14px 0 rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.5);
   --shadow-surface: 0 4px 24px -1px rgba(0, 0, 0, 0.3);
+  --shadow-form-secondary: 0 4px 14px 0 #{rgba($purple-light, 0.4)};
 }

@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -10,6 +11,8 @@ import type { ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
 import { RaDialog } from "@/components/Dialog";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
+import { InputField, PasswordField } from "@/ui";
+import { TVariant } from "@/ui/types";
 import "./styles.scss";
 
 export function MainPage() {
@@ -17,42 +20,39 @@ export function MainPage() {
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isValid, isSubmitting },
-  } = useForm<SiteFormData>({
-    resolver: yupResolver(siteSchema),
-    mode: "onChange",
-    defaultValues: {
-      title: "",
-      description: "",
-    },
-  });
-
-  const handleAddSite = async({ title, description }: SiteFormData) => {
-    const newSite: Omit<ISiteDTO, "id"> = {
-      title,
-      description,
-      createdAt: new Date().toISOString(),
-      published: false,
-    };
-
-    try {
-      await addSite(newSite).unwrap();
-      reset();
-    } catch (error) {
-      console.error("Не удалось добавить сайт", error);
-    }
-  };
-
   const handleDeleteSite = (siteId: string) => {
     deleteSite(siteId);
   };
 
   const createdAt = (site: ISiteDTO) =>
     new Date(site.createdAt).toLocaleDateString("ru-RU");
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid, isSubmitSuccessful, isSubmitting },
+  } = useForm<SiteFormData>({
+    resolver: yupResolver(siteSchema),
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
+  
+  const onSubmit = (data: SiteFormData) => {
+    const newSite: Omit<ISiteDTO, "id"> = {
+      title: data.title,
+      description: data.description,
+      createdAt: new Date().toISOString(),
+      published: false,
+    };
+
+    addSite(newSite);   
+  };
 
   return (
     <div className="main-page">
@@ -67,32 +67,23 @@ export function MainPage() {
       <main className="main-page__content">
         <div className="create-card">
           <h2 className="create-card__title">Создать новый сайт</h2>
-          <form className="create-card__form" onSubmit={handleSubmit(handleAddSite)}>
-            <label>
-              <input
-                type="text"
-                className="ui-input"
-                placeholder="Название проекта"
-                {...register("title")}
-              />
-              {errors.title && (
-                <span className="form-error">{errors.title.message}</span>
-              )}
-            </label>
-            <label>
-              <input
-                type="text"
-                className="ui-input"
-                placeholder="Краткое описание"
-                {...register("description")}
-              />
-              {errors.description && (
-                <span className="form-error">{errors.description.message}</span>
-              )}
-            </label>
+          <form onSubmit={handleSubmit(onSubmit)} className="create-card__form">
+            <InputField
+              register={register}
+              errors={errors}
+              fieldName="title"
+              placeholder="Название проекта"
+            />
+            <PasswordField
+              register={register}
+              errors={errors}
+              fieldName="description"
+              placeholder="Краткое описание"
+              variant={TVariant.SECONDARY}
+            />
             <button
-              className="ui-btn ui-btn--primary"
               type="submit"
+              className="ui-btn ui-btn--primary"
               disabled={!isValid || isSubmitting}
             >
               Создать сайт

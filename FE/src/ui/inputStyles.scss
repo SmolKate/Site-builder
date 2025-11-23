@@ -1,0 +1,117 @@
+@use "@/styles/abstracts/breakpoints" as *;
+@use "@/styles/abstracts/mixins" as mix;
+@use "@/styles/abstracts/sizes";
+
+.field {
+	$root: &;
+
+	&__wrapper {
+		width: 100%;
+		font-family: var(--font-family-sofia);
+		font-weight: var(--font-weight-semibold);
+
+		&:not(:has(.field__error)) {
+			padding-bottom: calc(var(--font-size-sm) + var(--space-xxs));
+		}
+	}
+
+	&__input-root {
+		display: flex;
+		flex-wrap: nowrap;
+		align-items: center;
+		justify-content: space-between;
+		padding-left: var(--space-sm);
+		height: var(--input-height);
+		border-radius: var(--radius-xl);
+		border: var(--border-width-md) solid var(--border-color-default);
+		color: var(--text-primary);
+		transition: all 0.2s ease;
+
+		&:hover {
+    	box-shadow: var(--shadow-sm);
+		}
+
+		&:focus-within {
+			outline: none;
+			border-color: var(--bg-app);
+			background: rgba(255, 255, 255, 0.07);
+			box-shadow: var(--shadow-sm);
+		}
+	}
+
+	&__input {
+		all: unset;
+		flex: 1;
+		height: 100%;
+		line-height: 1;
+		width: 100%;
+		caret-color: var(--border-color-default);
+
+		&::placeholder {
+			color: var(--text-secondary);
+			opacity: 0.5;
+		}
+	}
+
+	&__input-toggle {
+		all: unset;
+		@include mix.flex-center;
+		height: 100%;
+		aspect-ratio: 1;
+		border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+		border: none;
+		border-left: var(--border-width-md) solid var(--border-color-default);
+
+		svg path {
+			fill: var(--border-color-default);
+		}
+
+		&:focus {
+			outline: unset;
+		}
+	}
+
+	&__label {
+		font-size: var(--font-size-sm);
+		line-height: 100%;
+		padding-bottom: var(--space-xs);
+	}
+
+	&__error {
+		padding-top: var(--space-xxs);
+		color: var(--color-error);
+		font-size: var(--font-size-sm);
+		line-height: 100%;
+		padding-left: var(--space-sm);
+	}
+
+	// стиль secondary
+
+	&__wrapper--secondary {
+		#{$root}__input-root {
+			background-color: var(--bg-form-secondary);
+			border-color: var(--text-form-secondary);
+
+			&:focus-within {
+				box-shadow: var(--shadow-form-secondary);
+			}
+		}
+
+		#{$root}__input {
+			color: var(--text-form-secondary);
+			
+			&::placeholder {
+				color: var(--text-form-secondary);
+			}
+		}
+
+		#{$root}__input-toggle {
+			background-color: var(--bg-form-secondary);
+			border-color: var(--text-form-secondary);
+
+			svg path {
+				fill: var(--text-form-secondary);
+			}
+		}
+	}
+}
