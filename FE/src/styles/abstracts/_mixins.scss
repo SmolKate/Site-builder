@@ -70,3 +70,10 @@
   color: var(--text-secondary);
   line-height: 1.5;
 }
+
+@mixin text-gradient-blue {
+	background: var(--border-blue-gradient);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}

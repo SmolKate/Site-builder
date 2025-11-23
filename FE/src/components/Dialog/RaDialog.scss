@@ -130,7 +130,7 @@
 
     &:focus {
       outline: none;
-      border-color: var(--bg-primary-color);
+      border-color: var(--bg-app);
       box-shadow: 0 0 0 3px rgba(60, 45, 162, 0.15);
       background: rgba(255, 255, 255, 0.07);
     }

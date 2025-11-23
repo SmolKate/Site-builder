@@ -76,6 +76,7 @@
 
 .create-card {
   @include mix.glass-container;
+  background-color: var(--bg-app);
   border-radius: var(--radius-xxl);
   padding: var(--space-4xl);
 
@@ -94,7 +95,7 @@
   &__form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2xl);
+    gap: var(--space-sm);
   }
 }
 
@@ -116,7 +117,7 @@
 
   &:focus {
     outline: none;
-    border-color: var(--bg-primary-color);
+    border-color: var(--bg-app);
     background: rgba(255, 255, 255, 0.07);
     box-shadow: var(--shadow-sm);
   }

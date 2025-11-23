@@ -49,20 +49,9 @@ $font-inter: "Inter", sans-serif;
 $font-sofia: "Sofia Sans", sans-serif;
 $font-roboto: "Roboto", sans-serif;
 
-// CSS-классы
-.font-poppins {
-  font-family: $font-poppins;
-  font-weight: 700;
-}
-.font-inter {
-  font-family: $font-inter;
-  font-weight: 500;
-}
-.font-sofia {
-  font-family: $font-sofia;
-  font-weight: 600;
-}
-.font-roboto {
-  font-family: $font-roboto;
-  font-weight: 400;
+:root {
+  --font-family-base: #{$font-inter};
+  --font-family-poppins: #{$font-poppins};
+  --font-family-sofia: #{$font-sofia};
+  --font-family-roboto: #{$font-roboto};
 }

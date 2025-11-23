@@ -1,1 +1,4 @@
-// экспорт ui компонентов для приложения
+import { InputField} from "./InputField";
+import { PasswordField } from "./PasswordField";
+
+export { InputField, PasswordField };
