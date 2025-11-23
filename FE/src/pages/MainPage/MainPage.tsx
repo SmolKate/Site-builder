@@ -6,6 +6,8 @@ import {
   useDeleteSiteMutation,
 } from "@/store/sites";
 import type { ISiteDTO } from "@/utils/types";
+import { RaPopover } from "@/components/Popover";
+import { RaDialog } from "@/components/Dialog";
 
 export function MainPage() {
   const { data: sites, isLoading } = useFetchSitesQuery();
@@ -33,70 +35,90 @@ export function MainPage() {
   const handleDeleteSite = (siteId: string) => {
     deleteSite(siteId);
   };
+  
 
   const createdAt = (site: ISiteDTO) =>
     new Date(site.createdAt).toLocaleDateString("ru-RU");
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>Site Builder</h1>
-        <p>Демо работы с firebase</p>
+    <div className="main-page">
+      <header className="main-page__header">
+        <h1 className="main-page__title">Site Builder</h1>
+        <p className="main-page__subtitle">Панель управления проектами</p>
       </header>
 
-      <main className="main-content">
-        <div className="card">
-          <h2>Добавить новый сайт</h2>
-          <div className="form">
+      <RaPopover />
+      <RaDialog />
+
+      <main className="main-page__content">
+        <div className="create-card">
+          <h2 className="create-card__title">Создать новый сайт</h2>
+          <div className="create-card__form">
             <input
               type="text"
-              placeholder="Название сайта"
+              className="ui-input"
+              placeholder="Название проекта"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
             />
             <input
               type="text"
-              placeholder="Описание сайта"
+              className="ui-input"
+              placeholder="Краткое описание"
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
             />
-            <button onClick={handleAddSite} disabled={!newTitle.trim()}>
-              Добавить сайт
+            <button
+              className="ui-btn ui-btn--primary"
+              onClick={handleAddSite}
+              disabled={!newTitle.trim()}
+            >
+              Создать сайт
             </button>
           </div>
         </div>
 
-        <div className="card">
-          <div className="sites-header">
-            <h2>Мои сайты</h2>
+        <div className="sites-section">
+          <div className="sites-section__header">
+            <h2 className="sites-section__title">Мои сайты</h2>
           </div>
 
           {isLoading ? (
             <h2>Загрузка...</h2>
           ) : sites?.length === 0 ? (
-            <p className="no-sites">Нет сайтов для отображения</p>
+            <div className="sites-section__empty">
+              <p>Нет сайтов для отображения. Создайте свой первый проект!</p>
+            </div>
           ) : (
-            <div className="sites-list">
+            <div className="sites-section__grid">
               {sites?.map((site) => (
-                <div key={site.id} className="site-item">
-                  <div className="site-info">
-                    <h3>{site.title}</h3>
-                    <p>{site.description}</p>
-                    <div className="site-meta">
-                      <span className="date">{createdAt(site)}</span>
+                <div key={site.id} className="site-card">
+                  <div className="site-card__info">
+                    <h3 className="site-card__title">{site.title}</h3>
+                    <p className="site-card__desc">{site.description}</p>
+
+                    <div className="site-card__meta">
+                      <span className="site-card__date">{createdAt(site)}</span>
                       <span
-                        className={`status ${site.published ? "published" : "draft"}`}
+                        className={`status-badge ${
+                          site.published
+                            ? "status-badge--published"
+                            : "status-badge--draft"
+                        }`}
                       >
-                        {site.published ? "Опубликован" : "Черновик"}
+                        {site.published ? "Live" : "Draft"}
                       </span>
                     </div>
                   </div>
-                  <button
-                    onClick={() => handleDeleteSite(site.id)}
-                    className="delete-btn"
-                  >
-                    Удалить
-                  </button>
+
+                  <div className="site-card__actions">
+                    <button
+                      onClick={() => handleDeleteSite(site.id)}
+                      className="ui-btn ui-btn--danger ui-btn--sm"
+                    >
+                      Удалить
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
