@@ -1,1 +1,65 @@
-// экспорт всех стилей
+@use "reset";
+@use "fonts";
+
+@use "abstracts/variables";
+@use "abstracts/colors";
+@use "abstracts/borders";
+@use "abstracts/text";
+@use "abstracts/spacing";
+@use "abstracts/mixins";
+@use "abstracts/breakpoints";
+
+@use "vendor/radix";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--bg-app);
+}
+
+body {
+  font-family: fonts.$font-inter;
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(120, 110, 255, 0.3);
+    border-radius: 4px;
+  }
+}
+
+input,
+textarea,
+select {
+  color: var(--text-primary);
+  background: transparent;
+}
+
+.glass-panel {
+  @include mixins.glass-container;
+}
+
+.text-gradient-special {
+  background: var(--gradient-special);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--radix-primary-color, #3c2da2);
+  outline-offset: 2px;
+}

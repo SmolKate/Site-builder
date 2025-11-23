@@ -1,0 +1,115 @@
+@use "variables" as *;
+
+:root {
+  color-scheme: light;
+
+  // --- Фоны ---
+  --bg-app: #{$white-soft};
+  --bg-surface: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(243, 243, 243, 0.1) 100%
+  );
+
+  // --- Текст ---
+  --text-primary: #{$black-text};
+  --text-secondary: #{rgba($black-text, 0.7)};
+  --text-inverse: #{$white};
+  --text-on-primary: #{$white};
+
+  // --- Градиентная обводка (для миксина) ---
+  --border-glass-gradient: linear-gradient(
+    65deg,
+    rgba(124, 159, 255, 0.15),
+    rgba(175, 228, 255, 0.05)
+  );
+  // --- Обводки ---
+  --border-color-default: #{$brand-purple-border};
+  --border-color-btn: rgba(127, 141, 209, 0);
+
+  // --- Статусы ---
+  --color-error: #{$error};
+  --color-success: #{$success};
+  --color-warning: #eab308;
+
+  // --- Полупрозрачные стили ---
+  --bg-error-soft: #{rgba($error, 0.1)};
+  --border-error-soft: #{rgba($error, 0.2)};
+
+  --bg-success-soft: #{rgba($success, 0.15)};
+  --border-success-soft: #{rgba($success, 0.2)};
+
+  --bg-warning-soft: rgba(255, 193, 7, 0.15);
+  --border-warning-soft: rgba(255, 193, 7, 0.2);
+  --text-warning: #eab308;
+
+  // --- Радиальный градиент ---
+  --gradient-hero-radial: radial-gradient(
+    circle,
+    #{$brand-blue-light} 0%,
+    #{$brand-blue-mid} 50%,
+    #{$brand-blue-deep} 100%
+  );
+  // --- Градиент для особой кнопки ---
+  --gradient-special: linear-gradient(
+    40deg,
+    #{$accent-blue} -50%,
+    #{$accent-cyan} 10%,
+    #{$accent-blue} 70%,
+    #{$accent-pink} 110%
+  );
+
+  // --- Градиент для основной кнопки (Синий -> Фиолетовый/Светло-синий) ---
+  --gradient-btn-primary: linear-gradient(
+    135deg,
+    #{$brand-blue-mid} 0%,
+    #{$brand-blue-light} 100%
+  );
+
+  // Маленькая тень (для кнопок в покое)
+  --shadow-sm: 0 4px 14px 0 rgba(0, 0, 0, 0.2);
+
+  // Большая тень (для ховера или карточек)
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.15);
+
+  // Тень для поверхности (Surface)
+  --shadow-surface: 0 4px 24px -1px rgba(0, 0, 0, 0.1);
+  --shadow-btn-hover: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-app: radial-gradient(
+    circle at center,
+    #{$brand-blue-mid} 0%,
+    #{$brand-blue-deep} 100%
+  );
+  --bg-surface: #{rgba($dark-surface, 0.5)};
+
+  --text-primary: #{$white-soft};
+  --text-secondary: #{$light-text};
+  --text-inverse: #{$black-text};
+  --text-on-primary: #{$white-soft};
+
+  // --- Градиентная обводка (для миксина) ---
+  --border-glass-gradient: linear-gradient(
+    145deg,
+    rgba(124, 159, 255, 0.25),
+    rgba(175, 228, 255, 0.05)
+  );
+  --border-color-default: #{$grey-soft};
+  --border-color-btn: rgba(255, 255, 255, 0.1);
+
+  --gradient-btn-primary: linear-gradient(
+    135deg,
+    #{$brand-blue-mid} 0%,
+    #{$brand-blue-light} 100%
+  );
+
+  --text-warning: #fcd34d;
+
+  --shadow-sm: 0 4px 14px 0 rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.5);
+  --shadow-surface: 0 4px 24px -1px rgba(0, 0, 0, 0.3);
+}
