@@ -1,0 +1,12 @@
+@use "../abstracts/variables" as *;
+
+.radix-dialog-content {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color-default);
+}
+
+:root {
+  --radix-primary-color: #{$brand-blue-light};
+}
