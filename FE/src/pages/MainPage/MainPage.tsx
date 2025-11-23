@@ -8,6 +8,7 @@ import {
 import type { ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
 import { RaDialog } from "@/components/Dialog";
+import "./styles.scss";
 
 export function MainPage() {
   const { data: sites, isLoading } = useFetchSitesQuery();
@@ -35,7 +36,6 @@ export function MainPage() {
   const handleDeleteSite = (siteId: string) => {
     deleteSite(siteId);
   };
-  
 
   const createdAt = (site: ISiteDTO) =>
     new Date(site.createdAt).toLocaleDateString("ru-RU");
