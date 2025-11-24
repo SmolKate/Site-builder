@@ -104,7 +104,7 @@
   padding: 0 var(--space-md);
 
   border-radius: var(--radius-xl);
-  border: 1px solid var(--border-color-default);
+  border: 2px solid var(--border-color-default);
 
   color: var(--text-primary);
   transition: all 0.2s ease;
@@ -140,7 +140,7 @@
   &--danger {
     background: transparent;
     color: var(--color-error);
-    border: 1px solid var(--border-error-soft);
+    border: 2px solid var(--border-error-soft);
     box-shadow: none;
 
     &:hover {
