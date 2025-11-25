@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,7 +10,7 @@ import type { ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
 import { RaDialog } from "@/components/Dialog";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, PasswordField } from "@/ui";
+import { InputField, PasswordField, Button } from "@/ui";
 import { TVariant } from "@/ui/types";
 import "./styles.scss";
 
@@ -81,13 +80,11 @@ export function MainPage() {
               placeholder="Краткое описание"
               variant={TVariant.SECONDARY}
             />
-            <button
+            <Button
+              buttonText="Создать сайт"
               type="submit"
-              className="ui-btn ui-btn--primary"
               disabled={!isValid || isSubmitting}
-            >
-              Создать сайт
-            </button>
+            />
           </form>
         </div>
 

@@ -1,4 +1,5 @@
 import { InputField} from "./InputField";
 import { PasswordField } from "./PasswordField";
+import { Button } from "./Button";
 
-export { InputField, PasswordField };
+export { InputField, PasswordField, Button };
