@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -6,21 +6,31 @@ import {
   useAddSiteMutation,
   useDeleteSiteMutation,
 } from "@/store/sites";
-import type { ISiteDTO } from "@/utils/types";
+import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
 import { RaDialog } from "@/components/Dialog";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
 import { InputField, PasswordField, Button } from "@/ui";
 import { TVariant } from "@/ui/types";
+import { Pagination } from "@/ui";
+import { paginate } from "@/utils";
+import { ITEMS_PER_PAGE } from "@/utils/constants";
 import "./styles.scss";
 
 export function MainPage() {
+  const [page, setPage] = useState(1);
   const { data: sites, isLoading } = useFetchSitesQuery();
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
+  const pageCount = sites && Math.ceil(sites.length / ITEMS_PER_PAGE);
+  const sitesCrop = sites && paginate(sites, page, ITEMS_PER_PAGE);
 
   const handleDeleteSite = (siteId: string) => {
     deleteSite(siteId);
+  };
+
+  const handlePageChange = ({ selected }: ISelectedPage) => {
+    setPage(selected + 1);
   };
 
   const createdAt = (site: ISiteDTO) =>
@@ -41,7 +51,7 @@ export function MainPage() {
       reset();
     }
   }, [isSubmitSuccessful, reset]);
-  
+
   const onSubmit = (data: SiteFormData) => {
     const newSite: Omit<ISiteDTO, "id"> = {
       title: data.title,
@@ -50,7 +60,7 @@ export function MainPage() {
       published: false,
     };
 
-    addSite(newSite);   
+    addSite(newSite);
   };
 
   return (
@@ -95,13 +105,13 @@ export function MainPage() {
 
           {isLoading ? (
             <h2>Загрузка...</h2>
-          ) : sites?.length === 0 ? (
+          ) : sitesCrop?.length === 0 ? (
             <div className="sites-section__empty">
               <p>Нет сайтов для отображения. Создайте свой первый проект!</p>
             </div>
           ) : (
             <div className="sites-section__grid">
-              {sites?.map((site) => (
+              {sitesCrop?.map((site) => (
                 <div key={site.id} className="site-card">
                   <div className="site-card__info">
                     <h3 className="site-card__title">{site.title}</h3>
@@ -134,6 +144,14 @@ export function MainPage() {
             </div>
           )}
         </div>
+
+        {pageCount && (
+          <Pagination
+            onPageChange={handlePageChange}
+            pageCount={pageCount}
+            page={page}
+          />
+        )}
       </main>
     </div>
   );

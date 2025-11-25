@@ -1,1 +1,1 @@
-// экспорт утилок
+export * from "./paginate";

@@ -1,0 +1,34 @@
+.pagination-container {
+  display: flex;
+  justify-content: center;
+
+  list-style: none;
+
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-xl);
+  color: var(--text-on-primary);
+}
+
+.pagination-page,
+.pagination-previous-page,
+.pagination-next-page,
+.break {
+  a {
+    display: block;
+    padding: var(--space-md);
+
+    cursor: pointer;
+
+    &:hover {
+      background: var(--gradient-btn-primary);
+      border-radius: var(--radius-lg);
+    }
+  }
+}
+
+.pagination-active-page {
+  a {
+    background: var(--gradient-btn-primary);
+    border-radius: var(--radius-lg);
+  }
+}
