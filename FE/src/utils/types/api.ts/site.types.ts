@@ -9,3 +9,7 @@ export interface ISiteDTO {
 export interface IAuthState {
   isAuthenticated: boolean;
 }
+
+export interface ISelectedPage {
+  selected: number;
+}
