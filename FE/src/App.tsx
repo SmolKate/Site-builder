@@ -1,15 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
-import {
-  Login,
-  MainPage,
-  NewSite,
-  NotFound,
-  Profile,
-  Signup,
-  Site,
-  SitesList,
-} from "@/pages";
+import { Login, MainPage, NewSite, NotFound, Profile, Signup, Site, SitesList } from "@/pages";
 import { MainLayout, ProtectedLayout } from "@/layouts";
 import { ErrorBoundary } from "@/components";
 import { messages } from "@/locales";

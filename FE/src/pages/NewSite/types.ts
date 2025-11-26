@@ -11,26 +11,21 @@ const Tag = {
   SPAN: "span",
 } as const;
 
-type TTag = typeof Tag[keyof typeof Tag]
+type TTag = (typeof Tag)[keyof typeof Tag];
 
 interface IBlock {
-  id: number
-  name: string
-  tag: TTag
-  link?: string
+  id: number;
+  name: string;
+  tag: TTag;
+  link?: string;
 }
 
 interface ILayoutConfigItem {
   i: string;
   style: {
     [key: string]: string;
-  }
-  htmlAttr: Omit<IBlock, "id">
+  };
+  htmlAttr: Omit<IBlock, "id">;
 }
 
-export {
-  Tag,
-  type TTag,
-  type IBlock,
-  type ILayoutConfigItem,
-};
+export { Tag, type TTag, type IBlock, type ILayoutConfigItem };
