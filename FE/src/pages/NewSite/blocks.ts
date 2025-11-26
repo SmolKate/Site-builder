@@ -15,7 +15,7 @@ const blocks = [
     id: 3,
     name: "Button",
     tag: Tag.BUTTON,
-    link: "/home"
+    link: "/home",
   },
 ];
 

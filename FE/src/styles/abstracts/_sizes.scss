@@ -1,6 +1,7 @@
 :root {
   --layout-max-width: 1440px; // Максимальная ширина лейаута
   --header-height: 54px; // Высота шапки
+  --header-padding-y: var(--space-xs); // Вертикальный внутренний отступ шапки
   --input-height: 48px; // Высота инпутов
   --selector-height: 40px; // Высота селекторов
   --button-min-height: 28px;

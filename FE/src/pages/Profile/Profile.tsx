@@ -33,8 +33,7 @@ export const Profile = () => {
             alt={`${firstName} ${lastName}`}
           />
           <Avatar.Fallback className="profile-card__avatar-fallback">
-            {firstName?.charAt(0).toUpperCase() +
-              lastName?.charAt(0).toUpperCase()}
+            {firstName?.charAt(0).toUpperCase() + lastName?.charAt(0).toUpperCase()}
           </Avatar.Fallback>
         </Avatar.Root>
         <Flex direction="column">
