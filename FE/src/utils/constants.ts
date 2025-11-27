@@ -9,3 +9,7 @@ export const ITEMS_PER_PAGE = 6;
 export const PAGE_RANGE_DISPLAYED = 3;
 
 export const MARGIN_PAGES_DISPLAYED = 1;
+export const LANGUAGE_ENUM = {
+  RU: "RU",
+  EN: "EN",
+} as const;
