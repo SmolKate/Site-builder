@@ -33,6 +33,7 @@ const Pagination: FC<IPaginationProps> = ({
       previousClassName="pagination-previous-page"
       nextClassName="pagination-next-page"
       activeClassName="pagination-active-page"
+      disabledClassName="pagination-disabled-arrow"
     />
   );
 };
