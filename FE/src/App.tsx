@@ -10,23 +10,24 @@ import {
   Site,
   SitesList,
 } from "@/pages";
-import { ProtectedLayout } from "@/layouts";
-import { ErrorBoundary, Header } from "@/components";
+import { MainLayout, ProtectedLayout } from "@/layouts";
+import { ErrorBoundary } from "@/components";
 import { messages } from "@/locales";
 
 function App() {
   return (
     <ErrorBoundary fallback={<div>{messages.fallbackError}</div>}>
-      <Header />
       <Suspense fallback={messages.loading}>
         <Routes>
-          <Route element={<ProtectedLayout />}>
-            <Route path="/" element={<MainPage />} />
-            <Route path="me" element={<Profile />} />
-            <Route path="sites">
-              <Route index element={<SitesList />} />
-              <Route path=":siteId" element={<Site />} />
-              <Route path="new" element={<NewSite />} />
+          <Route element={<MainLayout />}>
+            <Route element={<ProtectedLayout />}>
+              <Route path="/" element={<MainPage />} />
+              <Route path="me" element={<Profile />} />
+              <Route path="sites">
+                <Route index element={<SitesList />} />
+                <Route path=":siteId" element={<Site />} />
+                <Route path="new" element={<NewSite />} />
+              </Route>
             </Route>
           </Route>
           <Route path="login" element={<Login />} />
