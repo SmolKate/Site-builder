@@ -1,0 +1,30 @@
+@use "@/styles/abstracts/_sizes";
+
+.main-layout {
+  margin: 0 auto;
+  height: 100vh;
+  max-width: 1440px;
+
+  &__header {
+    align-content: center;
+    height: var(--header-height);
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+
+    //эти приседания для того чтобы ограничить по ширине
+    //по другому не сработало из-за  position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1440px;
+
+    flex-shrink: 0;
+  }
+
+  &__content {
+    flex: 1;
+    padding-top: var(--header-height);
+    height: 100vh;
+  }
+}
