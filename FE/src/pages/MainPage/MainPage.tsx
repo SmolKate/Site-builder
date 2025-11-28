@@ -7,7 +7,8 @@ import { mainPageMessages } from "@/locales";
 import { useFetchSitesQuery, useAddSiteMutation, useDeleteSiteMutation } from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, Button, Pagination, Dropdown, SearchInputField } from "@/ui";
+import { InputField, Button, Pagination, Loader, Dropdown, SearchInputField } from "@/ui";
+import { LSize, LVariant } from "@/ui/Loader";
 import { TVariant } from "@/ui/types";
 import { paginate } from "@/utils";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
@@ -29,7 +30,7 @@ export function MainPage() {
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
   const [updateUser] = useUpdateUserMutation();
-  const { data: currentUser, isLoading: currentUserLoading } = useGetCurrentUserQuery();
+  const { data: currentUser } = useGetCurrentUserQuery();
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [site, setSite] = useState<{ id: string; title: string }>({ id: "", title: "" });
 
@@ -143,7 +144,11 @@ export function MainPage() {
               placeholder={mainPageMessages.createCard.descriptionPlaceholder}
               variant={TVariant.SECONDARY}
             />
-            <Button buttonText={mainPageMessages.createCard.submit} type="submit" disabled={!isValid || isSubmitting} />
+            <Button
+              buttonText={mainPageMessages.createCard.submit}
+              type="submit"
+              disabled={!isValid || isSubmitting}
+            />
           </form>
         </div>
 
@@ -155,8 +160,11 @@ export function MainPage() {
             <SearchInputField value={searchQuery} onChange={handleSearchQuery} />
             <Dropdown sortAlg={sortAlg} onSortSites={handleSortSites} />
           </div>
-          {isLoading || currentUserLoading ? (
-            <h2>{mainPageMessages.sitesSection.loading}</h2>
+
+          {isLoading ? (
+            <div className="sites-section__loading">
+              <Loader variant={LVariant.DOTS} size={LSize.LG} />
+            </div>
           ) : sitesCrop?.length === 0 ? (
             <div className="sites-section__empty">
               <p>{mainPageMessages.sitesSection.empty}</p>
@@ -182,8 +190,7 @@ export function MainPage() {
                       >
                         {site.published
                           ? mainPageMessages.sitesSection.status.live
-                          : mainPageMessages.sitesSection.status.draft
-                        }
+                          : mainPageMessages.sitesSection.status.draft}
                       </span>
                     </div>
                   </div>

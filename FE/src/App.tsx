@@ -4,11 +4,19 @@ import { Login, MainPage, Constructor, NotFound, Profile, Signup, SitesList } fr
 import { MainLayout, ProtectedLayout, UnauthorizedLayout } from "@/layouts";
 import { ErrorBoundary } from "@/components";
 import { messages } from "@/locales";
+import { Loader } from "@/ui";
+import { LSize, LVariant } from "./ui/Loader";
 
 function App() {
   return (
     <ErrorBoundary fallback={<div>{messages.fallbackError}</div>}>
-      <Suspense fallback={messages.loading}>
+      <Suspense
+        fallback={
+          <div className="app-loader">
+            <Loader variant={LVariant.DOTS} size={LSize.LG} />
+          </div>
+        }
+      >
         <Routes>
           <Route element={<MainLayout />}>
             <Route element={<ProtectedLayout />}>

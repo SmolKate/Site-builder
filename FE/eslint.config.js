@@ -7,8 +7,12 @@ import pluginPrettier from "eslint-plugin-prettier";
 import importPlugin from "eslint-plugin-import";
 
 export default [
-  { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx,spec.ts,test.ts}"] },
-  { ignores: ["dist"] },
+  {
+    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
+  },
+  {
+    ignores: ["dist", "node_modules", "coverage"],
+  },
   {
     languageOptions: {
       globals: {
@@ -39,9 +43,6 @@ export default [
       prettier: pluginPrettier,
       import: importPlugin,
     },
-  },
-
-  {
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
       indent: ["error", 2],

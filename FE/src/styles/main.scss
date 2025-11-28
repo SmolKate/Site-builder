@@ -1,15 +1,15 @@
-@use "reset";
-@use "fonts";
+@use 'reset';
+@use 'fonts';
 
-@use "abstracts/variables";
-@use "abstracts/colors";
-@use "abstracts/borders";
-@use "abstracts/text";
-@use "abstracts/spacing";
-@use "abstracts/mixins";
-@use "abstracts/breakpoints";
+@use 'abstracts/variables';
+@use 'abstracts/colors';
+@use 'abstracts/borders';
+@use 'abstracts/text';
+@use 'abstracts/spacing';
+@use 'abstracts/mixins';
+@use 'abstracts/breakpoints';
 
-@use "vendor/radix";
+@use 'vendor/radix';
 
 * {
   box-sizing: border-box;
@@ -62,4 +62,11 @@ select {
 :focus-visible {
   outline: 2px solid var(--radix-primary-color, #3c2da2);
   outline-offset: 2px;
+}
+
+.app-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }

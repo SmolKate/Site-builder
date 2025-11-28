@@ -6,6 +6,7 @@ import { Dropdown } from "./Dropdown";
 import { RadioField } from "./RadioField";
 import { UniversalPopover } from "./Popover";
 import { SearchInputField } from "./SearchInputField";
+import { Loader } from "./Loader";
 
 export {
   InputField,
@@ -16,4 +17,5 @@ export {
   RadioField,
   UniversalPopover,
   SearchInputField,
+  Loader,
 };
