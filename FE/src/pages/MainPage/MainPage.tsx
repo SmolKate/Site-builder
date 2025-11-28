@@ -1,32 +1,50 @@
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   useFetchSitesQuery,
   useAddSiteMutation,
   useDeleteSiteMutation,
-} from "@/store/sites";
-import type { ISelectedPage, ISiteDTO } from "@/utils/types";
-import { RaPopover } from "@/components/Popover";
-import { RaDialog } from "@/components/Dialog";
-import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, PasswordField, Button } from "@/ui";
-import { TVariant } from "@/ui/types";
-import { Pagination } from "@/ui";
-import { paginate } from "@/utils";
-import { ITEMS_PER_PAGE } from "@/utils/constants";
-import "./styles.scss";
+} from '@/store/sites';
+import type { ISelectedPage, ISiteDTO } from '@/utils/types';
+import { RaPopover } from '@/components/Popover';
+import { RaDialog } from '@/components/Dialog';
+import { siteSchema, type SiteFormData } from '@/utils/helpers';
+import {
+  InputField,
+  PasswordField,
+  Button,
+  Pagination,
+  UniversalPopup,
+} from '@/ui';
+import { TVariant, TButtonVariant } from '@/ui/types';
+import { paginate } from '@/utils';
+import { ITEMS_PER_PAGE } from '@/utils/constants';
+import './styles.scss';
 
 export function MainPage() {
   const [page, setPage] = useState(1);
+  const [siteToDelete, setSiteToDelete] = useState<ISiteDTO | null>(null);
+  const [isDemoPopupOpen, setIsDemoPopupOpen] = useState(false);
   const { data: sites, isLoading } = useFetchSitesQuery();
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
   const pageCount = sites && Math.ceil(sites.length / ITEMS_PER_PAGE);
   const sitesCrop = sites && paginate(sites, page, ITEMS_PER_PAGE);
 
-  const handleDeleteSite = (siteId: string) => {
-    deleteSite(siteId);
+  const handleDeleteSite = (site: ISiteDTO) => {
+    setSiteToDelete(site);
+  };
+
+  const closeDeletePopup = () => setSiteToDelete(null);
+
+  const confirmDeleteSite = () => {
+    if (!siteToDelete) {
+      return;
+    }
+
+    deleteSite(siteToDelete.id);
+    closeDeletePopup();
   };
 
   const handlePageChange = ({ selected }: ISelectedPage) => {
@@ -34,7 +52,7 @@ export function MainPage() {
   };
 
   const createdAt = (site: ISiteDTO) =>
-    new Date(site.createdAt).toLocaleDateString("ru-RU");
+    new Date(site.createdAt).toLocaleDateString('ru-RU');
 
   const {
     register,
@@ -43,7 +61,7 @@ export function MainPage() {
     formState: { errors, isValid, isSubmitSuccessful, isSubmitting },
   } = useForm<SiteFormData>({
     resolver: yupResolver(siteSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   useEffect(() => {
@@ -53,7 +71,7 @@ export function MainPage() {
   }, [isSubmitSuccessful, reset]);
 
   const onSubmit = (data: SiteFormData) => {
-    const newSite: Omit<ISiteDTO, "id"> = {
+    const newSite: Omit<ISiteDTO, 'id'> = {
       title: data.title,
       description: data.description,
       createdAt: new Date().toISOString(),
@@ -68,6 +86,13 @@ export function MainPage() {
       <header className="main-page__header">
         <h1 className="main-page__title">Site Builder</h1>
         <p className="main-page__subtitle">Панель управления проектами</p>
+        <Button
+          buttonText="Показать демо-попап"
+          variant={TButtonVariant.SECONDARY}
+          size="sm"
+          className="main-page__demo-button"
+          onClick={() => setIsDemoPopupOpen(true)}
+        />
       </header>
 
       <RaPopover />
@@ -122,18 +147,18 @@ export function MainPage() {
                       <span
                         className={`status-badge ${
                           site.published
-                            ? "status-badge--published"
-                            : "status-badge--draft"
+                            ? 'status-badge--published'
+                            : 'status-badge--draft'
                         }`}
                       >
-                        {site.published ? "Live" : "Draft"}
+                        {site.published ? 'Live' : 'Draft'}
                       </span>
                     </div>
                   </div>
 
                   <div className="site-card__actions">
                     <button
-                      onClick={() => handleDeleteSite(site.id)}
+                      onClick={() => handleDeleteSite(site)}
                       className="ui-btn ui-btn--danger ui-btn--sm"
                     >
                       Удалить
@@ -153,6 +178,39 @@ export function MainPage() {
           />
         )}
       </main>
+      <UniversalPopup
+        isOpen={Boolean(siteToDelete)}
+        title={
+          siteToDelete
+            ? `Удалить сайт «${siteToDelete.title}»?`
+            : 'Удалить сайт?'
+        }
+        bodyText="Действие нельзя отменить. Вы уверены, что хотите удалить проект?"
+        onClose={closeDeletePopup}
+        primaryButton={{
+          label: 'Удалить',
+          variant: TButtonVariant.DANGER,
+          onClick: confirmDeleteSite,
+        }}
+        secondaryButton={{
+          label: 'Отмена',
+          variant: TButtonVariant.SECONDARY,
+          onClick: closeDeletePopup,
+        }}
+      />
+      <UniversalPopup
+        isOpen={isDemoPopupOpen}
+        title="Демо-попап"
+        bodyText={
+          'Это демонстрация универсального попапа. ' +
+          'Нажмите на кнопку ниже, чтобы закрыть окно.'
+        }
+        onClose={() => setIsDemoPopupOpen(false)}
+        primaryButton={{
+          label: 'Закрыть',
+          onClick: () => setIsDemoPopupOpen(false),
+        }}
+      />
     </div>
   );
 }
