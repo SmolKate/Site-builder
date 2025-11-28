@@ -1,10 +1,13 @@
 module.exports = {
   preset: "ts-jest",
   transform: {
-    // eslint-disable-next-line no-useless-escape
-    "^.+\.(ts|tsx|js|jsx)$": "ts-jest",
+    "^.+\\.(ts|tsx)$": ["ts-jest", { tsconfig: "<rootDir>/tsconfig.jest.json" }],
+  },
+  moduleNameMapper: {
+    "^.+\\.(css|scss|sass)$": "<rootDir>/jest.styleMock.js",
+    "^@/(.*)$": "<rootDir>/src/$1",
   },
   testEnvironment: "jsdom",
   transformIgnorePatterns: ["node_modules"],
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
