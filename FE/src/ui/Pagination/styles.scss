@@ -6,7 +6,7 @@
 
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-xl);
-  color: var(--text-on-primary);
+  color: var(--text-pagination);
 }
 
 .pagination-page,
@@ -20,7 +20,7 @@
     cursor: pointer;
 
     &:hover {
-      background: var(--gradient-btn-primary);
+      background: var(--bg-pagination-hover);
       border-radius: var(--radius-lg);
     }
   }
@@ -28,7 +28,11 @@
 
 .pagination-active-page {
   a {
-    background: var(--gradient-btn-primary);
+    background: var(--bg-pagination-hover);
     border-radius: var(--radius-lg);
   }
+}
+
+.pagination-disabled-arrow {
+  pointer-events: none;
 }

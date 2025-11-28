@@ -11,6 +11,8 @@
     rgba(243, 243, 243, 0.1) 100%
   );
   --bg-form-secondary: #{$purple-light};
+  --bg-pagination: #{$white-soft};
+  --bg-pagination-hover: #{$purple-light};
 
   // --- Текст ---
   --text-primary: #{$black-text};
@@ -18,6 +20,7 @@
   --text-inverse: #{$white};
   --text-on-primary: #{$white};
   --text-form-secondary: #{$brand-purple-border};
+  --text-pagination: #{$black-text};
 
   // --- Градиентная обводка (для миксина) ---
   --border-glass-gradient: linear-gradient(
@@ -94,11 +97,14 @@ html[data-theme="dark"] {
     #{$brand-blue-deep} 100%
   );
   --bg-surface: #{rgba($dark-surface, 0.5)};
+  --bg-pagination: #171a38;
+  --bg-pagination-hover: #171a38;
 
   --text-primary: #{$white-soft};
   --text-secondary: #{$light-text};
   --text-inverse: #{$black-text};
   --text-on-primary: #{$white-soft};
+  --text-pagination: #{$white-soft};
 
   // --- Градиентная обводка (для миксина) ---
   --border-glass-gradient: linear-gradient(

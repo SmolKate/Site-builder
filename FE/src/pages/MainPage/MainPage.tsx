@@ -10,9 +10,9 @@ import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
 import { RaDialog } from "@/components/Dialog";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, PasswordField, Button } from "@/ui";
+import { InputField, PasswordField, Button , Pagination } from "@/ui";
 import { TVariant } from "@/ui/types";
-import { Pagination } from "@/ui";
+
 import { paginate } from "@/utils";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
 import "./styles.scss";
