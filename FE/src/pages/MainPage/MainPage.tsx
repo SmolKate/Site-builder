@@ -1,21 +1,29 @@
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   useFetchSitesQuery,
   useAddSiteMutation,
   useDeleteSiteMutation,
-} from "@/store/sites";
-import type { ISelectedPage, ISiteDTO } from "@/utils/types";
-import { RaPopover } from "@/components/Popover";
-import { RaDialog } from "@/components/Dialog";
-import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, PasswordField, Button , Pagination } from "@/ui";
-import { TVariant } from "@/ui/types";
+} from '@/store/sites';
+import type { ISelectedPage, ISiteDTO } from '@/utils/types';
+import { RaPopover } from '@/components/Popover';
+import { RaDialog } from '@/components/Dialog';
+import { siteSchema, type SiteFormData } from '@/utils/helpers';
+import {
+  InputField,
+  PasswordField,
+  Button,
+  Pagination,
+  Loader,
+  LVariant,
+  LSize,
+} from '@/ui';
+import { TVariant } from '@/ui/types';
 
-import { paginate } from "@/utils";
-import { ITEMS_PER_PAGE } from "@/utils/constants";
-import "./styles.scss";
+import { paginate } from '@/utils';
+import { ITEMS_PER_PAGE } from '@/utils/constants';
+import './styles.scss';
 
 export function MainPage() {
   const [page, setPage] = useState(1);
@@ -34,7 +42,7 @@ export function MainPage() {
   };
 
   const createdAt = (site: ISiteDTO) =>
-    new Date(site.createdAt).toLocaleDateString("ru-RU");
+    new Date(site.createdAt).toLocaleDateString('ru-RU');
 
   const {
     register,
@@ -43,7 +51,7 @@ export function MainPage() {
     formState: { errors, isValid, isSubmitSuccessful, isSubmitting },
   } = useForm<SiteFormData>({
     resolver: yupResolver(siteSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   useEffect(() => {
@@ -53,7 +61,7 @@ export function MainPage() {
   }, [isSubmitSuccessful, reset]);
 
   const onSubmit = (data: SiteFormData) => {
-    const newSite: Omit<ISiteDTO, "id"> = {
+    const newSite: Omit<ISiteDTO, 'id'> = {
       title: data.title,
       description: data.description,
       createdAt: new Date().toISOString(),
@@ -104,7 +112,9 @@ export function MainPage() {
           </div>
 
           {isLoading ? (
-            <h2>Загрузка...</h2>
+            <div className="sites-section__loading">
+              <Loader variant={LVariant.DOTS} size={LSize.LG} />
+            </div>
           ) : sitesCrop?.length === 0 ? (
             <div className="sites-section__empty">
               <p>Нет сайтов для отображения. Создайте свой первый проект!</p>
@@ -122,11 +132,11 @@ export function MainPage() {
                       <span
                         className={`status-badge ${
                           site.published
-                            ? "status-badge--published"
-                            : "status-badge--draft"
+                            ? 'status-badge--published'
+                            : 'status-badge--draft'
                         }`}
                       >
-                        {site.published ? "Live" : "Draft"}
+                        {site.published ? 'Live' : 'Draft'}
                       </span>
                     </div>
                   </div>

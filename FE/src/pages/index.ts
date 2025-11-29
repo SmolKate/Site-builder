@@ -1,42 +1,42 @@
-import { lazy } from "react";
+import { lazy } from 'react';
 
 export const Login = lazy(() =>
-  import("./Login").then((module) => ({
+  import('./Login').then((module) => ({
     default: module.Login,
   }))
 );
 export const MainPage = lazy(() =>
-  import("./MainPage").then((module) => ({
+  import('./MainPage').then((module) => ({
     default: module.MainPage,
   }))
 );
 export const NewSite = lazy(() =>
-  import("./NewSite").then((module) => ({
+  import('./NewSite').then((module) => ({
     default: module.NewSite,
   }))
 );
 export const NotFound = lazy(() =>
-  import("./NotFound").then((module) => ({
+  import('./NotFound').then((module) => ({
     default: module.NotFound,
   }))
 );
 export const Profile = lazy(() =>
-  import("./Profile").then((module) => ({
+  import('./Profile').then((module) => ({
     default: module.Profile,
   }))
 );
 export const Signup = lazy(() =>
-  import("./Signup").then((module) => ({
+  import('./Signup').then((module) => ({
     default: module.Signup,
   }))
 );
 export const Site = lazy(() =>
-  import("./Site").then((module) => ({
+  import('./Site').then((module) => ({
     default: module.Site,
   }))
 );
 export const SitesList = lazy(() =>
-  import("./SitesList").then((module) => ({
+  import('./SitesList').then((module) => ({
     default: module.SitesList,
   }))
 );
