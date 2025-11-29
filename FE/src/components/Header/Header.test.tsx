@@ -1,14 +1,15 @@
+import "@testing-library/jest-dom/vitest";
 import { MemoryRouter } from "react-router-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { jest, describe, expect, test } from "@jest/globals";
-import { Header } from "./Header";
+import { describe, expect, test, vi } from 'vitest'
 import { ThemeProvider } from "@/context/ThemeContext";
+import { Header } from "./Header";
 
 type AuthState = { isAuthenticated: boolean };
 let mockAuthState: AuthState = { isAuthenticated: false };
 
-jest.mock("@/store", () => ({
-  useAppDispatch: () => jest.fn(),
+vi.mock("@/store", () => ({
+  useAppDispatch: () => vi.fn(),
   useAppSelector: (selector: (state: { auth: AuthState }) => unknown) =>
     selector({ auth: mockAuthState }),
 }));
