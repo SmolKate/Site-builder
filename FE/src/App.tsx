@@ -1,5 +1,5 @@
-import { Route, Routes } from "react-router-dom";
-import { Suspense } from "react";
+import { Route, Routes } from 'react-router-dom';
+import { Suspense } from 'react';
 import {
   Login,
   MainPage,
@@ -9,15 +9,29 @@ import {
   Signup,
   Site,
   SitesList,
-} from "@/pages";
-import { MainLayout, ProtectedLayout } from "@/layouts";
-import { ErrorBoundary } from "@/components";
-import { messages } from "@/locales";
+} from '@/pages';
+import { MainLayout, ProtectedLayout } from '@/layouts';
+import { ErrorBoundary } from '@/components';
+import { messages } from '@/locales';
+import { Loader, LVariant, LSize } from '@/ui';
 
 function App() {
   return (
     <ErrorBoundary fallback={<div>{messages.fallbackError}</div>}>
-      <Suspense fallback={messages.loading}>
+      <Suspense
+        fallback={
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              minHeight: '100vh',
+            }}
+          >
+            <Loader variant={LVariant.DOTS} size={LSize.LG} />
+          </div>
+        }
+      >
         <Routes>
           <Route element={<MainLayout />}>
             <Route element={<ProtectedLayout />}>
