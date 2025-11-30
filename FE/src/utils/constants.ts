@@ -13,3 +13,5 @@ export const LANGUAGE_ENUM = {
   RU: "RU",
   EN: "EN",
 } as const;
+
+export const ROW_HEIGHT_ENUM = 5 as const;
