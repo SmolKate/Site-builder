@@ -1,0 +1,154 @@
+@use "@/styles/abstracts/mixins" as mix;
+
+.builder {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  &__body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    padding: var(--space-2xl) var(--space-md);
+    gap: var(--space-md);
+  }
+
+  &__drawer {
+    @include mix.glass-container;
+
+    position: absolute;
+    top: var(--space-md);
+    bottom: var(--space-md);
+    left: calc(var(--sidebar-left) + var(--space-2xl));
+    width: var(--sidebar-left-width);
+
+    z-index: 1;
+
+    transition:
+      transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.25s ease,
+      visibility 0s linear 0.25s;
+    will-change: transform, opacity;
+
+    transform: translateX(-20px);
+    opacity: 0;
+    visibility: hidden;
+
+    &.is-open {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+    }
+  }
+
+  &__sidebar-right {
+    @include mix.glass-container;
+    border-radius: var(--radius-lg);
+
+    position: absolute;
+    right: var(--space-md);
+
+    width: var(--sidebar-right-width);
+    display: flex;
+    flex-direction: column;
+
+    transition:
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.2s ease,
+      visibility 0s linear 0.3s;
+    will-change: transform, opacity;
+
+    transform: translateX(20px);
+    opacity: 0;
+    visibility: hidden;
+
+    &.is-visible {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+    }
+  }
+
+  &__canvas-area {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+
+    border-radius: var(--radius-xl);
+    background-color: var(--bg-app);
+    height: 100%;
+    width: 100%;
+
+    background-image: radial-gradient(var(--border-color-default) 1px, transparent 1px);
+    background-size: 34px 34px;
+
+    &--active {
+      background-color: rgba(33, 150, 243, 0.05);
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      transition: all 0.2s;
+      border: 2px dashed transparent;
+      border-radius: var(--radius-lg);
+    }
+
+    &--active::before {
+      border-color: #2196f3;
+      background: rgba(33, 150, 243, 0.05);
+    }
+  }
+
+  &__drop-hint {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2196f3;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  &__grid-container {
+    width: 1200px;
+    min-height: 100%;
+    background: transparent;
+    position: relative;
+  }
+
+  &__drag-overlay {
+    @include mix.glass-container;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--radix-primary-color);
+    color: var(--radix-primary-color);
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    pointer-events: none;
+    z-index: 100;
+    border-radius: var(--radius-md);
+  }
+  &__empty-state {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-secondary);
+    font-size: 16px;
+    border: 2px dashed var(--border-color-default);
+    padding: 40px;
+    border-radius: 12px;
+    pointer-events: none;
+  }
+}

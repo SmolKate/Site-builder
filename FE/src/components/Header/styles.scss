@@ -9,10 +9,10 @@
   justify-content: space-between;
 
   height: var(--header-height);
-  padding: var(--header-padding-y) var(--space-xl);
-  margin: var(--space-xl);
+  padding: var(--header-padding-y) var(--space-sm);
+  margin: var(--space-md);
 
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
 
   &__nav {
     display: inline-flex;
@@ -37,7 +37,7 @@
 
     &--pill {
       padding: calc(var(--space-sm) / 2) var(--space-md);
-      border-radius: var(--radius-full);
+      border-radius: var(--radius-md);
       border: var(--border-width-sm) solid var(--border-color-nav-pill);
       background: var(--bg-nav-pill);
       color: var(--text-primary);
@@ -81,7 +81,7 @@
   &__theme-toggle {
     min-width: var(--space-4xl);
     padding: calc(var(--space-sm) / 2) var(--space-sm);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     border: var(--border-width-sm) solid var(--border-color-btn);
     background: #{rgba($black-text, 0.15)};
     color: var(--text-on-primary);
@@ -101,7 +101,7 @@
 
   &__button {
     padding: calc(var(--space-sm) / 2) var(--space-md);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     font-size: var(--font-size-sm);
     cursor: pointer;
     border: var(--border-width-sm) solid transparent;

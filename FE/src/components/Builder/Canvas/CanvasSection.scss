@@ -1,0 +1,114 @@
+@use "@/styles/abstracts/mixins" as mix;
+
+.canvas-section {
+  min-height: fit-content;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  
+  transition: outline 0.1s ease, background-color 0.2s ease;
+  
+  outline: 1px dashed transparent;
+
+  &--hovered {
+    z-index: 100; 
+    outline: 1px dashed var(--border-color-default);
+  }
+
+  &--selected {
+    outline: 2px solid var(--brand-primary-color);
+    z-index: 101; 
+  }
+
+  &--over {
+    z-index: 102;
+    outline: 2px solid var(--brand-primary-color);
+    background-color: color-mix(in srgb, var(--brand-primary-color) 5%, transparent) !important;
+  }
+
+  &__handle {
+    position: absolute;
+    bottom: calc(-1 * var(--space-xl));
+    left: 0;
+    bottom: 0;
+    
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs); 
+    
+    height: var(--space-xl); 
+    padding: 0 var(--space-md); 
+    
+    background-color: var(--brand-primary-color);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0 ;
+    
+    cursor: move;
+    
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+
+    &--visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  &__handle-icon {
+    color: var(--text-inverse); 
+    display: flex;
+  }
+
+  &__handle-divider {
+    width: 1px;
+    height: 12px; 
+    background-color: color-mix(in srgb, var(--text-inverse) 40%, transparent);
+  }
+
+  &__delete-btn {
+    cursor: pointer;
+    color: var(--text-inverse);
+    display: flex;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--color-error); 
+    }
+  }
+
+  &__content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__placeholder {
+    margin: 0;
+    padding: var(--space-sm);
+    text-align: center;
+    width: 80%;
+    @include mix.text-small;
+    
+    border: 2px dashed var(--border-color-default);
+    border-radius: var(--radius-md);
+    pointer-events: none;
+  }
+
+  &__drop-indicator {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    color: var(--brand-primary-color);
+    font-weight: var(--font-weight-bold);
+    background: color-mix(in srgb, var(--text-inverse) 80%, transparent);
+    backdrop-filter: blur(2px);
+  }
+}

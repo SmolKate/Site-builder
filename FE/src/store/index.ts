@@ -3,10 +3,12 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
 import sitesReducer, { sitesMiddleware, sitesReducerPath } from "./sites";
 import authReducer from "./auth";
+import builderReducer from "./builder/builderSlice";
 
 export const rootReducer = combineReducers({
   [sitesReducerPath]: sitesReducer,
   auth: authReducer,
+  builder: builderReducer,
 });
 
 export const setupStore = (preloadedState?: Partial<RootState>) => {

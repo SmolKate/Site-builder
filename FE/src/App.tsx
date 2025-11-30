@@ -1,6 +1,15 @@
 import { Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
-import { Login, MainPage, NewSite, NotFound, Profile, Signup, Site, SitesList } from "@/pages";
+import {
+  Login,
+  MainPage,
+  Constructor,
+  NotFound,
+  Profile,
+  Signup,
+  Site,
+  SitesList,
+} from "@/pages";
 import { MainLayout, ProtectedLayout } from "@/layouts";
 import { ErrorBoundary } from "@/components";
 import { messages } from "@/locales";
@@ -17,7 +26,7 @@ function App() {
               <Route path="sites">
                 <Route index element={<SitesList />} />
                 <Route path=":siteId" element={<Site />} />
-                <Route path="new" element={<NewSite />} />
+                <Route path="new" element={<Constructor />} />
               </Route>
             </Route>
           </Route>
