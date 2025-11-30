@@ -157,6 +157,10 @@
       grid-template-columns: repeat(3, 1fr);
     }
   }
+
+  &__query {
+    margin-bottom: var(--space-xl);
+  }
 }
 
 .site-card {

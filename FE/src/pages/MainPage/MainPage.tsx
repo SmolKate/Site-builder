@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { orderBy } from "lodash";
 import {
   useFetchSitesQuery,
   useAddSiteMutation,
@@ -10,7 +11,7 @@ import {
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, Button, Pagination } from "@/ui";
+import { InputField, Button, Pagination, Dropdown } from "@/ui";
 import { TVariant } from "@/ui/types";
 
 import { paginate } from "@/utils";
@@ -22,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 export function MainPage() {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
+  const [sortAlg, setSortAlg] = useState("alphabet-asc");
   const { data: sites, isLoading } = useFetchSitesQuery();
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
@@ -29,8 +31,16 @@ export function MainPage() {
   // const { data: getSiteContent, isLoading: isLoadingSiteContent } =
   //   useGetSiteContentQuery("dpiZfBk007dKBmlMdE52");
   const { data: currentUser, isLoading: currentUserLoading } = useGetCurrentUserQuery();
-  const pageCount = sites && Math.ceil(sites.length / ITEMS_PER_PAGE);
-  const sitesCrop = sites && paginate(sites, page, ITEMS_PER_PAGE);
+
+  const iter = sortAlg.split("-")[0];
+  const order = sortAlg.split("-")[1];
+  const sortedSites = orderBy(
+    sites,
+    iter === "alphabet" ? "title" : "createdAt",
+    order === "asc" ? "asc" : "desc"
+  );
+  const pageCount = Math.ceil(sortedSites.length / ITEMS_PER_PAGE);
+  const sitesCrop = paginate(sortedSites, page, ITEMS_PER_PAGE);
 
   const handleDeleteSite = (siteId: string) => {
     deleteSite(siteId);
@@ -38,6 +48,10 @@ export function MainPage() {
 
   const handlePageChange = ({ selected }: ISelectedPage) => {
     setPage(selected + 1);
+  };
+
+  const handleSortSites = (alg: string) => {
+    setSortAlg(alg);
   };
 
   const createdAt = (site: ISiteDTO) => new Date(site.createdAt).toLocaleDateString("ru-RU");
@@ -112,7 +126,9 @@ export function MainPage() {
           <div className="sites-section__header">
             <h2 className="sites-section__title">Мои сайты</h2>
           </div>
-
+          <div className="sites-section__query">
+            <Dropdown sortAlg={sortAlg} onSortSites={handleSortSites} />
+          </div>
           {isLoading || currentUserLoading ? (
             <h2>Загрузка...</h2>
           ) : sitesCrop?.length === 0 ? (
@@ -156,7 +172,7 @@ export function MainPage() {
           )}
         </div>
 
-        {pageCount && (
+        {pageCount > 0 && (
           <Pagination onPageChange={handlePageChange} pageCount={pageCount} page={page} />
         )}
       </main>
