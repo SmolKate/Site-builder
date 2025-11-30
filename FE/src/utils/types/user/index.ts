@@ -1,7 +1,6 @@
 import type { LANGUAGE_ENUM, THEME_ENUM } from "@/utils/constants";
 
-export interface IUserProfile {
-  id: string;
+export interface IUser {
   email: string;
   firstName: string;
   lastName: string;
