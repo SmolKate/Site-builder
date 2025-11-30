@@ -6,20 +6,20 @@ export default {
       "always",
       {
         except: ["first-nested"],
-        ignore: ["after-declaration"]
-      }
+        ignore: ["after-declaration"],
+      },
     ],
     "rule-empty-line-before": [
       "always",
       {
         except: ["first-nested"],
-        ignore: ["after-comment"]
-      }
+        ignore: ["after-comment"],
+      },
     ],
     "color-function-alias-notation": "with-alpha",
     "color-function-notation": "legacy",
     "alpha-value-notation": "number",
     "value-keyword-case": ["lower", { camelCaseSvgKeywords: true }],
-    "color-hex-length": "short"
-  }
+    "color-hex-length": "short",
+  },
 };

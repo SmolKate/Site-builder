@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use 'variables' as *;
 
 :root {
   color-scheme: light;
@@ -77,6 +77,17 @@
     #{$brand-blue-light} 100%
   );
 
+  // --- Навигационные пилюли ---
+  --border-color-nav-pill: #{rgba($brand-purple-light, 0.35)};
+  --bg-nav-pill: #{rgba($brand-purple-light, 0.12)};
+  --bg-nav-pill-hover: #{rgba($brand-purple-light, 0.25)};
+  --gradient-nav-pill: linear-gradient(
+    135deg,
+    #{$brand-purple-light} 0%,
+    #{$accent-pink} 50%,
+    #{$accent-cyan} 100%
+  );
+
   // Маленькая тень (для кнопок в покое)
   --shadow-sm: 0 4px 14px 0 rgba(0, 0, 0, 0.2);
 
@@ -88,7 +99,7 @@
   --shadow-form-secondary: 0 4px 14px 0 #{rgba($brand-purple-border, 0.4)};
 }
 
-html[data-theme="dark"] {
+html[data-theme='dark'] {
   color-scheme: dark;
 
   --bg-app: radial-gradient(
@@ -119,6 +130,16 @@ html[data-theme="dark"] {
     135deg,
     #{$brand-blue-mid} 0%,
     #{$brand-blue-light} 100%
+  );
+
+  --border-color-nav-pill: #{rgba($white-soft, 0.25)};
+  --bg-nav-pill: #{rgba($white-soft, 0.08)};
+  --bg-nav-pill-hover: #{rgba($white-soft, 0.18)};
+  --gradient-nav-pill: linear-gradient(
+    135deg,
+    #{$brand-purple-light} 0%,
+    #{$accent-pink} 50%,
+    #{$accent-cyan} 100%
   );
 
   --text-warning: #fcd34d;

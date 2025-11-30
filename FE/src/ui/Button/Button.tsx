@@ -22,7 +22,7 @@ const Button = (props: IButtonProps) => {
     ...restProps
   } = props;
 
-  if(!buttonText) return null;
+  if (!buttonText) return null;
 
   return (
     <button

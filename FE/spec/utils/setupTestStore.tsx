@@ -6,9 +6,7 @@ export const setupTestStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     devTools: true,
-    middleware: getDefaultMiddleware => getDefaultMiddleware().concat([
-      sitesMiddleware
-    ]),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([sitesMiddleware]),
     preloadedState,
   });
 };

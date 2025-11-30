@@ -25,7 +25,7 @@ const InputField = <TFieldValues extends FieldValues>(props: IInputFieldProps<TF
     fieldName,
     label,
     placeholder,
-    type= "text",
+    type = "text",
     wrapperClassName = "",
     inputClassName = "",
     errorClassName = "",
@@ -36,17 +36,16 @@ const InputField = <TFieldValues extends FieldValues>(props: IInputFieldProps<TF
 
   const error = errors?.[fieldName]?.message as string | undefined;
 
-  const variantClassName = variant === TVariant.PRIMARY
-    ? "field__wrapper--primary"
-    : "field__wrapper--secondary";
+  const variantClassName =
+    variant === TVariant.PRIMARY ? "field__wrapper--primary" : "field__wrapper--secondary";
 
   return (
     <div className={`field__wrapper ${variantClassName} ${wrapperClassName}`}>
-      {label &&
+      {label && (
         <label htmlFor={fieldName} className="text-gradient-special field__label">
           {label}
         </label>
-      }
+      )}
       <div className="field__input-root">
         <input
           id={fieldName}
@@ -58,11 +57,7 @@ const InputField = <TFieldValues extends FieldValues>(props: IInputFieldProps<TF
           {...inputProps}
         />
       </div>
-      {error && (
-        <div className={`field__error ${errorClassName}`}>
-          {error}
-        </div>
-      )}
+      {error && <div className={`field__error ${errorClassName}`}>{error}</div>}
     </div>
   );
 };

@@ -1,14 +1,7 @@
 import { THEME_ENUM } from "@/utils/constants";
 import type { ThemeValue } from "@/utils/types/theme";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type FC,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useState, type FC, type ReactNode } from "react";
 
 interface ThemeContextType {
   theme: ThemeValue;
@@ -41,9 +34,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
     let effectiveTheme = theme;
 
     if (theme === THEME_ENUM.SYSTEM) {
-      const systemDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
+      const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       effectiveTheme = systemDark ? THEME_ENUM.DARK : THEME_ENUM.LIGHT;
     }
 
@@ -54,9 +45,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
     if (theme === THEME_ENUM.SYSTEM) {
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
       const handleChange = () => {
-        const newSystemTheme = mediaQuery.matches
-          ? THEME_ENUM.DARK
-          : THEME_ENUM.LIGHT;
+        const newSystemTheme = mediaQuery.matches ? THEME_ENUM.DARK : THEME_ENUM.LIGHT;
         root.setAttribute("data-theme", newSystemTheme);
       };
 
@@ -72,9 +61,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider
-      value={{ theme, toggleTheme, setTheme: setThemeState }}
-    >
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme: setThemeState }}>
       {children}
     </ThemeContext.Provider>
   );

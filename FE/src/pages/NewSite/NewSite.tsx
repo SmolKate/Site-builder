@@ -10,17 +10,15 @@ import "./styles.scss";
 export const NewSite = () => {
   const savedLayout = window.localStorage.getItem("layout");
   const savedStyleLayout = window.localStorage.getItem("layoutConfig");
-  
-  const [layout, setLayout] = useState<Layout[]>(
-    savedLayout ? JSON.parse(savedLayout) : []
-  );
+
+  const [layout, setLayout] = useState<Layout[]>(savedLayout ? JSON.parse(savedLayout) : []);
   const [layoutConfig, setLayoutConfig] = useState<ILayoutConfigItem[]>(
     savedStyleLayout ? JSON.parse(savedStyleLayout) : []
   );
 
   const handleAddBlock = (block: IBlock) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const {id, ...rest} = block;
+    const { id, ...rest } = block;
     const RColor = Math.random() * 255;
     const GColor = Math.random() * 255;
     const BColor = Math.random() * 255;
@@ -37,13 +35,17 @@ export const NewSite = () => {
     const newBlockConfig = {
       i: uuid,
       style: {
-        backgroundColor
+        backgroundColor,
       },
       htmlAttr: rest,
     };
 
-    setLayout(prevState => {return [...prevState, newBlock];});
-    setLayoutConfig(prevState => {return [...prevState, newBlockConfig];});
+    setLayout((prevState) => {
+      return [...prevState, newBlock];
+    });
+    setLayoutConfig((prevState) => {
+      return [...prevState, newBlockConfig];
+    });
   };
 
   const handleSaveLayout = () => {
@@ -57,12 +59,14 @@ export const NewSite = () => {
         <button onClick={handleSaveLayout}>Save</button>
       </div>
       <div className="builder__content">
-        <BlockSidebar onItemAdd={handleAddBlock}/>
+        <BlockSidebar onItemAdd={handleAddBlock} />
         <div className="builder__grid-container">
           <div className="builder__grid">
-            {Array(1200).fill(0).map((_, index) => {
-              return <div key={index} className="builder__grid-item"></div>;
-            })}
+            {Array(1200)
+              .fill(0)
+              .map((_, index) => {
+                return <div key={index} className="builder__grid-item"></div>;
+              })}
           </div>
           <GridLayout
             className="builder__layout"

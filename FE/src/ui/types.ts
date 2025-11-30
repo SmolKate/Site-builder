@@ -3,7 +3,7 @@ const TVariant = {
   SECONDARY: "secondary",
 } as const;
 
-type TVariantKeys = typeof TVariant[keyof typeof TVariant];
+type TVariantKeys = (typeof TVariant)[keyof typeof TVariant];
 
 const TButtonVariant = {
   PRIMARY: "primary",
@@ -11,7 +11,7 @@ const TButtonVariant = {
   DANGER: "danger",
 } as const;
 
-type TButtonVariantKeys = typeof TButtonVariant[keyof typeof TButtonVariant];
+type TButtonVariantKeys = (typeof TButtonVariant)[keyof typeof TButtonVariant];
 
 const TButtonSize = {
   SMALL: "sm",
@@ -19,7 +19,7 @@ const TButtonSize = {
   LARGE: "lg",
 } as const;
 
-type TButtonSizeKeys = typeof TButtonSize[keyof typeof TButtonSize];
+type TButtonSizeKeys = (typeof TButtonSize)[keyof typeof TButtonSize];
 
 export {
   TVariant,

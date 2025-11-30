@@ -1,10 +1,7 @@
 import ReactPaginate from "react-paginate";
 import type { FC } from "react";
 import type { ISelectedPage } from "@/utils/types";
-import {
-  MARGIN_PAGES_DISPLAYED,
-  PAGE_RANGE_DISPLAYED,
-} from "@/utils/constants";
+import { MARGIN_PAGES_DISPLAYED, PAGE_RANGE_DISPLAYED } from "@/utils/constants";
 import "./styles.scss";
 
 interface IPaginationProps {
@@ -13,11 +10,7 @@ interface IPaginationProps {
   page: number;
 }
 
-const Pagination: FC<IPaginationProps> = ({
-  onPageChange,
-  pageCount,
-  page,
-}) => {
+const Pagination: FC<IPaginationProps> = ({ onPageChange, pageCount, page }) => {
   return (
     <ReactPaginate
       breakLabel="..."

@@ -50,7 +50,7 @@ export default [
       indent: ["error", 2],
       semi: [2, "always"],
       "space-before-function-paren": ["error", "never"],
-      quotes: ["error", "double", { allowTemplateLiterals: true }],
+      "prettier/prettier": "error",
       "max-len": ["error", { code: 100 }],
       "no-console": "error",
       "linebreak-style": ["error", "unix"],

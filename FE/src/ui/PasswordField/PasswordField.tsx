@@ -9,8 +9,9 @@ import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { TVariant, type TVariantKeys } from "./../types";
 import "../inputStyles.scss";
 
-type IInputProps = React.InputHTMLAttributes<HTMLInputElement>
-  & {autoComplete?: "current-password" | "new-password"}
+type IInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  autoComplete?: "current-password" | "new-password";
+};
 
 interface IPasswordFieldProps<TFieldValues extends FieldValues> extends IInputProps {
   register: UseFormRegister<TFieldValues>;
@@ -42,17 +43,16 @@ const PasswordField = <TFieldValues extends FieldValues>(
   } = props;
 
   const error = errors?.[fieldName]?.message as string | undefined;
-  const variantClassName = variant === TVariant.PRIMARY
-    ? "field__wrapper--primary"
-    : "field__wrapper--secondary";
+  const variantClassName =
+    variant === TVariant.PRIMARY ? "field__wrapper--primary" : "field__wrapper--secondary";
 
   return (
     <div className={`field__wrapper ${variantClassName} ${wrapperClassName}`}>
-      {label &&
+      {label && (
         <label htmlFor={fieldName} className="text-gradient-special field__label">
           {label}
         </label>
-      }
+      )}
       <PasswordToggleField.Root>
         <div className="field__input-root">
           <PasswordToggleField.Input
@@ -62,22 +62,12 @@ const PasswordField = <TFieldValues extends FieldValues>(
             placeholder={placeholder}
             {...inputProps}
           />
-          <PasswordToggleField.Toggle
-            className="field__input-toggle"
-            id={`${fieldName}-toggle`}
-          >
-            <PasswordToggleField.Icon
-              visible={<EyeOpenIcon />}
-              hidden={<EyeClosedIcon />}
-            />
+          <PasswordToggleField.Toggle className="field__input-toggle" id={`${fieldName}-toggle`}>
+            <PasswordToggleField.Icon visible={<EyeOpenIcon />} hidden={<EyeClosedIcon />} />
           </PasswordToggleField.Toggle>
         </div>
       </PasswordToggleField.Root>
-      {error && (
-        <div className={`field__error ${errorClassName}`}>
-          {error}
-        </div>
-      )}
+      {error && <div className={`field__error ${errorClassName}`}>{error}</div>}
     </div>
   );
 };

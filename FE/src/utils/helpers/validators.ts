@@ -27,7 +27,7 @@ export const passwordSchema = (minLength: number = MIN_PASSWORD_LENGTH) =>
     .matches(PASSWORD_REGEX, validationErrors.common.notSpecialSymbols)
     .min(minLength, validationErrors.password.minLength(minLength));
 
-export const requiredTextSchema = (params?: {minLength?: number, maxLength?: number}) => {
+export const requiredTextSchema = (params?: { minLength?: number; maxLength?: number }) => {
   const { minLength = MIN_TEXT_LENGTH, maxLength = MAX_TEXT_LENGTH } = params ?? {};
   return yup
     .string()
@@ -58,7 +58,7 @@ export const profileSchema = yup.object({
 
 export const siteSchema = yup.object({
   title: requiredTextSchema(),
-  description: requiredTextSchema({maxLength: 150}),
+  description: requiredTextSchema({ maxLength: 150 }),
 });
 
 // Типы для TypeScript

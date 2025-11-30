@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  useFetchSitesQuery,
-  useAddSiteMutation,
-  useDeleteSiteMutation,
-} from "@/store/sites";
+import { useFetchSitesQuery, useAddSiteMutation, useDeleteSiteMutation } from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
 import { RaDialog } from "@/components/Dialog";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, PasswordField, Button , Pagination } from "@/ui";
+import { InputField, PasswordField, Button, Pagination } from "@/ui";
 import { TVariant } from "@/ui/types";
 
 import { paginate } from "@/utils";
@@ -33,8 +29,7 @@ export function MainPage() {
     setPage(selected + 1);
   };
 
-  const createdAt = (site: ISiteDTO) =>
-    new Date(site.createdAt).toLocaleDateString("ru-RU");
+  const createdAt = (site: ISiteDTO) => new Date(site.createdAt).toLocaleDateString("ru-RU");
 
   const {
     register,
@@ -90,11 +85,7 @@ export function MainPage() {
               placeholder="Краткое описание"
               variant={TVariant.SECONDARY}
             />
-            <Button
-              buttonText="Создать сайт"
-              type="submit"
-              disabled={!isValid || isSubmitting}
-            />
+            <Button buttonText="Создать сайт" type="submit" disabled={!isValid || isSubmitting} />
           </form>
         </div>
 
@@ -121,9 +112,7 @@ export function MainPage() {
                       <span className="site-card__date">{createdAt(site)}</span>
                       <span
                         className={`status-badge ${
-                          site.published
-                            ? "status-badge--published"
-                            : "status-badge--draft"
+                          site.published ? "status-badge--published" : "status-badge--draft"
                         }`}
                       >
                         {site.published ? "Live" : "Draft"}
@@ -146,11 +135,7 @@ export function MainPage() {
         </div>
 
         {pageCount && (
-          <Pagination
-            onPageChange={handlePageChange}
-            pageCount={pageCount}
-            page={page}
-          />
+          <Pagination onPageChange={handlePageChange} pageCount={pageCount} page={page} />
         )}
       </main>
     </div>
