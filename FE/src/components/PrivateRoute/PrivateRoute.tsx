@@ -1,5 +1,4 @@
-import type { RootState } from "@/store";
-import { useSelector } from "react-redux";
+import { useGetAuthStatusQuery } from "@/store/auth";
 import { Navigate, useLocation } from "react-router-dom";
 
 interface IPrivateRouteProps {
@@ -7,10 +6,11 @@ interface IPrivateRouteProps {
 }
 
 export const PrivateRoute = ({ children }: IPrivateRouteProps) => {
-  const auth = useSelector((state: RootState) => state.auth);
+  const { data, isLoading } = useGetAuthStatusQuery();
   const location = useLocation();
 
-  if (!auth.isAuthenticated) {
+  if (isLoading) return "loading";
+  if (!data?.isAuth) {
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 
