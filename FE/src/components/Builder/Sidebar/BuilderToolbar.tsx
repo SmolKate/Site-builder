@@ -24,7 +24,7 @@ export const BuilderToolbar = ({ activePanel, onTogglePanel }: Props) => {
           title="Добавить компоненты"
         >
           <PlusIcon width={24} height={24} />
-          <span>Добавить</span>
+          <span>Блоки</span>
         </button>
 
         <button 
