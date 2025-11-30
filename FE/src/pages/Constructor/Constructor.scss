@@ -18,8 +18,6 @@
     @include mix.glass-container;
 
     position: absolute;
-    top: var(--space-md);
-    bottom: var(--space-md);
     left: calc(var(--sidebar-left) + var(--space-2xl));
     width: var(--sidebar-left-width);
 

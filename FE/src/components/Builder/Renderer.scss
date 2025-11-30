@@ -41,10 +41,6 @@
     
     opacity: 0;
     animation: fadeIn 0.2s forwards;
-
-    &:hover {
-      background-color: darken(#2196f3, 10%);
-    }
   }
 }
 
