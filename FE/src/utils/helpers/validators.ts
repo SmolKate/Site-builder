@@ -27,6 +27,34 @@ export const passwordSchema = (minLength: number = MIN_PASSWORD_LENGTH) =>
     .matches(PASSWORD_REGEX, validationErrors.common.notSpecialSymbols)
     .min(minLength, validationErrors.password.minLength(minLength));
 
+export const firstNameSchema = (params?: { minLength?: number }) => {
+  const { minLength = MIN_TEXT_LENGTH } = params ?? {};
+  return yup
+    .string()
+    .trim()
+    .required(validationErrors.firstName.required)
+    .matches(COMMON_REGEX, validationErrors.common.notSpecialSymbols)
+    .min(minLength, validationErrors.firstName.minLength(minLength));
+};
+
+export const lastNameSchema = (params?: { minLength?: number }) => {
+  const { minLength = MIN_TEXT_LENGTH } = params ?? {};
+  return yup
+    .string()
+    .trim()
+    .required(validationErrors.lastName.required)
+    .matches(COMMON_REGEX, validationErrors.common.notSpecialSymbols)
+    .min(minLength, validationErrors.lastName.minLength(minLength));
+};
+
+export const confirmPasswordSchema = (minLength: number = MIN_PASSWORD_LENGTH) =>
+  yup
+    .string()
+    .trim()
+    .oneOf([yup.ref("password")], validationErrors.confirmPassword.invalid)
+    .required(validationErrors.confirmPassword.required)
+    .min(minLength, validationErrors.password.minLength(minLength));
+
 export const requiredTextSchema = (params?: { minLength?: number; maxLength?: number }) => {
   const { minLength = MIN_TEXT_LENGTH, maxLength = MAX_TEXT_LENGTH } = params ?? {};
   return yup
@@ -46,9 +74,11 @@ export const loginSchema = yup.object({
 });
 
 export const signupSchema = yup.object({
+  firstName: firstNameSchema(),
+  lastName: lastNameSchema(),
   email: emailSchema(),
   password: passwordSchema(),
-  name: requiredTextSchema(),
+  confirmPassword: confirmPasswordSchema(),
 });
 
 export const profileSchema = yup.object({
