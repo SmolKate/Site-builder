@@ -75,7 +75,6 @@
     overflow: auto;
     position: relative;
 
-    border-radius: var(--radius-xl);
     background-color: var(--bg-app);
     height: 100%;
     width: 100%;
@@ -148,5 +147,18 @@
     padding: 40px;
     border-radius: 12px;
     pointer-events: none;
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: start;
+    gap: var(--space-sm);
+  }
+
+  &__control-btns {
+    display: flex;
+    gap: var(--space-sm);
   }
 }

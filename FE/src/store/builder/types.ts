@@ -2,7 +2,7 @@ export type BlockType = "text" | "button" | "container" | "heading" | "image";
 export type SectionVariant = "default" | "two-columns" | "three-columns";
 
 export interface IBlockStyles {
-  [key: string]: string | number | undefined;
+  [key: string]: string;
 }
 
 export interface IBlock {
@@ -12,7 +12,10 @@ export interface IBlock {
   parentId: string | null;
   childrenIds: string[];
   content?: string;
-  props: Record<string, unknown>;
+  props: {
+    text?: string;
+    [key: string]: unknown;
+  };
   style: IBlockStyles;
 }
 export interface ILayoutItem {
@@ -26,4 +29,6 @@ export interface BuilderState {
   components: Record<string, IBlock>;
   layout: ILayoutItem[];
   selectedId: string | null;
+  siteTitle: string
+  siteDescription: string
 }

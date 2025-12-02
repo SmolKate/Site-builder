@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import { MemoryRouter } from "react-router-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, expect, test, vi } from 'vitest'
+import { describe, expect, test, vi } from "vitest";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Header } from "./Header";
 

@@ -2,7 +2,7 @@ import React from "react";
 import { useAppSelector, useAppDispatch } from "@/store";
 import { selectComponentById } from "../../../store/builder";
 import { updateSectionDimensions, selectComponent } from "@/store/builder/builderSlice";
-import { ROW_HEIGHT_ENUM } from "@/utils/constants";
+import { ROW_HEIGHT } from "@/utils/constants";
 import { CanvasSection } from "./CanvasSection";
 import { type ILayoutItem } from "@/store/builder/types";
 
@@ -27,7 +27,7 @@ export const GridSection = ({ item }: GridSectionProps) => {
   const handleContentResize = (contentHeight: number) => {
     const MARGIN_Y = 0;
     const totalNeededPx = contentHeight;
-    const neededRows = Math.ceil(totalNeededPx / (ROW_HEIGHT_ENUM + MARGIN_Y));
+    const neededRows = Math.ceil(totalNeededPx / (ROW_HEIGHT + MARGIN_Y));
     const minRows = 1;
     const targetRows = Math.max(neededRows, minRows);
 
