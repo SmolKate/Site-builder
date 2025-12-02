@@ -2,6 +2,7 @@ import { sitesApiSlice } from "./api";
 
 export const {
   useFetchSitesQuery,
+  useFetchSiteByIdQuery,
   useAddSiteMutation,
   useDeleteSiteMutation,
   useUpdateSiteMutation,

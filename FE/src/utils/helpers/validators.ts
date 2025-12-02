@@ -2,7 +2,7 @@ import * as yup from "yup";
 import { validationErrors } from "./validationErrors";
 
 // Очищает ввод, оставляя только буквы (латиница/кириллица), цифры и дефис
-const COMMON_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9-]+$/;
+const COMMON_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9- ]+$/;
 const EMAIL_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9!@#$%^&*()-_=+.]+$/;
 const PASSWORD_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9!@#$%^&*()-_=+]+$/;
 

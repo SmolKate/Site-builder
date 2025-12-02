@@ -37,7 +37,7 @@ export const HeadingBlock = ({ block, readOnly = false }: Props) => {
     onBlur: ({ editor }) => {
       dispatch(updateComponent({
         id: block.id,
-        changes: { content: editor.getHTML() }
+        changes: { content: editor.getText() }
       }));
     },
   });

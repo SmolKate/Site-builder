@@ -23,7 +23,22 @@ export const PropertiesPanel = () => {
     } else if (target === "props") {
       changes = { props: { ...block.props, [key]: value } };
     } else if (target === "variant") {
-      changes = { variant: value as SectionVariant };
+      let column = 1;
+      if (value === "two-columns") column = 2;
+      if (value === "three-columns") column = 3;
+      changes = {
+        variant: value as SectionVariant,
+        style: {
+          ...block.style,
+          display: "grid", 
+          gridTemplateColumns: `repeat(${column}, 1fr)`, 
+          gap: "15px",
+          alignItems: "center",
+          justifyItems: "center",
+          height: "100%",
+          width: "100%",
+        }
+      };
     }
 
     dispatch(updateComponent({

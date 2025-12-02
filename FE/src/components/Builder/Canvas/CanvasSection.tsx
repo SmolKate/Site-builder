@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
+import clsx from "clsx";
 import { useDroppable } from "@dnd-kit/core";
+import type { IBlock } from "@/store/builder/types"; 
 import { useAppDispatch } from "@/store";
 import { deleteComponent } from "@/store/builder/builderSlice";
 import { Cross2Icon, MoveIcon } from "@radix-ui/react-icons";
-import { type IBlock } from "@/store/builder/types"; 
-import { SectionContent } from "./SectionContent";
-import clsx from "clsx";
+import { Renderer } from "../Renderer";
 import "./CanvasSection.scss";
 
 interface CanvasSectionProps {
@@ -72,10 +72,7 @@ export const CanvasSection = ({
           "canvas-section--over": isOver
         }
       )}
-      style={{
-        ...style, 
-        ...block.style, 
-      }}
+      style={style}
       onClick={onSelect}
     >
       <div 
@@ -100,11 +97,12 @@ export const CanvasSection = ({
       </div>
 
       <div ref={contentRef} className="canvas-section__content no-drag">
-        <SectionContent
-          variant={block.variant} 
-          childrenIds={block.childrenIds} 
-        />
-        
+        {block.childrenIds.length > 0 && <div style={{...block.style}}>
+          {block.childrenIds.map((id) => (
+            <Renderer key={id} id={id} />
+          ))}
+        </div>
+        }
         {block.childrenIds.length === 0 && !isOver && (
           <div className="canvas-section__placeholder">
             Перетащите компоненты сюда

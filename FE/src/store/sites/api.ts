@@ -1,16 +1,16 @@
+import type { ISiteContentDTO, ISiteDTO } from "@/utils/types";
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "@/config";
-import type { ISiteDTO } from "@/utils/types";
 
 interface IUpdateSiteProps {
   id: string;
   updatesSite: Partial<ISiteDTO>;
-  updatesContent: Partial<ISiteDTO>;
+  updatesContent: Partial<ISiteContentDTO>;
 }
 interface IAddSite {
-  newSite: ISiteDTO;
-  siteContent: ISiteDTO;
+  newSite: Omit<ISiteDTO, "id">;
+  siteContent: ISiteContentDTO;
 }
 
 export const sitesApiSlice = createApi({
@@ -22,6 +22,7 @@ export const sitesApiSlice = createApi({
       async queryFn() {
         try {
           const querySnapshot = await getDocs(collection(db, "sites"));
+
           const data = querySnapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
@@ -37,7 +38,24 @@ export const sitesApiSlice = createApi({
       providesTags: ["Sites"],
     }),
 
-    addSite: builder.mutation<{ siteId: string; siteContentId: string }, IAddSite>({
+    fetchSiteById: builder.query<{siteInfo: ISiteDTO, siteContent: ISiteContentDTO}, string>({
+      async queryFn(siteId) {
+        try {
+          const siteDoc = await getDoc(doc(db, "sites", siteId));
+          const siteInfo = siteDoc.data() as ISiteDTO;
+          const siteContentDoc = await getDoc(doc(db, "siteContent", siteDoc.data()?.siteContentId));     
+          const siteContent = siteContentDoc.data() as ISiteContentDTO;
+ 
+          return { data: {siteContent, siteInfo}};
+        } catch (error) {
+          return {
+            error: { message: "Ошибка получения данных о сайтах:", error },
+          };
+        }
+      },
+    }),
+
+    addSite: builder.mutation<string, IAddSite>({
       async queryFn({ newSite, siteContent }) {
         try {
           const newSiteContent = await addDoc(collection(db, "siteContent"), siteContent);
@@ -46,7 +64,7 @@ export const sitesApiSlice = createApi({
             siteContentId: newSiteContent.id,
           });
 
-          return { data: { siteId: site.id, siteContentId: newSiteContent.id } };
+          return { data: site.id };
         } catch (error) {
           return {
             error: { message: "Упс, ошибка создания сайта:", error },
@@ -82,7 +100,7 @@ export const sitesApiSlice = createApi({
     }),
 
     updateSite: builder.mutation<void, IUpdateSiteProps>({
-      async queryFn({ id, updatesSite, updatesContent }) {
+      async queryFn({ id, updatesSite = {}, updatesContent = {} }) {
         try {
           const siteRef = doc(db, "sites", id);
           const siteDoc = await getDoc(doc(db, "sites", id));

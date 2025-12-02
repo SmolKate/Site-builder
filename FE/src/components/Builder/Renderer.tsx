@@ -67,7 +67,6 @@ export const Renderer = ({ id }: { id: string }) => {
           <TrashIcon width={14} height={14} />
         </button>
       )}
-      
       {content}
     </div>
   );

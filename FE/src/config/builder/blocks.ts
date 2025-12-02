@@ -8,12 +8,12 @@ interface BlockConfig {
 
 export const BLOCK_DEFAULTS: Record<BlockType, BlockConfig> = {
   text: {
-    content: "<p>Начните вводить текст...</p>",
+    content: "Начните вводить текст...",
     style: {},
     props: {},
   },
   heading: {
-    content: "<h2>Новый заголовок</h2>",
+    content: "Новый заголовок",
     props: { level: 2 },
     style: { fontWeight: "bold" },
   },
@@ -34,14 +34,24 @@ export const BLOCK_DEFAULTS: Record<BlockType, BlockConfig> = {
     },
   },
   container: {
-    style: { backgroundColor: "#ffffff", padding: "0" },
+    style: {
+      backgroundColor: "#5aa7c6ff",
+      padding: "0",
+      display: "grid", 
+      gap: "15px",
+      alignItems: "center",
+      justifyItems: "center",
+      height: "100%",
+      width: "100%",
+      minHeight: "fit-content",
+    },
     props: {},
   },
 };
 
 export const DEFAULT_SECTION_LAYOUT = {
   w: 12,
-  h: 1,
+  h: 10,
   x: 0,
   y: Infinity,
 };

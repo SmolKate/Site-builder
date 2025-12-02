@@ -2,11 +2,14 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useTheme } from "@/context/ThemeContext";
 import { useGetAuthStatusQuery, useLogoutUserMutation } from "@/store/auth";
 import "./styles.scss";
+import { getSiteTitle } from "@/store/builder";
+import { useAppSelector } from "@/store";
 
 export const Header = () => {
   const [logoutUser] = useLogoutUserMutation();
   const navigate = useNavigate();
   const { data: isAuthenticated } = useGetAuthStatusQuery();
+  const siteTitle = useAppSelector(getSiteTitle);
   const { theme, toggleTheme } = useTheme();
 
   const handleClickLogout = () => {
@@ -38,6 +41,7 @@ export const Header = () => {
           Login page
         </NavLink>
       </nav>
+      {siteTitle}
 
       <div className="auth-header__controls">
         <button className="auth-header__theme-toggle" onClick={toggleTheme}>
