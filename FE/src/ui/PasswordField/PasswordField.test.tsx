@@ -1,15 +1,16 @@
 import "@testing-library/jest-dom/vitest";
 import { render, screen } from "@testing-library/react";
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from "vitest";
 import type { FieldErrors, FieldValues } from "react-hook-form";
-import userEvent from '@testing-library/user-event';
+import userEvent from "@testing-library/user-event";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { useForm } from "@/utils/mocks";
 import PasswordField, { type IPasswordFieldProps} from "./PasswordField";
 import { TVariant } from "../types";
 
+type TRenderPasswordFieldProps = Omit<IPasswordFieldProps<FieldValues>, "register" | "errors"> & {errorMessage?: string}
 
-const renderPasswordField = (props: Omit<IPasswordFieldProps<FieldValues>, "register" | "errors"> & {errorMessage?: string}) => {
+const renderPasswordField = (props: TRenderPasswordFieldProps) => {
   const { register } = useForm();
   const {
     errorMessage,
@@ -23,7 +24,7 @@ const renderPasswordField = (props: Omit<IPasswordFieldProps<FieldValues>, "regi
     variant
   } = props;
 
-  const errors = {[fieldName]: {message: errorMessage}} as FieldErrors<FieldValues>
+  const errors = {[fieldName]: {message: errorMessage}} as FieldErrors<FieldValues>;
 
   return render(
     <ThemeProvider>
@@ -111,7 +112,7 @@ describe("PasswordField", () => {
     expect(container.container.firstChild).toHaveClass(wrapperClassName);
   });
 
-  test("click password toggle", async () => {
+  test("click password toggle", async() => {
     const testPlaceholder = "test placeholder";
     renderPasswordField({
       fieldName: "fieldName",

@@ -10,10 +10,19 @@ import {
   DEFAULT_SECTION_LAYOUT,
 } from "@/config/builder/blocks";
 
+interface ISiteConstructor {
+  layout: ILayoutItem[];
+  components: {[key: string]: IBlock};
+  siteTitle: string;
+  siteDescription: string;
+}
+
 const initialState: BuilderState = {
   components: {},
   layout: [],
   selectedId: null,
+  siteTitle: "",
+  siteDescription: "",
 };
 
 const getAllDescendantIds = (
@@ -70,9 +79,23 @@ export const builderSlice = createSlice({
         });
       },
     },
-
     updateLayout: (state, action: PayloadAction<ILayoutItem[]>) => {
       state.layout = action.payload;
+    },
+
+    updateSiteConstructor: (state, action: PayloadAction<ISiteConstructor>) => {
+      const {layout, components, siteTitle, siteDescription} = action.payload;
+      state.layout = layout;
+      state.components = components;
+      state.siteTitle = siteTitle;
+      state.siteDescription = siteDescription;
+    },
+
+    resetSiteConstructor: (state) => {
+      state.layout = [];
+      state.components = {};
+      state.siteTitle = "";
+      state.siteDescription = "";
     },
 
     addBlockToContainer: {
@@ -163,11 +186,13 @@ export const builderSlice = createSlice({
 export const {
   addSection,
   updateLayout,
+  updateSiteConstructor,
   addBlockToContainer,
   selectComponent,
   updateComponent,
   deleteComponent,
   updateSectionDimensions,
+  resetSiteConstructor,
 } = builderSlice.actions;
 
 export default builderSlice.reducer;

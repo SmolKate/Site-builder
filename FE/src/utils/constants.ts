@@ -14,4 +14,7 @@ export const LANGUAGE_ENUM = {
   EN: "EN",
 } as const;
 
-export const ROW_HEIGHT_ENUM = 5 as const;
+export const ROW_HEIGHT = 5 as const;
+export const GRID_COLUMN_NUMBER = 12 as const;
+export const TOTAL_WIDTH = 1200 as const;
+

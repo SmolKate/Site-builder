@@ -5,29 +5,29 @@ import {
   useFetchSitesQuery,
   useAddSiteMutation,
   useDeleteSiteMutation,
-  useUpdateSiteMutation,
-  useGetSiteContentQuery,
+  // useGetSiteContentQuery,
 } from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, PasswordField, Button, Pagination } from "@/ui";
+import { InputField, Button, Pagination } from "@/ui";
 import { TVariant } from "@/ui/types";
 
 import { paginate } from "@/utils";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
 import { useGetCurrentUserQuery, useUpdateUserMutation } from "@/store/users";
 import "./styles.scss";
+import { useNavigate } from "react-router-dom";
 
 export function MainPage() {
   const [page, setPage] = useState(1);
+  const navigate = useNavigate();
   const { data: sites, isLoading } = useFetchSitesQuery();
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
-  const [updateSite] = useUpdateSiteMutation();
   const [updateUser] = useUpdateUserMutation();
-  const { data: getSiteContent, isLoading: isLoadingSiteContent } =
-    useGetSiteContentQuery("dpiZfBk007dKBmlMdE52");
+  // const { data: getSiteContent, isLoading: isLoadingSiteContent } =
+  //   useGetSiteContentQuery("dpiZfBk007dKBmlMdE52");
   const { data: currentUser, isLoading: currentUserLoading } = useGetCurrentUserQuery();
   const pageCount = sites && Math.ceil(sites.length / ITEMS_PER_PAGE);
   const sitesCrop = sites && paginate(sites, page, ITEMS_PER_PAGE);
@@ -58,27 +58,23 @@ export function MainPage() {
     }
   }, [isSubmitSuccessful, reset]);
 
-  const onSubmit = async (data: SiteFormData) => {
-    const newSite: Omit<Omit<ISiteDTO, "id">, "siteContentId"> = {
+  const onSubmit = async(data: SiteFormData) => {
+    const newSite: Omit<ISiteDTO, "id"> = {
       title: data.title,
       description: data.description,
       createdAt: new Date().toISOString(),
       published: false,
     };
-    const siteContent = { components: { block: { id: 122 } }, layout: ["dffdfd", "dfdfdfdf"] };
-
+    const siteContent = { components: {}, layout: [] };
     const { data: idSite } = await addSite({ newSite, siteContent });
-    if (currentUser && sites) {
+   
+    if (currentUser && idSite) {
       updateUser({ uid: currentUser.uid, updates: { sites: idSite } });
+      navigate(`/sites/${idSite}`);
     }
-    updateSite({
-      id: "fyPFzAuUs9kvyA20Z9C6",
-      updatesSite: { published: true },
-      updatesContent: { components: { block: { id: 1000000 } }, layout: ["aga", "nea"] },
-    });
-    if (!isLoadingSiteContent) {
-      console.log("getSiteContent", getSiteContent);
-    }
+    // if (!isLoadingSiteContent) {
+    //   console.log("getSiteContent", getSiteContent);
+    // }
   };
 
   return (
@@ -99,8 +95,9 @@ export function MainPage() {
               errors={errors}
               fieldName="title"
               placeholder="Название проекта"
+              variant={TVariant.SECONDARY}
             />
-            <PasswordField
+            <InputField
               register={register}
               errors={errors}
               fieldName="description"
@@ -125,7 +122,7 @@ export function MainPage() {
           ) : (
             <div className="sites-section__grid">
               {sitesCrop?.map((site) => (
-                <div key={site.id} className="site-card">
+                <div key={site.id} className="site-card" onClick={() => navigate(`/sites/${site.id}`)}>
                   <div className="site-card__info">
                     <h3 className="site-card__title">{site.title}</h3>
                     <p className="site-card__desc">{site.description}</p>
@@ -144,7 +141,10 @@ export function MainPage() {
 
                   <div className="site-card__actions">
                     <button
-                      onClick={() => handleDeleteSite(site.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteSite(site.id);
+                      }}
                       className="ui-btn ui-btn--danger ui-btn--sm"
                     >
                       Удалить

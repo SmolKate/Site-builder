@@ -7,7 +7,6 @@ import {
   NotFound,
   Profile,
   Signup,
-  Site,
   SitesList,
 } from "@/pages";
 import { MainLayout, ProtectedLayout } from "@/layouts";
@@ -25,8 +24,7 @@ function App() {
               <Route path="me" element={<Profile />} />
               <Route path="sites">
                 <Route index element={<SitesList />} />
-                <Route path=":siteId" element={<Site />} />
-                <Route path="new" element={<Constructor />} />
+                <Route path=":siteId" element={<Constructor />} />
               </Route>
             </Route>
           </Route>

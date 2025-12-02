@@ -61,4 +61,8 @@
       color: var(--brand-primary-color);
     }
   }
+
+  &__save-btn {
+    font-size: var(--font-size-sm);
+  }
 }

@@ -1,13 +1,15 @@
 import "@testing-library/jest-dom/vitest";
 import { render, screen } from "@testing-library/react";
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from "vitest";
 import type { FieldErrors, FieldValues } from "react-hook-form";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { useForm } from "@/utils/mocks";
 import { TVariant } from "../types";
 import InputField, { type IInputFieldProps} from "./InputField";
 
-const renderInputField = (props: Omit<IInputFieldProps<FieldValues>, "register" | "errors"> & {errorMessage?: string}) => {
+type TRenderInputFieldProps = Omit<IInputFieldProps<FieldValues>, "register" | "errors"> & {errorMessage?: string}
+
+const renderInputField = (props: TRenderInputFieldProps) => {
   const { register } = useForm();
   const {
     errorMessage,
@@ -22,7 +24,7 @@ const renderInputField = (props: Omit<IInputFieldProps<FieldValues>, "register" 
     variant
   } = props;
 
-  const errors = {[fieldName]: {message: errorMessage}} as FieldErrors<FieldValues>
+  const errors = {[fieldName]: {message: errorMessage}} as FieldErrors<FieldValues>;
 
   return render(
     <ThemeProvider>

@@ -6,9 +6,11 @@ const selectComponents = (state: RootState) => state.builder.components;
 export const selectComponentById = (state: RootState, id: string) =>
   state.builder.components[id];
 
-export const selectLayout = (state: RootState) => state.builder.layout;
+export const getLayout = (state: RootState) => state.builder.layout;
 
 export const selectSelectedId = (state: RootState) => state.builder.selectedId;
+export const getAllComponents = (state: RootState) => state.builder.components;
+export const getSiteTitle = (state: RootState) => state.builder.siteTitle;
 
 export const selectSelectedComponent = createSelector(
   [selectComponents, selectSelectedId],

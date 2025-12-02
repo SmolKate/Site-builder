@@ -78,7 +78,7 @@ test1234@example.com
        id: "scCRKoV2ILRYwBkgwUFs",
        updates: {
          components: { block: { id: 122 } },
-         layout: ["dffdfd", "dfdfdfdf"],
+         layout: ["dffdfd2", "dfdfdfdf"],
        },
      });
    };
