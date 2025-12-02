@@ -1,19 +1,16 @@
 import { NavLink, useNavigate } from "react-router-dom";
-
-import { useAppDispatch, useAppSelector } from "@/store";
-import { logout } from "@/store/auth";
 import { useTheme } from "@/context/ThemeContext";
-
+import { useGetAuthStatusQuery, useLogoutUserMutation } from "@/store/auth";
 import "./styles.scss";
 
 export const Header = () => {
-  const dispatch = useAppDispatch();
+  const [logoutUser] = useLogoutUserMutation();
   const navigate = useNavigate();
-  const isAuthenticated = useAppSelector((state: any) => state.auth?.isAuthenticated);
+  const { data: isAuthenticated } = useGetAuthStatusQuery();
   const { theme, toggleTheme } = useTheme();
 
   const handleClickLogout = () => {
-    dispatch(logout());
+    logoutUser();
     navigate("/login");
   };
 

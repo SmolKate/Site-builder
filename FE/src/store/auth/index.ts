@@ -1,5 +1,11 @@
-import { authSlice } from "./authSlice";
+import { authApiSlice } from "./api";
 
-export const authReducerPath = authSlice.reducerPath;
-export const { login, logout } = authSlice.actions;
-export default authSlice.reducer;
+export const {
+  useLoginUserMutation,
+  useLogoutUserMutation,
+  useRegisterUserMutation,
+  useGetAuthStatusQuery,
+} = authApiSlice;
+export const authMiddleware = authApiSlice.middleware;
+export const authReducerPath = authApiSlice.reducerPath;
+export default authApiSlice.reducer;

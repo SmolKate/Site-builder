@@ -4,9 +4,9 @@ import "../inputStyles.scss";
 
 type IInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-interface IInputFieldProps<TFieldValues extends FieldValues> extends IInputProps {
+export interface IInputFieldProps<TFieldValues extends FieldValues> extends IInputProps {
   register: UseFormRegister<TFieldValues>;
-  errors: FieldErrors<TFieldValues>;
+  errors?: FieldErrors<TFieldValues>;
   fieldName: Path<TFieldValues>;
   label?: string;
   placeholder: string;
@@ -57,7 +57,7 @@ const InputField = <TFieldValues extends FieldValues>(props: IInputFieldProps<TF
           {...inputProps}
         />
       </div>
-      {error && <div className={`field__error ${errorClassName}`}>{error}</div>}
+      {error && <div className={`field__error ${errorClassName}`} data-testid="input-error-text">{error}</div>}
     </div>
   );
 };

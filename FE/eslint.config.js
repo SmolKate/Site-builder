@@ -5,7 +5,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import pluginPrettier from "eslint-plugin-prettier";
 import importPlugin from "eslint-plugin-import";
-import pluginJest from "eslint-plugin-jest";
+// import pluginJest from "eslint-plugin-jest";
 
 export default [
   { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx,spec.ts,test.ts}"] },
@@ -15,7 +15,7 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...pluginJest.environments.globals.globals,
+        // ...pluginJest.environments.globals.globals,
       },
     },
   },
@@ -50,8 +50,8 @@ export default [
       indent: ["error", 2],
       semi: [2, "always"],
       "space-before-function-paren": ["error", "never"],
-      "prettier/prettier": "error",
-      "max-len": ["error", { code: 100 }],
+      quotes: ["error", "double", { allowTemplateLiterals: true }],
+      "max-len": ["error", { code: 120 }],
       "no-console": "error",
       "linebreak-style": ["error", "unix"],
       ...importPlugin.configs.recommended.rules,

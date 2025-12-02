@@ -1,23 +1,17 @@
 import { Avatar } from "radix-ui";
-import type { IUserProfile } from "@/utils/types";
 import { Box, Flex } from "@radix-ui/themes";
 import { GearIcon } from "@radix-ui/react-icons";
+import type { IUser } from "@/utils/types";
+import { messages } from "@/locales";
+import { useGetCurrentUserQuery } from "@/store/users";
 import "./styles.scss";
 
-// временно, пока без БЭКА
-const user: IUserProfile = {
-  id: "",
-  firstName: "Вася",
-  lastName: "Пупкин",
-  avatarURL: "",
-  sites: [],
-  email: "test@mail.ru",
-  createdAt: "",
-  updatedAt: "",
-};
-
 export const Profile = () => {
-  const { firstName, lastName, avatarURL, email } = user;
+  const { data: getCurrentUser, isLoading } = useGetCurrentUserQuery();
+
+  if (isLoading) return messages.loading;
+
+  const { firstName, lastName, avatarURL, email } = getCurrentUser as IUser;
 
   return (
     <Box className="profile-wrapper">

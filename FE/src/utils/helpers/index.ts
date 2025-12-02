@@ -1,2 +1,2 @@
-// экспорт хелперов
 export * from "./validators";
+export * from "./localStorage";

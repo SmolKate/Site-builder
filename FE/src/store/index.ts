@@ -2,18 +2,23 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
 import sitesReducer, { sitesMiddleware, sitesReducerPath } from "./sites";
-import authReducer from "./auth";
+import authReducer, { authReducerPath, authMiddleware } from "./auth";
+import builderReducer from "./builder/builderSlice";
+import usersReducer, { usersReducerPath, usersMiddleware } from "./users";
 
 export const rootReducer = combineReducers({
   [sitesReducerPath]: sitesReducer,
-  auth: authReducer,
+  [usersReducerPath]: usersReducer,
+  [authReducerPath]: authReducer,
+  builder: builderReducer,
 });
 
 export const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     devTools: true,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([sitesMiddleware]),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat([sitesMiddleware, authMiddleware, usersMiddleware]),
     preloadedState,
   });
 };

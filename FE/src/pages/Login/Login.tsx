@@ -1,14 +1,12 @@
-import { useAppDispatch } from "@/store";
-import { login } from "@/store/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, InputField, PasswordField } from "@/ui";
 import { loginSchema, type LoginFormData } from "@/utils/helpers";
+import { useLoginUserMutation } from "@/store/auth";
 import "../authStyles.scss";
 
 export const Login = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from || "/";
@@ -21,8 +19,10 @@ export const Login = () => {
     mode: "onChange",
   });
 
-  const onSubmit = () => {
-    dispatch(login());
+  const [loginUser] = useLoginUserMutation();
+  const onSubmit = async(values: LoginFormData) => {
+    const { email, password } = values;
+    await loginUser({ email, password });
     navigate(from, { replace: true });
   };
 

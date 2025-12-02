@@ -14,6 +14,8 @@
   --bg-pagination: #{$white-soft};
   --bg-pagination-hover: #{$purple-light};
 
+  --brand-primary-color: #{$brand-blue-light};
+
   // --- Текст ---
   --text-primary: #{$black-text};
   --text-secondary: #{rgba($black-text, 0.7)};
@@ -110,6 +112,8 @@ html[data-theme='dark'] {
   --bg-surface: #{rgba($dark-surface, 0.5)};
   --bg-pagination: #171a38;
   --bg-pagination-hover: #171a38;
+
+  --brand-primary-color: #{$purple-light};
 
   --text-primary: #{$white-soft};
   --text-secondary: #{$light-text};
