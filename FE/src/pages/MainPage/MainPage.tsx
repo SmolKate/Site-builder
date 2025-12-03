@@ -6,6 +6,7 @@ import {
   useAddSiteMutation,
   useDeleteSiteMutation,
   useUpdateSiteMutation,
+  useGetSiteContentQuery,
 } from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
@@ -25,6 +26,8 @@ export function MainPage() {
   const [deleteSite] = useDeleteSiteMutation();
   const [updateSite] = useUpdateSiteMutation();
   const [updateUser] = useUpdateUserMutation();
+  const { data: getSiteContent, isLoading: isLoadingSiteContent } =
+    useGetSiteContentQuery("dpiZfBk007dKBmlMdE52");
   const { data: currentUser, isLoading: currentUserLoading } = useGetCurrentUserQuery();
   const pageCount = sites && Math.ceil(sites.length / ITEMS_PER_PAGE);
   const sitesCrop = sites && paginate(sites, page, ITEMS_PER_PAGE);
@@ -73,6 +76,9 @@ export function MainPage() {
       updatesSite: { published: true },
       updatesContent: { components: { block: { id: 1000000 } }, layout: ["aga", "nea"] },
     });
+    if (!isLoadingSiteContent) {
+      console.log("getSiteContent", getSiteContent);
+    }
   };
 
   return (

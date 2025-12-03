@@ -5,6 +5,7 @@ export const {
   useAddSiteMutation,
   useDeleteSiteMutation,
   useUpdateSiteMutation,
+  useGetSiteContentQuery,
 } = sitesApiSlice;
 export const sitesMiddleware = sitesApiSlice.middleware;
 export const sitesReducerPath = sitesApiSlice.reducerPath;
