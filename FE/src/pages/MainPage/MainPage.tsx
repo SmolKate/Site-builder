@@ -56,8 +56,9 @@ export function MainPage() {
       createdAt: new Date().toISOString(),
       published: false,
     };
+    const siteContent = { components: { block: { id: 122 } }, layout: ["dffdfd", "dfdfdfdf"] };
 
-    const { data: idSite } = await addSite(newSite);
+    const { data: idSite } = await addSite({ newSite, siteContent });
     if (currentUser && sites) {
       updateUser({ uid: currentUser.uid, updates: { sites: idSite } });
     }

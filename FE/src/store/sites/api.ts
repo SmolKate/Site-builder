@@ -3,9 +3,13 @@ import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase
 import { db } from "@/config";
 import type { ISiteDTO } from "@/utils/types";
 
-interface IUpdateUserProps {
+interface IUpdateSiteProps {
   id: string;
   updates: Partial<ISiteDTO>;
+}
+interface IAddSite {
+  newSite: ISiteDTO;
+  siteContent: ISiteDTO;
 }
 
 export const sitesApiSlice = createApi({
@@ -32,12 +36,16 @@ export const sitesApiSlice = createApi({
       providesTags: ["Sites"],
     }),
 
-    addSite: builder.mutation<string, Omit<ISiteDTO, "id">>({
-      async queryFn(newSite) {
+    addSite: builder.mutation<string, IAddSite>({
+      async queryFn({ newSite, siteContent }) {
         try {
-          const data = await addDoc(collection(db, "sites"), newSite);
+          const newSiteContent = await addDoc(collection(db, "siteContent"), siteContent);
+          const site = await addDoc(collection(db, "sites"), {
+            ...newSite,
+            siteContentId: newSiteContent.id,
+          });
 
-          return { data: data.id };
+          return { data: site.id };
         } catch (error) {
           return {
             error: { message: "Упс, ошибка создания сайта:", error },
@@ -47,7 +55,7 @@ export const sitesApiSlice = createApi({
       invalidatesTags: ["Sites"],
     }),
 
-    updateSite: builder.mutation<void, IUpdateUserProps>({
+    updateSite: builder.mutation<void, IUpdateSiteProps>({
       async queryFn({ id, updates }) {
         try {
           const siteRef = doc(db, "sites", id);
