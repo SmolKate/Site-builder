@@ -91,8 +91,17 @@ export const siteSchema = yup.object({
   description: requiredTextSchema({ maxLength: 150 }),
 });
 
+export const editProfileSchema = yup.object({
+  firstName: requiredTextSchema(),
+  lastName: requiredTextSchema(),
+  email: emailSchema(),
+  // password: passwordSchema(),
+  // confirmPassword: confirmPasswordSchema(),
+});
+
 // Типы для TypeScript
 export type LoginFormData = yup.InferType<typeof loginSchema>;
 export type SignupFormData = yup.InferType<typeof signupSchema>;
 export type ProfileFormData = yup.InferType<typeof profileSchema>;
 export type SiteFormData = yup.InferType<typeof siteSchema>;
+export type EditProfileFormData = yup.InferType<typeof editProfileSchema>;
