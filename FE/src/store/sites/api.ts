@@ -37,7 +37,7 @@ export const sitesApiSlice = createApi({
       providesTags: ["Sites"],
     }),
 
-    addSite: builder.mutation<string, IAddSite>({
+    addSite: builder.mutation<{ siteId: string; siteContentId: string }, IAddSite>({
       async queryFn({ newSite, siteContent }) {
         try {
           const newSiteContent = await addDoc(collection(db, "siteContent"), siteContent);
@@ -46,7 +46,7 @@ export const sitesApiSlice = createApi({
             siteContentId: newSiteContent.id,
           });
 
-          return { data: site.id };
+          return { data: { siteId: site.id, siteContentId: newSiteContent.id } };
         } catch (error) {
           return {
             error: { message: "Упс, ошибка создания сайта:", error },
@@ -54,6 +54,31 @@ export const sitesApiSlice = createApi({
         }
       },
       invalidatesTags: ["Sites"],
+    }),
+
+    getSiteContent: builder.query({
+      async queryFn(id: string) {
+        try {
+          const contentSiteDoc = await getDoc(doc(db, "siteContent", id));
+          let contentData = null;
+          if (contentSiteDoc.exists()) {
+            contentData = {
+              id: contentSiteDoc.id,
+              ...contentSiteDoc.data(),
+            };
+          }
+
+          return { data: contentData };
+        } catch (error) {
+          return {
+            error: {
+              message: "Ошибка получения данных о контенте сайта:",
+              error,
+            },
+          };
+        }
+      },
+      providesTags: ["Sites"],
     }),
 
     updateSite: builder.mutation<void, IUpdateSiteProps>({
