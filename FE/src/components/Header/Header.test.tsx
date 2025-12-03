@@ -3,41 +3,40 @@ import "@testing-library/jest-dom/vitest";
 import { MemoryRouter } from "react-router-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
-
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Header } from "./Header";
+import { Provider } from "react-redux";
+import { store } from "@/store";
 
-type AuthState = { isAuthenticated: boolean };
+// Создаем объект состояния для мока - используем глобальный объект
+const mockAuthState: { isAuthenticated: boolean } = { isAuthenticated: false };
+const mockLogoutUser = vi.fn();
 
-let mockAuthState: AuthState = { isAuthenticated: false };
-
-vi.mock("@/store", () => ({
-  useAppDispatch: () => vi.fn(),
-  useAppSelector: (
-    selector: (state: { auth: AuthState; builder: { siteTitle: string } }) => unknown
-  ) =>
-    selector({
-      auth: mockAuthState,
-      builder: { siteTitle: "Test site" },
+vi.mock("@/store/auth", async(importOriginal) => {
+  const actual = await importOriginal() as object;
+  return {
+    ...actual,
+    useGetAuthStatusQuery: () => ({
+      data: { isAuth: mockAuthState.isAuthenticated },
     }),
-}));
-
-vi.mock("@/store/auth", () => ({
-  useLogoutUserMutation: () => [vi.fn()],
-  useGetAuthStatusQuery: () => ({ data: mockAuthState.isAuthenticated }),
-}));
+    useLogoutUserMutation: () => [mockLogoutUser],
+  };
+});
 
 const renderHeader = (options?: { isAuthenticated?: boolean; initialEntries?: string[] }) => {
   const { isAuthenticated = false, initialEntries = ["/login"] } = options || {};
 
-  mockAuthState = { isAuthenticated };
+  // Обновляем состояние перед рендером
+  mockAuthState.isAuthenticated = isAuthenticated;
 
   return render(
-    <ThemeProvider>
-      <MemoryRouter initialEntries={initialEntries}>
-        <Header />
-      </MemoryRouter>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider>
+        <MemoryRouter initialEntries={initialEntries}>
+          <Header />
+        </MemoryRouter>
+      </ThemeProvider>
+    </Provider>
   );
 };
 

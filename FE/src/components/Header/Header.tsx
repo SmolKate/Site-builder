@@ -12,7 +12,8 @@ export const Header = () => {
   const navigate = useNavigate();
 
   const siteTitle = useAppSelector(getSiteTitle);
-  const { data } = useGetAuthStatusQuery();
+  const { data: authStatus } = useGetAuthStatusQuery();
+  const isAuthenticated = authStatus?.isAuth ?? false;
   const { theme, toggleTheme } = useTheme();
 
   const handleClickLogout = () => {
@@ -30,8 +31,6 @@ export const Header = () => {
 
   const getPillNavLinkClass = ({ isActive }: { isActive: boolean }) =>
     `auth-header__link auth-header__link--pill ${isActive ? "auth-header__link--pill-active" : ""}`;
-
-  const isAuthenticated = Boolean(data);
 
   return (
     <header className="auth-header">
