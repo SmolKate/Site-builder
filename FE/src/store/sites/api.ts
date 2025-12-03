@@ -1,11 +1,12 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "@/config";
 import type { ISiteDTO } from "@/utils/types";
 
 interface IUpdateSiteProps {
   id: string;
-  updates: Partial<ISiteDTO>;
+  updatesSite: Partial<ISiteDTO>;
+  updatesContent: Partial<ISiteDTO>;
 }
 interface IAddSite {
   newSite: ISiteDTO;
@@ -56,13 +57,19 @@ export const sitesApiSlice = createApi({
     }),
 
     updateSite: builder.mutation<void, IUpdateSiteProps>({
-      async queryFn({ id, updates }) {
+      async queryFn({ id, updatesSite, updatesContent }) {
         try {
           const siteRef = doc(db, "sites", id);
+          const siteDoc = await getDoc(doc(db, "sites", id));
+          const siteContentRef = doc(db, "siteContent", siteDoc.data()?.siteContentId);
 
-          console.log();
           await updateDoc(siteRef, {
-            ...updates,
+            ...updatesSite,
+            updatedAt: new Date().toISOString(),
+          });
+
+          await updateDoc(siteContentRef, {
+            ...updatesContent,
             updatedAt: new Date().toISOString(),
           });
 

@@ -2,6 +2,7 @@ export interface ISiteDTO {
   id: string;
   title: string;
   description: string;
+  siteContentId: string;
   createdAt: string;
   published: boolean;
 }
