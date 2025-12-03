@@ -8,7 +8,6 @@ import { Header } from "./Header";
 import { Provider } from "react-redux";
 import { store } from "@/store";
 
-// Создаем объект состояния для мока - используем глобальный объект
 const mockAuthState: { isAuthenticated: boolean } = { isAuthenticated: false };
 const mockLogoutUser = vi.fn();
 
@@ -26,7 +25,6 @@ vi.mock("@/store/auth", async(importOriginal) => {
 const renderHeader = (options?: { isAuthenticated?: boolean; initialEntries?: string[] }) => {
   const { isAuthenticated = false, initialEntries = ["/login"] } = options || {};
 
-  // Обновляем состояние перед рендером
   mockAuthState.isAuthenticated = isAuthenticated;
 
   return render(
