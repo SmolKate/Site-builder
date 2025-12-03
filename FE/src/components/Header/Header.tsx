@@ -6,7 +6,8 @@ import "./styles.scss";
 export const Header = () => {
   const [logoutUser] = useLogoutUserMutation();
   const navigate = useNavigate();
-  const { data: isAuthenticated } = useGetAuthStatusQuery();
+  const { data: authStatus } = useGetAuthStatusQuery();
+  const isAuthenticated = authStatus?.isAuth ?? false;
   const { theme, toggleTheme } = useTheme();
 
   const handleClickLogout = () => {
