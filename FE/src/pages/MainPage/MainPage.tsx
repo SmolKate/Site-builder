@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useFetchSitesQuery, useAddSiteMutation, useDeleteSiteMutation } from "@/store/sites";
+import {
+  useFetchSitesQuery,
+  useAddSiteMutation,
+  useDeleteSiteMutation,
+  useUpdateSiteMutation,
+} from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
@@ -18,6 +23,7 @@ export function MainPage() {
   const { data: sites, isLoading } = useFetchSitesQuery();
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
+  const [updateSite] = useUpdateSiteMutation();
   const [updateUser] = useUpdateUserMutation();
   const { data: currentUser, isLoading: currentUserLoading } = useGetCurrentUserQuery();
   const pageCount = sites && Math.ceil(sites.length / ITEMS_PER_PAGE);
@@ -50,7 +56,7 @@ export function MainPage() {
   }, [isSubmitSuccessful, reset]);
 
   const onSubmit = async (data: SiteFormData) => {
-    const newSite: Omit<ISiteDTO, "id"> = {
+    const newSite: Omit<Omit<ISiteDTO, "id">, "siteContentId"> = {
       title: data.title,
       description: data.description,
       createdAt: new Date().toISOString(),
@@ -62,6 +68,11 @@ export function MainPage() {
     if (currentUser && sites) {
       updateUser({ uid: currentUser.uid, updates: { sites: idSite } });
     }
+    updateSite({
+      id: "fyPFzAuUs9kvyA20Z9C6",
+      updatesSite: { published: true },
+      updatesContent: { components: { block: { id: 1000000 } }, layout: ["aga", "nea"] },
+    });
   };
 
   return (
