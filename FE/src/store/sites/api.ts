@@ -1,7 +1,12 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "@/config";
 import type { ISiteDTO } from "@/utils/types";
+
+interface IUpdateUserProps {
+  id: string;
+  updates: Partial<ISiteDTO>;
+}
 
 export const sitesApiSlice = createApi({
   reducerPath: "sitesApi",
@@ -27,15 +32,39 @@ export const sitesApiSlice = createApi({
       providesTags: ["Sites"],
     }),
 
-    addSite: builder.mutation<void, Omit<ISiteDTO, "id">>({
+    addSite: builder.mutation<string, Omit<ISiteDTO, "id">>({
       async queryFn(newSite) {
         try {
-          await addDoc(collection(db, "sites"), newSite);
+          const data = await addDoc(collection(db, "sites"), newSite);
+
+          return { data: data.id };
+        } catch (error) {
+          return {
+            error: { message: "Упс, ошибка создания сайта:", error },
+          };
+        }
+      },
+      invalidatesTags: ["Sites"],
+    }),
+
+    updateSite: builder.mutation<void, IUpdateUserProps>({
+      async queryFn({ id, updates }) {
+        try {
+          const siteRef = doc(db, "sites", id);
+
+          console.log();
+          await updateDoc(siteRef, {
+            ...updates,
+            updatedAt: new Date().toISOString(),
+          });
 
           return { data: undefined };
         } catch (error) {
           return {
-            error: { message: "Упс, ошибка создания сайта:", error },
+            error: {
+              message: "Ошибка обновления сайта:",
+              error,
+            },
           };
         }
       },

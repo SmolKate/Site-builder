@@ -7,7 +7,11 @@ import { db, auth } from "@/config";
 
 interface IUpdateUserProps {
   uid: string;
-  updates: Partial<IUser>;
+  updates: Partial<
+    Omit<IUser, "sites"> & {
+      sites?: string; // Переопределяем тип с string[] на string
+    }
+  >;
 }
 
 export const usersApiSlice = createApi({
@@ -74,6 +78,16 @@ export const usersApiSlice = createApi({
       async queryFn({ uid, updates }) {
         try {
           const userRef = doc(db, "users", uid);
+          const userDoc = await getDoc(doc(db, "users", uid));
+
+          if ("sites" in updates) {
+            const sites = userDoc.data()?.sites;
+            sites.push(updates.sites);
+            if (updates.sites) {
+              updates = { ...updates, sites: sites };
+            }
+          }
+
           await updateDoc(userRef, {
             ...updates,
             updatedAt: new Date().toISOString(),

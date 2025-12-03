@@ -69,3 +69,16 @@
 зарегистрированный пользователь
 test1234@example.com
 123456
+
+
+  const [updateSite] = useUpdateSiteMutation();
+
+   const handleUpdateSiteClick = async () => {
+     await updateSite({
+       id: "scCRKoV2ILRYwBkgwUFs",
+       updates: {
+         components: { block: { id: 122 } },
+         layout: ["dffdfd", "dfdfdfdf"],
+       },
+     });
+   };

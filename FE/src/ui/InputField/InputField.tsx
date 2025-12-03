@@ -57,7 +57,11 @@ const InputField = <TFieldValues extends FieldValues>(props: IInputFieldProps<TF
           {...inputProps}
         />
       </div>
-      {error && <div className={`field__error ${errorClassName}`} data-testid="input-error-text">{error}</div>}
+      {error && (
+        <div className={`field__error ${errorClassName}`} data-testid="input-error-text">
+          {error}
+        </div>
+      )}
     </div>
   );
 };

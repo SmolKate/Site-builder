@@ -4,13 +4,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useFetchSitesQuery, useAddSiteMutation, useDeleteSiteMutation } from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
-import { RaDialog } from "@/components/Dialog";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
 import { InputField, PasswordField, Button, Pagination } from "@/ui";
 import { TVariant } from "@/ui/types";
 
 import { paginate } from "@/utils";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
+import { useGetCurrentUserQuery, useUpdateUserMutation } from "@/store/users";
 import "./styles.scss";
 
 export function MainPage() {
@@ -18,6 +18,8 @@ export function MainPage() {
   const { data: sites, isLoading } = useFetchSitesQuery();
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
+  const [updateUser] = useUpdateUserMutation();
+  const { data: currentUser, isLoading: currentUserLoading } = useGetCurrentUserQuery();
   const pageCount = sites && Math.ceil(sites.length / ITEMS_PER_PAGE);
   const sitesCrop = sites && paginate(sites, page, ITEMS_PER_PAGE);
 
@@ -47,7 +49,7 @@ export function MainPage() {
     }
   }, [isSubmitSuccessful, reset]);
 
-  const onSubmit = (data: SiteFormData) => {
+  const onSubmit = async (data: SiteFormData) => {
     const newSite: Omit<ISiteDTO, "id"> = {
       title: data.title,
       description: data.description,
@@ -55,7 +57,10 @@ export function MainPage() {
       published: false,
     };
 
-    addSite(newSite);
+    const { data: idSite } = await addSite(newSite);
+    if (currentUser && sites) {
+      updateUser({ uid: currentUser.uid, updates: { sites: idSite } });
+    }
   };
 
   return (
@@ -66,7 +71,6 @@ export function MainPage() {
       </header>
 
       <RaPopover />
-      <RaDialog />
 
       <main className="main-page__content">
         <div className="create-card">
@@ -94,7 +98,7 @@ export function MainPage() {
             <h2 className="sites-section__title">Мои сайты</h2>
           </div>
 
-          {isLoading ? (
+          {isLoading || currentUserLoading ? (
             <h2>Загрузка...</h2>
           ) : sitesCrop?.length === 0 ? (
             <div className="sites-section__empty">

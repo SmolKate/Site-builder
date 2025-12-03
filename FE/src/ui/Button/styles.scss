@@ -9,6 +9,12 @@
     color: var(--text-on-primary);
   }
 
+  &--secondary {
+    background: var(--gradient-btn-secondary);
+    color: #fff;
+    border: none;
+  }
+
   &--special {
     background: var(--gradient-special);
     color: #fff;

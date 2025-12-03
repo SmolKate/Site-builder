@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 :root {
   color-scheme: light;
@@ -30,11 +30,7 @@
     rgba(124, 159, 255, 0.15),
     rgba(175, 228, 255, 0.05)
   );
-  --border-blue-gradient: linear-gradient(
-    90deg,
-    #{$brand-purple-light},
-    #{$brand-purple-border}
-  );
+  --border-blue-gradient: linear-gradient(90deg, #{$brand-purple-light}, #{$brand-purple-border});
 
   // --- Обводки ---
   --border-color-default: #{$brand-purple-border};
@@ -73,12 +69,9 @@
   );
 
   // --- Градиент для основной кнопки (Синий -> Фиолетовый/Светло-синий) ---
-  --gradient-btn-primary: linear-gradient(
-    135deg,
-    #{$brand-blue-mid} 0%,
-    #{$brand-blue-light} 100%
-  );
+  --gradient-btn-primary: linear-gradient(135deg, #{$brand-blue-mid} 0%, #{$brand-blue-light} 100%);
 
+  --gradient-btn-secondary: linear-gradient(135deg, #{$grey-soft} 0%, #{$grey-soft} 100%);
   // --- Навигационные пилюли ---
   --border-color-nav-pill: #{rgba($brand-purple-light, 0.35)};
   --bg-nav-pill: #{rgba($brand-purple-light, 0.12)};
@@ -101,14 +94,10 @@
   --shadow-form-secondary: 0 4px 14px 0 #{rgba($brand-purple-border, 0.4)};
 }
 
-html[data-theme='dark'] {
+html[data-theme="dark"] {
   color-scheme: dark;
 
-  --bg-app: radial-gradient(
-    circle at center,
-    #{$brand-blue-mid} 0%,
-    #{$brand-blue-deep} 100%
-  );
+  --bg-app: radial-gradient(circle at center, #{$brand-blue-mid} 0%, #{$brand-blue-deep} 100%);
   --bg-surface: #{rgba($dark-surface, 0.5)};
   --bg-pagination: #171a38;
   --bg-pagination-hover: #171a38;
@@ -130,11 +119,7 @@ html[data-theme='dark'] {
   --border-color-default: #{$grey-soft};
   --border-color-btn: rgba(255, 255, 255, 0.1);
 
-  --gradient-btn-primary: linear-gradient(
-    135deg,
-    #{$brand-blue-mid} 0%,
-    #{$brand-blue-light} 100%
-  );
+  --gradient-btn-primary: linear-gradient(135deg, #{$brand-blue-mid} 0%, #{$brand-blue-light} 100%);
 
   --border-color-nav-pill: #{rgba($white-soft, 0.25)};
   --bg-nav-pill: #{rgba($white-soft, 0.08)};

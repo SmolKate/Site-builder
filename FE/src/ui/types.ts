@@ -7,7 +7,8 @@ type TVariantKeys = (typeof TVariant)[keyof typeof TVariant];
 
 const TButtonVariant = {
   PRIMARY: "primary",
-  SECONDARY: "special",
+  SECONDARY: "secondary",
+  SPECIAL: "special",
   DANGER: "danger",
 } as const;
 
