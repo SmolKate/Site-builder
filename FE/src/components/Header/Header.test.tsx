@@ -5,7 +5,6 @@ import { describe, expect, test, vi } from "vitest";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Header } from "./Header";
 
-// Создаем объект состояния для мока - используем глобальный объект
 const mockAuthState: { isAuthenticated: boolean } = { isAuthenticated: false };
 const mockLogoutUser = vi.fn();
 
@@ -19,7 +18,6 @@ vi.mock("@/store/auth", () => ({
 const renderHeader = (options?: { isAuthenticated?: boolean; initialEntries?: string[] }) => {
   const { isAuthenticated = false, initialEntries = ["/login"] } = options || {};
 
-  // Обновляем состояние перед рендером
   mockAuthState.isAuthenticated = isAuthenticated;
 
   return render(
