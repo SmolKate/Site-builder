@@ -75,6 +75,7 @@
     overflow: auto;
     position: relative;
 
+    border-radius: var(--radius-lg);
     background-color: var(--bg-app);
     height: 100%;
     width: 100%;
@@ -85,6 +86,8 @@
     &--active {
       background-color: rgba(33, 150, 243, 0.05);
     }
+
+    scrollbar-width: thin;
 
     &::before {
       content: "";
@@ -119,7 +122,7 @@
   }
 
   &__grid-container {
-    width: 1200px;
+    width: 1280px;
     min-height: 100%;
     background: transparent;
     position: relative;

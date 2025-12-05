@@ -2,6 +2,8 @@ import { PlusIcon, LayersIcon, GearIcon } from "@radix-ui/react-icons";
 import clsx from "clsx";
 import "./BuilderToolbar.scss";
 
+import Logo from '@/assets/icons/logo.svg';
+
 interface Props {
   activePanel: string | null;
   onTogglePanel: (panel: string) => void;
@@ -12,7 +14,7 @@ export const BuilderToolbar = ({ activePanel, onTogglePanel }: Props) => {
     <aside className="builder-toolbar">
       <div className="builder-toolbar__top">
         <div className="builder-toolbar__logo">
-          ЛОГО
+          <img className="builder-toolbar__logo-img" src={Logo} alt="logotype" />
         </div>
       </div>
 
