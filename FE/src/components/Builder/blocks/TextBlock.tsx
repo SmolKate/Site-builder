@@ -36,7 +36,7 @@ export const TextBlock = ({ block, readOnly = false }: Props) => {
   if (!editor) return null;
 
   return (
-    <div style={{ ...block.style }} className="text-block-wrapper">
+    <div style={{ ...block.style }}>
       <EditorContent editor={editor} />
     </div>
   );

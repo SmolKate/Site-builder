@@ -15,7 +15,7 @@ export const BLOCK_DEFAULTS: Record<BlockType, BlockConfig> = {
   heading: {
     content: "Новый заголовок",
     props: { level: 2 },
-    style: { fontWeight: "bold" },
+    style: { fontWeight: "bold", color: "#04031c" },
   },
   image: {
     props: {
@@ -37,7 +37,7 @@ export const BLOCK_DEFAULTS: Record<BlockType, BlockConfig> = {
     style: {
       backgroundColor: "#5aa7c6ff",
       padding: "0",
-      display: "grid", 
+      display: "grid",
       gap: "15px",
       alignItems: "center",
       justifyItems: "center",

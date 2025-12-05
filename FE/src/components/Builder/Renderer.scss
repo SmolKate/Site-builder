@@ -1,49 +1,50 @@
 .renderer-wrapper {
   position: relative;
-  min-height: 20px; 
-  
+  min-height: 20px;
+
   outline: 1px dashed transparent;
-  outline-offset: -2px; 
+  outline-offset: -2px;
   transition: outline 0.2s ease;
-  
-&:hover {
+
+  &:hover {
     z-index: 100;
-    outline: 1px dashed var(--border-color-default); 
+    outline: 1px dashed var(--border-color-default);
   }
 
   &--selected {
-    outline: 2px solid var(--brand-primary-color);
-    z-index: 101; 
+    z-index: 101;
   }
 
   &__delete-btn {
     position: absolute;
     bottom: -24px;
     left: 0;
-    z-index: 102; 
-    
+    z-index: 102;
+
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 4px;
-    
+
     height: var(--space-xl);
     padding: 0 var(--space-xs);
-    
-    background-color: #2196f3;
+
+    background-color: var(--color-error);
     color: white;
-    
+
     border: none;
-    border-radius:  0 0 var(--radius-sm) var(--radius-sm);
-    
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+
     cursor: pointer;
     font-size: var(--font-size-xs);
-    
+
     opacity: 0;
     animation: fadeIn 0.2s forwards;
   }
 }
 
 @keyframes fadeIn {
-  to { opacity: 1; }
+  to {
+    opacity: 1;
+  }
 }
