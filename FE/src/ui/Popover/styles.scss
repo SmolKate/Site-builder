@@ -1,0 +1,93 @@
+@use "@/styles/abstracts/mixins" as m;
+
+@keyframes ui-popover-slideUpAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ui-popover {
+  &__content {
+    @include m.glass-container;
+
+    border-radius: var(--radius-lg);
+    width: 280px;
+    padding: var(--space-md);
+
+    animation-duration: 400ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+
+    &[data-side="top"],
+    &[data-side="bottom"],
+    &[data-side="left"],
+    &[data-side="right"] {
+      animation-name: ui-popover-slideUpAndFade;
+    }
+
+    z-index: 50;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-sm);
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  &__close {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    margin-left: var(--space-xs);
+
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+
+  &__body {
+    color: var(--text-secondary);
+  }
+
+  &__text {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  &__arrow {
+    fill: var(--bg-surface);
+  }
+
+  &__trigger {
+    display: none;
+  }
+}

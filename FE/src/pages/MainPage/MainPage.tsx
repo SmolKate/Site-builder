@@ -5,9 +5,8 @@ import { orderBy } from "lodash";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useFetchSitesQuery, useAddSiteMutation, useDeleteSiteMutation } from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
-import { RaPopover } from "@/components/Popover";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, Button, Pagination, Dropdown } from "@/ui";
+import { InputField, Button, Pagination, Dropdown, UniversalPopover } from "@/ui";
 import { TVariant } from "@/ui/types";
 import { paginate } from "@/utils";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
@@ -25,6 +24,8 @@ export function MainPage() {
   const [deleteSite] = useDeleteSiteMutation();
   const [updateUser] = useUpdateUserMutation();
   const { data: currentUser, isLoading: currentUserLoading } = useGetCurrentUserQuery();
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [siteId, setSiteId] = useState<null | string>(null);
 
   const iter = sortAlg.split("-")[0];
   const order = sortAlg.split("-")[1];
@@ -35,10 +36,6 @@ export function MainPage() {
   );
   const pageCount = Math.ceil(sortedSites.length / ITEMS_PER_PAGE);
   const sitesCrop = paginate(sortedSites, page, ITEMS_PER_PAGE);
-
-  const handleDeleteSite = (siteId: string) => {
-    deleteSite(siteId);
-  };
 
   const handlePageChange = ({ selected }: ISelectedPage) => {
     setPage(selected + 1);
@@ -87,7 +84,7 @@ export function MainPage() {
     const { data: idSite } = await addSite({ newSite, siteContent });
 
     if (currentUser && idSite) {
-      updateUser({ uid: currentUser.uid, updates: { sites: idSite } });
+      updateUser({ uid: currentUser.uid!, updates: { sites: idSite } });
       navigate(`/sites/${idSite}`);
     }
   };
@@ -101,7 +98,19 @@ export function MainPage() {
 
       {accessError && <p className="auth-page__error">{accessError}</p>}
 
-      <RaPopover />
+      <UniversalPopover
+        isOpen={isInfoOpen}
+        onClose={() => setIsInfoOpen(false)}
+        title="Вы точно хотите удалить сайт"
+        bodyText="Его нельзя будет восстановить"
+        primaryButton={{
+          label: "Да",
+          onClick: () => {
+            if(siteId) deleteSite(siteId);
+          },
+          variant: "primary",
+        }}
+      />
 
       <main className="main-page__content">
         <div className="create-card">
@@ -166,7 +175,8 @@ export function MainPage() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteSite(site.id);
+                        setSiteId(site.id);
+                        setIsInfoOpen(true);
                       }}
                       className="ui-btn ui-btn--danger ui-btn--sm"
                     >
