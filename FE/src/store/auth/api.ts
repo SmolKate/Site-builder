@@ -4,6 +4,7 @@ import { db, auth } from "@/config";
 import type { IUser } from "@/utils/types";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { getAuth, removeAuth, removeUser, setAuth, setUser } from "@/utils/helpers";
+import { FirebaseError } from "firebase/app";
 
 // Тип для ответа при авторизации
 interface ILoginResponse {
@@ -110,6 +111,25 @@ export const authApiSlice = createApi({
           };
         } catch (error) {
           const { message, code } = error as IAuthError;
+          let errorMessage = "Ошибка авторизации:";
+
+          // Проверяем, является ли ошибка FirebaseError
+          if (error instanceof FirebaseError) {
+            // Более конкретные сообщения об ошибках
+            switch (error.code) {
+              case "auth/user-not-found":
+                errorMessage = "Пользователь не найден";
+                break;
+              case "auth/wrong-password":
+                errorMessage = "Неверный пароль";
+                break;
+              default:
+                errorMessage = `Ошибка авторизации: ${error.code}`;
+            }
+          } else if (error instanceof Error) {
+            // Обычная JavaScript ошибка
+            errorMessage = error.message;
+          }
 
           return {
             error: {

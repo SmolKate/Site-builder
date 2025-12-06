@@ -63,3 +63,27 @@
     font-weight: var(--font-weight-medium);
   }
 }
+
+.dialog-email {
+  margin-bottom: var(--space-xs);
+  &__label {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-xxs);
+  }
+  &__content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: var(--text-secondary);
+  }
+  &__icon:hover {
+    cursor: pointer;
+  }
+}
+
+.dialog-checkbox {
+  margin-right: var(--space-md);
+  &__label {
+    user-select: none;
+  }
+}
