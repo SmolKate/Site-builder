@@ -1,12 +1,14 @@
-// vitest-setup.js (can be any file name)
 import { vi, expect } from "vitest";
 import * as matchers from "@testing-library/jest-dom/matchers";
+
 import "@testing-library/jest-dom/vitest";
 
 expect.extend(matchers);
 
 const { getComputedStyle } = window;
+
 window.getComputedStyle = (elt) => getComputedStyle(elt);
+
 window.HTMLElement.prototype.scrollIntoView = () => {};
 
 Object.defineProperty(window, "matchMedia", {
@@ -22,3 +24,11 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: vi.fn(),
   })),
 });
+
+class ResizeObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+window.ResizeObserver = ResizeObserverMock;
