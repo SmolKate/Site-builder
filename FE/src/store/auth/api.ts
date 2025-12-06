@@ -1,9 +1,8 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { db, auth } from "@/config";
 import type { IUser } from "@/utils/types";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
 import { getAuth, removeAuth, removeUser, setAuth, setUser } from "@/utils/helpers";
 
 // Тип для ответа при авторизации
@@ -18,13 +17,25 @@ interface ILoginProps {
   password: string;
 }
 
+interface IRegisterProps {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+interface IAuthError {
+  message: string;
+  code: string;
+}
+
 export const authApiSlice = createApi({
   reducerPath: "authApi",
   baseQuery: fakeBaseQuery(),
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
     // Регистрация пользователя (создание в Authentication + Firestore)
-    registerUser: builder.mutation<{ uid: string }, IUser & { password: string }>({
+    registerUser: builder.mutation<{ uid: string }, IRegisterProps>({
       async queryFn(userData) {
         try {
           // Создаем пользователя в Firebase Authentication
@@ -41,18 +52,26 @@ export const authApiSlice = createApi({
             firstName: userData.firstName,
             lastName: userData.lastName,
             sites: [],
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
+            avatarURL: `https://api.dicebear.com/9.x/avataaars/svg?seed=${(Math.random() + 1)
+              .toString(36)
+              .substring(7)}`,
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now(),
           };
 
           await setDoc(doc(db, "users", user.uid), userDoc);
 
+          setUser(user.uid);
+          setAuth();
+
           return { data: { uid: user.uid } };
-        } catch (error) {
+        } catch (e) {
+          const error = e as IAuthError;
+
           return {
             error: {
-              message: "Ошибка регистрации пользователя:",
-              error,
+              message: error.message,
+              code: error.code,
             },
           };
         }
@@ -89,31 +108,13 @@ export const authApiSlice = createApi({
               displayName: user.displayName || userData?.firstName + " " + userData?.lastName,
             },
           };
-        } catch (error) {
-          let errorMessage = "Ошибка авторизации:";
-
-          // Проверяем, является ли ошибка FirebaseError
-          if (error instanceof FirebaseError) {
-            // Более конкретные сообщения об ошибках
-            switch (error.code) {
-            case "auth/user-not-found":
-              errorMessage = "Пользователь не найден";
-              break;
-            case "auth/wrong-password":
-              errorMessage = "Неверный пароль";
-              break;
-            default:
-              errorMessage = `Ошибка авторизации: ${error.code}`;
-            }
-          } else if (error instanceof Error) {
-            // Обычная JavaScript ошибка
-            errorMessage = error.message;
-          }
+        } catch (e) {
+          const error = e as IAuthError;
 
           return {
             error: {
-              message: errorMessage,
-              error,
+              message: error.message,
+              code: error.code,
             },
           };
         }

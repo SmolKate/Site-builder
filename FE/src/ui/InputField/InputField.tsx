@@ -41,11 +41,7 @@ const InputField = <TFieldValues extends FieldValues>(props: IInputFieldProps<TF
 
   return (
     <div className={`field__wrapper ${variantClassName} ${wrapperClassName}`}>
-      {label && (
-        <label htmlFor={fieldName} className="text-gradient-special field__label">
-          {label}
-        </label>
-      )}
+      {label && <label htmlFor={fieldName}>{label}</label>}
       <div className="field__input-root">
         <input
           id={fieldName}
