@@ -28,6 +28,13 @@
   margin-bottom: var(--space-lg);
 }
 
+.auth-page__error {
+  margin-bottom: var(--space-lg);
+  
+  color: red;
+  text-align: center;
+}
+
 .container {
   width: 100%;
   max-width: var(--auth-form-width);

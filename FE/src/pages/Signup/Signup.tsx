@@ -1,15 +1,15 @@
-import { useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, InputField, PasswordField } from "@/ui";
 import { signupSchema, type SignupFormData } from "@/utils/helpers";
+import { useRegisterUserMutation } from "@/store/auth";
+import { authMessages } from "@/locales";
 import "../authStyles.scss";
 
 export const Signup = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from || "/";
   const {
     register,
     watch,
@@ -20,10 +20,23 @@ export const Signup = () => {
     resolver: yupResolver(signupSchema),
     mode: "onChange",
   });
+  const [registerUser] = useRegisterUserMutation();
+  const [registerError, setRegisterError] = useState<null | string>(null);
+  const allFields = watch();
   const password = watch("password");
 
-  const onSubmit = () => {
-    navigate(from, { replace: true });
+  const onSubmit = (data: SignupFormData) => {
+    const { firstName, lastName, email, password } = data;
+
+    registerUser({
+      firstName,
+      lastName,
+      email,
+      password,
+    })
+      .unwrap()
+      .then(() => navigate("/", { state: {}, replace: true }))
+      .catch(() => setRegisterError(authMessages.registerError));
   };
 
   useEffect(() => {
@@ -31,6 +44,10 @@ export const Signup = () => {
       trigger("confirmPassword");
     }
   }, [password, trigger]);
+
+  useEffect(() => {
+    setRegisterError(null);
+  }, [JSON.stringify(allFields)]);
 
   return (
     <div className="auth-page">
@@ -76,6 +93,8 @@ export const Signup = () => {
             />
             <Button buttonText="Зарегистрироваться" disabled={!isValid} />
           </form>
+
+          {registerError && <p className="auth-page__error">{registerError}</p>}
 
           <p className="text-center">
             Есть аккаунт? <Link to="/login">Войти</Link>

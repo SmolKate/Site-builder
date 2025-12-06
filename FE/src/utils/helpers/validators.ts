@@ -7,7 +7,7 @@ const EMAIL_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9!@#$%^&*()-_=+.]+$/;
 const PASSWORD_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9!@#$%^&*()-_=+]+$/;
 
 // Константы валидации
-const MIN_PASSWORD_LENGTH = 5;
+const MIN_PASSWORD_LENGTH = 6;
 const MIN_TEXT_LENGTH = 2;
 const MAX_TEXT_LENGTH = 15;
 
