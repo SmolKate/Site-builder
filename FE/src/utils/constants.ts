@@ -17,4 +17,3 @@ export const LANGUAGE_ENUM = {
 export const ROW_HEIGHT = 5 as const;
 export const GRID_COLUMN_NUMBER = 12 as const;
 export const TOTAL_WIDTH = 1200 as const;
-

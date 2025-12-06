@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { orderBy } from "lodash";
@@ -13,17 +14,17 @@ import { RaPopover } from "@/components/Popover";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
 import { InputField, Button, Pagination, Dropdown } from "@/ui";
 import { TVariant } from "@/ui/types";
-
 import { paginate } from "@/utils";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
 import { useGetCurrentUserQuery, useUpdateUserMutation } from "@/store/users";
 import "./styles.scss";
-import { useNavigate } from "react-router-dom";
 
 export function MainPage() {
-  const [page, setPage] = useState(1);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [page, setPage] = useState(1);
   const [sortAlg, setSortAlg] = useState("alphabet-asc");
+  const [accessError, setAccessError] = useState<null | string>(null);
   const { data: sites, isLoading } = useFetchSitesQuery();
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
@@ -72,6 +73,16 @@ export function MainPage() {
     }
   }, [isSubmitSuccessful, reset]);
 
+  useEffect(() => {
+    if (location.state?.unauthorizedRedirect) {
+      setAccessError(location.state?.message);
+      navigate(location.pathname, {
+        state: {},
+        replace: true,
+      });
+    }
+  }, [location.key]);
+
   const onSubmit = async(data: SiteFormData) => {
     const newSite: Omit<ISiteDTO, "id"> = {
       title: data.title,
@@ -81,7 +92,7 @@ export function MainPage() {
     };
     const siteContent = { components: {}, layout: [] };
     const { data: idSite } = await addSite({ newSite, siteContent });
-   
+
     if (currentUser && idSite) {
       updateUser({ uid: currentUser.uid, updates: { sites: idSite } });
       navigate(`/sites/${idSite}`);
@@ -97,6 +108,8 @@ export function MainPage() {
         <h1 className="main-page__title">Site Builder</h1>
         <p className="main-page__subtitle">Панель управления проектами</p>
       </header>
+
+      {accessError && <p className="auth-page__error">{accessError}</p>}
 
       <RaPopover />
 
@@ -138,7 +151,11 @@ export function MainPage() {
           ) : (
             <div className="sites-section__grid">
               {sitesCrop?.map((site) => (
-                <div key={site.id} className="site-card" onClick={() => navigate(`/sites/${site.id}`)}>
+                <div
+                  key={site.id}
+                  className="site-card"
+                  onClick={() => navigate(`/sites/${site.id}`)}
+                >
                   <div className="site-card__info">
                     <h3 className="site-card__title">{site.title}</h3>
                     <p className="site-card__desc">{site.description}</p>

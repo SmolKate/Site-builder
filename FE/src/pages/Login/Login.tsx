@@ -1,30 +1,58 @@
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, InputField, PasswordField } from "@/ui";
 import { loginSchema, type LoginFormData } from "@/utils/helpers";
 import { useLoginUserMutation } from "@/store/auth";
+import { authMessages } from "@/locales";
 import "../authStyles.scss";
 
 export const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from || "/";
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
     mode: "onChange",
   });
-
   const [loginUser] = useLoginUserMutation();
-  const onSubmit = async(values: LoginFormData) => {
+  const [loginError, setLoginError] = useState<null | string>(null);
+  const [accessError, setAccessError] = useState<null | string>(null);
+  const allFields = watch();
+
+  const onSubmit = (values: LoginFormData) => {
     const { email, password } = values;
-    await loginUser({ email, password });
-    navigate(from, { replace: true });
+
+    loginUser({ email, password })
+      .unwrap()
+      .then(() => navigate("/", { state: {}, replace: true }))
+      .catch(() => setLoginError(authMessages.loginError));
   };
+
+  useEffect(() => {
+    setLoginError(null);
+  }, [JSON.stringify(allFields)]);
+
+  useEffect(() => {
+    if (location.state?.privateRedirect) {
+      setAccessError(location.state?.message);
+      navigate(location.pathname, {
+        state: {},
+        replace: true,
+      });
+    }
+  }, [location.key]);
+
+  useEffect(() => {
+    if (accessError && (allFields.email || allFields.password)) {
+      setAccessError(null);
+    }
+  }, [accessError, allFields.email, allFields.password]);
 
   return (
     <div className="auth-page">
@@ -49,6 +77,9 @@ export const Login = () => {
             />
             <Button buttonText="Войти" disabled={!isValid} />
           </form>
+
+          {loginError && <p className="auth-page__error">{loginError}</p>}
+          {accessError && <p className="auth-page__error">{accessError}</p>}
 
           <p className="text-center">
             Нет аккаунта? <Link to="/signup">Зарегистрироваться</Link>

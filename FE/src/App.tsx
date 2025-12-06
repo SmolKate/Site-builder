@@ -1,15 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
-import {
-  Login,
-  MainPage,
-  Constructor,
-  NotFound,
-  Profile,
-  Signup,
-  SitesList,
-} from "@/pages";
-import { MainLayout, ProtectedLayout } from "@/layouts";
+import { Login, MainPage, Constructor, NotFound, Profile, Signup, SitesList } from "@/pages";
+import { MainLayout, ProtectedLayout, UnauthorizedLayout } from "@/layouts";
 import { ErrorBoundary } from "@/components";
 import { messages } from "@/locales";
 
@@ -28,8 +20,10 @@ function App() {
               </Route>
             </Route>
           </Route>
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
+          <Route element={<UnauthorizedLayout />}>
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
