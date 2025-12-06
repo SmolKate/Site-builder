@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { orderBy } from "lodash";
-import {
-  useFetchSitesQuery,
-  useAddSiteMutation,
-  useDeleteSiteMutation,
-  // useGetSiteContentQuery,
-} from "@/store/sites";
+import { useFetchSitesQuery, useAddSiteMutation, useDeleteSiteMutation } from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { RaPopover } from "@/components/Popover";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
@@ -29,8 +23,6 @@ export function MainPage() {
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
   const [updateUser] = useUpdateUserMutation();
-  // const { data: getSiteContent, isLoading: isLoadingSiteContent } =
-  //   useGetSiteContentQuery("dpiZfBk007dKBmlMdE52");
   const { data: currentUser, isLoading: currentUserLoading } = useGetCurrentUserQuery();
 
   const iter = sortAlg.split("-")[0];
@@ -83,7 +75,7 @@ export function MainPage() {
     }
   }, [location.key]);
 
-  const onSubmit = async(data: SiteFormData) => {
+  const onSubmit = async (data: SiteFormData) => {
     const newSite: Omit<ISiteDTO, "id"> = {
       title: data.title,
       description: data.description,
@@ -97,9 +89,6 @@ export function MainPage() {
       updateUser({ uid: currentUser.uid, updates: { sites: idSite } });
       navigate(`/sites/${idSite}`);
     }
-    // if (!isLoadingSiteContent) {
-    //   console.log("getSiteContent", getSiteContent);
-    // }
   };
 
   return (
