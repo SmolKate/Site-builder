@@ -15,7 +15,6 @@ export const RaDialog = ({ open, onClose, title, description, content }: IRaDial
   return (
     <div className="main-dialog">
       <Dialog.Root open={open}>
-        {/* <Dialog.Trigger asChild>{trigger}</Dialog.Trigger> */}
         <Dialog.Portal>
           <div className="main-dialog__portal-wrapper">
             <Dialog.Overlay className="main-dialog__overlay" />
@@ -35,7 +34,7 @@ export const RaDialog = ({ open, onClose, title, description, content }: IRaDial
                 )}
               </div>
 
-              <div className="main-dialog__body">{content}</div>
+              <div className="main-dialog__body ">{content}</div>
 
               <Dialog.Close asChild>
                 <button className="main-dialog__close-button" aria-label="Close" onClick={onClose}>

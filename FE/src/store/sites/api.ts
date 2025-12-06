@@ -1,6 +1,15 @@
 import type { ISiteContentDTO, ISiteDTO } from "@/utils/types";
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "@/config";
 
 interface IUpdateSiteProps {
@@ -38,15 +47,17 @@ export const sitesApiSlice = createApi({
       providesTags: ["Sites"],
     }),
 
-    fetchSiteById: builder.query<{siteInfo: ISiteDTO, siteContent: ISiteContentDTO}, string>({
+    fetchSiteById: builder.query<{ siteInfo: ISiteDTO; siteContent: ISiteContentDTO }, string>({
       async queryFn(siteId) {
         try {
           const siteDoc = await getDoc(doc(db, "sites", siteId));
           const siteInfo = siteDoc.data() as ISiteDTO;
-          const siteContentDoc = await getDoc(doc(db, "siteContent", siteDoc.data()?.siteContentId));     
+          const siteContentDoc = await getDoc(
+            doc(db, "siteContent", siteDoc.data()?.siteContentId)
+          );
           const siteContent = siteContentDoc.data() as ISiteContentDTO;
- 
-          return { data: {siteContent, siteInfo}};
+
+          return { data: { siteContent, siteInfo } };
         } catch (error) {
           return {
             error: { message: "Ошибка получения данных о сайтах:", error },
@@ -58,13 +69,14 @@ export const sitesApiSlice = createApi({
     addSite: builder.mutation<string, IAddSite>({
       async queryFn({ newSite, siteContent }) {
         try {
-          const newSiteContent = await addDoc(collection(db, "siteContent"), siteContent);
-          const site = await addDoc(collection(db, "sites"), {
+          const { id } = await addDoc(collection(db, "siteContent"), siteContent);
+          const siteRef = doc(db, "sites", id);
+          await setDoc(siteRef, {
             ...newSite,
-            siteContentId: newSiteContent.id,
+            siteContentId: id,
           });
 
-          return { data: site.id };
+          return { data: id };
         } catch (error) {
           return {
             error: { message: "Упс, ошибка создания сайта:", error },

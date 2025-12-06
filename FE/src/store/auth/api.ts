@@ -96,14 +96,14 @@ export const authApiSlice = createApi({
           if (error instanceof FirebaseError) {
             // Более конкретные сообщения об ошибках
             switch (error.code) {
-            case "auth/user-not-found":
-              errorMessage = "Пользователь не найден";
-              break;
-            case "auth/wrong-password":
-              errorMessage = "Неверный пароль";
-              break;
-            default:
-              errorMessage = `Ошибка авторизации: ${error.code}`;
+              case "auth/user-not-found":
+                errorMessage = "Пользователь не найден";
+                break;
+              case "auth/wrong-password":
+                errorMessage = "Неверный пароль";
+                break;
+              default:
+                errorMessage = `Ошибка авторизации: ${error.code}`;
             }
           } else if (error instanceof Error) {
             // Обычная JavaScript ошибка
