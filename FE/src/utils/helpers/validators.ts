@@ -7,7 +7,7 @@ const EMAIL_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9!@#$%^&*()-_=+.]+$/;
 const PASSWORD_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9!@#$%^&*()-_=+]+$/;
 
 // Константы валидации
-const MIN_PASSWORD_LENGTH = 5;
+const MIN_PASSWORD_LENGTH = 6;
 const MIN_TEXT_LENGTH = 2;
 const MAX_TEXT_LENGTH = 15;
 
@@ -26,6 +26,9 @@ export const passwordSchema = (minLength: number = MIN_PASSWORD_LENGTH) =>
     .required(validationErrors.password.required)
     .matches(PASSWORD_REGEX, validationErrors.common.notSpecialSymbols)
     .min(minLength, validationErrors.password.minLength(minLength));
+
+export const passwordSchemaEdit = (minLength: number = MIN_PASSWORD_LENGTH) =>
+  yup.string().trim().min(minLength, validationErrors.password.minLength(minLength));
 
 export const firstNameSchema = (params?: { minLength?: number }) => {
   const { minLength = MIN_TEXT_LENGTH } = params ?? {};
@@ -91,17 +94,28 @@ export const siteSchema = yup.object({
   description: requiredTextSchema({ maxLength: 150 }),
 });
 
-export const editProfileSchema = yup.object({
-  firstName: requiredTextSchema(),
-  lastName: requiredTextSchema(),
-  email: emailSchema(),
-  // password: passwordSchema(),
-  // confirmPassword: confirmPasswordSchema(),
-});
-
 // Типы для TypeScript
 export type LoginFormData = yup.InferType<typeof loginSchema>;
 export type SignupFormData = yup.InferType<typeof signupSchema>;
 export type ProfileFormData = yup.InferType<typeof profileSchema>;
 export type SiteFormData = yup.InferType<typeof siteSchema>;
-export type EditProfileFormData = yup.InferType<typeof editProfileSchema>;
+
+export const getEditProfileSchema = (isPasswordChanged: boolean) => {
+  const baseSchema = yup.object({
+    firstName: requiredTextSchema(),
+    lastName: requiredTextSchema(),
+    email: emailSchema(),
+  });
+
+  if (isPasswordChanged) {
+    return baseSchema.concat(
+      yup.object({
+        password: passwordSchema(),
+        confirmPassword: confirmPasswordSchema(),
+        currentPassword: passwordSchema(),
+      })
+    );
+  }
+
+  return baseSchema;
+};

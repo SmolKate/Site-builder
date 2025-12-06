@@ -1,6 +1,11 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
-import { deleteUser } from "firebase/auth";
+import {
+  deleteUser,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from "firebase/auth";
 import { getUser, removeAuth, removeUser } from "@/utils/helpers";
 import type { IUser } from "@/utils/types";
 import { db, auth } from "@/config";
@@ -10,6 +15,8 @@ interface IUpdateUserProps {
   updates: Partial<
     Omit<IUser, "sites"> & {
       sites?: string; // Переопределяем тип с string[] на string
+      password?: string;
+      currentPassword?: string;
     }
   >;
 }
@@ -44,7 +51,6 @@ export const usersApiSlice = createApi({
       async queryFn() {
         try {
           const userUid = getUser();
-
           if (userUid) {
             // Получаем дополнительные данные пользователя из Firestore
             const userDoc = await getDoc(doc(db, "users", userUid));
@@ -78,7 +84,53 @@ export const usersApiSlice = createApi({
       async queryFn({ uid, updates }) {
         try {
           const userRef = doc(db, "users", uid);
-          const userDoc = await getDoc(doc(db, "users", uid));
+          const userDoc = await getDoc(userRef);
+          if (!userDoc.exists()) {
+            return {
+              error: {
+                message: "Пользователь не найден",
+              },
+            };
+          }
+          const existingUserData = userDoc.data() as IUser;
+          const currentUser = auth.currentUser;
+
+          // Проверяем, что текущий пользователь совпадает с обновляемым
+          if (!currentUser) {
+            throw new Error("Пользователь не авторизован");
+          }
+          if (currentUser?.uid !== uid) {
+            return {
+              error: {
+                message: "Нет прав для обновления этого пользователя",
+              },
+            };
+          }
+
+          // Обновление пароля в Firebase Authentication
+          if (updates.password && updates.currentPassword) {
+            try {
+              // Re-authenticate пользователя
+              const credential = EmailAuthProvider.credential(
+                existingUserData.email,
+                updates.currentPassword
+              );
+              await reauthenticateWithCredential(currentUser, credential);
+
+              // Обновляем пароль в Firebase Auth
+              await updatePassword(currentUser, updates.password);
+
+              // Удаляем пароль из обновлений для Firestore
+              delete updates.password;
+            } catch (error: unknown) {
+              return {
+                error: {
+                  message: "Ошибка при смене пароля. Проверьте текущий пароль",
+                  error,
+                },
+              };
+            }
+          }
 
           if ("sites" in updates) {
             const sites = userDoc.data()?.sites;

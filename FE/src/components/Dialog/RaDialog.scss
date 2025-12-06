@@ -57,7 +57,7 @@
 
     width: 90vw;
     max-width: 470px;
-    max-height: 85vh;
+    max-height: 92vh;
 
     @include m.glass-container;
     padding: var(--space-xl);
@@ -137,6 +137,7 @@
   }
 
   &__footer {
+    margin-top: var(--space-md);
     display: flex;
     gap: var(--space-md);
     justify-content: flex-end;
