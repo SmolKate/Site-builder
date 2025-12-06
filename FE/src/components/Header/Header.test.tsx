@@ -10,8 +10,18 @@ let mockAuthState: AuthState = { isAuthenticated: false };
 
 vi.mock("@/store", () => ({
   useAppDispatch: () => vi.fn(),
-  useAppSelector: (selector: (state: { auth: AuthState }) => unknown) =>
-    selector({ auth: mockAuthState }),
+  useAppSelector: (
+    selector: (state: { auth: AuthState; builder: { siteTitle: string } }) => unknown
+  ) =>
+    selector({
+      auth: mockAuthState,
+      builder: { siteTitle: "Test site" },
+    }),
+}));
+
+vi.mock("@/store/auth", () => ({
+  useLogoutUserMutation: () => [vi.fn()],
+  useGetAuthStatusQuery: () => ({ data: mockAuthState.isAuthenticated }),
 }));
 
 const renderHeader = (options?: { isAuthenticated?: boolean; initialEntries?: string[] }) => {
