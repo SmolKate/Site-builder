@@ -249,3 +249,10 @@
     border: 1px solid var(--border-warning-soft);
   }
 }
+
+.auth-page__error {
+  margin-bottom: var(--space-lg);
+  
+  color: red;
+  text-align: center;
+}
