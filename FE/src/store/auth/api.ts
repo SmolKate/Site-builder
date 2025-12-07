@@ -38,7 +38,7 @@ export const authApiSlice = createApi({
   endpoints: (builder) => ({
     // Регистрация пользователя (создание в Authentication + Firestore)
     registerUser: builder.mutation<{ uid: string }, IRegisterProps>({
-      async queryFn(userData) {
+      async queryFn(userData, api) {
         try {
           // Создаем пользователя в Firebase Authentication
           const userCredential = await createUserWithEmailAndPassword(
@@ -65,7 +65,9 @@ export const authApiSlice = createApi({
 
           setUser(user.uid);
           setAuth();
-
+          api.dispatch(
+            usersApiSlice.util.invalidateTags(["CurrentUser"])
+          );
           return { data: { uid: user.uid } };
         } catch (error) {
           const { message, code } = error as IAuthError;
