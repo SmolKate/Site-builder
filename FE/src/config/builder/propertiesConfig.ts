@@ -40,6 +40,34 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
       target: "style",
       defaultValue: 0,
     },
+    {
+      type: "color",
+      label: "Фон",
+      key: "backgroundColor",
+      target: "style",
+      defaultValue: "#ffffff",
+    },
+    {
+      type: "number",
+      label: "Внутренний отступ (px)",
+      key: "padding",
+      target: "style",
+      defaultValue: 20,
+    },
+    {
+      type: "number",
+      label: "Скругление (px)",
+      key: "borderRadius",
+      target: "style",
+      defaultValue: 0,
+    },
+    {
+      type: "number",
+      label: "Внешний отступ (px)",
+      key: "margin",
+      target: "style",
+      defaultValue: 0,
+    },
   ],
   specific: {
     container: [
@@ -54,75 +82,110 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
           { value: "three-columns", label: "3 колонки" },
         ],
       },
+      { type: "text", label: "Ширина (px/%)", key: "width", target: "style", defaultValue: "100%" },
+      { type: "text", label: "Мин. Высота (px)", key: "minHeight", target: "style", defaultValue: "100px" },
+      { type: "color", label: "Цвет фона", key: "backgroundColor", target: "style" },
+      { type: "number", label: "Padding (px)", key: "padding", target: "style" },
+      { type: "select", label: "Выравнивание", key: "alignItems", target: "style", 
+        options: [{value: "start", label: "Сверху"}, {value: "center", label: "По центру"},
+          {value: "end", label: "Снизу"}] 
+      },
+    ],
+    page: [
+      { 
+        type: "select", 
+        label: "Сайдбар", 
+        key: "hasSidebar", 
+        target: "props",
+        options: [{value: "1", label: "Показать"}, {value: "0", label: "Скрыть"}]
+      },
+      { type: "text", label: "Ширина сайдбара (px/%)", key: "sidebarWidth", target: "style" },
+      
+      {
+        type: "select",
+        label: "Макет центра",
+        key: "variant",
+        target: "variant",
+        options: [
+          { value: "default", label: "1 колонка" },
+          { value: "two-columns", label: "2 колонки" },
+          { value: "three-columns", label: "3 колонки" },
+        ]
+      },
+
+      { type: "color", label: "Фон Header", key: "headerBg", target: "style" },
+      { type: "color", label: "Фон Footer", key: "footerBg", target: "style" },
+      { type: "color", label: "Фон Sidebar", key: "sidebarBg", target: "style" },
     ],
     image: [
-      {
-        type: "text",
-        label: "URL изображения",
-        key: "src",
-        target: "props",
-        defaultValue: "https://via.placeholder.com/400x250",
-      },
-      {
-        type: "text",
-        label: "Альтернативный текст",
-        key: "alt",
-        target: "props",
-        defaultValue: "Новое изображение",
-      },
+      { type: "text", label: "URL изображения", key: "src", target: "props" },
+      { type: "text", label: "Alt текст", key: "alt", target: "props" },
     ],
     heading: [
       {
         type: "select",
-        label: "Уровень заголовка",
+        label: "Уровень",
         key: "level",
         target: "props",
         options: [
-          { value: "1", label: "H1 - Главный заголовок" },
-          { value: "2", label: "H2 - Заголовок секции" },
-          { value: "3", label: "H3 - Подзаголовок" },
-          { value: "4", label: "H4 - Малый заголовок" },
-          { value: "5", label: "H5 - Очень малый заголовок" },
-          { value: "6", label: "H6 - Лейбл" },
+          { value: "1", label: "H1" },
+          { value: "2", label: "H2" },
+          { value: "3", label: "H3" },
         ],
         defaultValue: "2",
       },
-      {
-        type: "color",
-        label: "Цвет текста",
-        key: "color",
-        target: "style",
-        defaultValue: "#000000",
-      },
+      { type: "color", label: "Цвет", key: "color", target: "style" },
       {
         type: "select",
         label: "Выравнивание",
         key: "textAlign",
         target: "style",
         options: [
-          { value: "left", label: "Слева" },
-          { value: "center", label: "По центру" },
-          { value: "right", label: "Справа" },
+          { value: "left", label: "Left" },
+          { value: "center", label: "Center" },
+          { value: "right", label: "Right" },
         ],
-        defaultValue: "left",
       },
     ],
     button: [
-      {
-        type: "text",
-        label: "Текст кнопки",
-        key: "text",
-        target: "props",
-        defaultValue: "Кнопка",
-      },
-      {
-        type: "color",
-        label: "Цвет текста",
-        key: "color",
-        target: "style",
-        defaultValue: "#000000",
-      },
+      { type: "text", label: "Текст", key: "text", target: "props" },
+      { type: "color", label: "Цвет текста", key: "color", target: "style" },
     ],
     text: [],
+
+    video: [
+      { type: "text", label: "Ссылка YouTube", key: "src", target: "props" },
+      { type: "number", label: "Ширина", key: "width", target: "style" },
+      { type: "number", label: "Высота", key: "height", target: "style" },
+    ],
+    divider: [
+      { type: "color", label: "Цвет линии", key: "backgroundColor", target: "style" },
+      { type: "number", label: "Толщина (px)", key: "height", target: "style" },
+    ],
+    quote: [
+      { type: "text", label: "Текст цитаты", key: "text", target: "props" },
+      { type: "text", label: "Автор", key: "author", target: "props" },
+      { type: "color", label: "Цвет текста", key: "color", target: "style" },
+    ],
+    list: [{ type: "color", label: "Цвет текста", key: "color", target: "style" }],
+    input: [
+      { type: "text", label: "Placeholder", key: "placeholder", target: "props" },
+      { type: "color", label: "Цвет границы", key: "borderColor", target: "style" },
+    ],
+    link: [
+      { type: "text", label: "Текст ссылки", key: "text", target: "props" },
+      { type: "text", label: "Адрес (href)", key: "href", target: "props" },
+      { type: "color", label: "Цвет", key: "color", target: "style" },
+      {
+        type: "select",
+        label: "Подчеркивание",
+        key: "textDecoration",
+        target: "style",
+        options: [
+          { value: "none", label: "Нет" },
+          { value: "underline", label: "Да" },
+        ],
+      },
+    ],
   },
 };
