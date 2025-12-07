@@ -11,6 +11,14 @@ import { HeadingBlock } from "./blocks/HeadingBlock";
 import { ImageBlock } from "./blocks/ImageBlock";
 
 import "./Renderer.scss";
+import { VideoBlock } from "./blocks/VideoBlock";
+import { QuoteBlock } from "./blocks/QuoteBlock";
+import { ListBlock } from "./blocks/ListBlock";
+import { InputBlock } from "./blocks/InputBlock";
+
+import { DividerBlock } from "./blocks/DividerBlock";
+import { LinkBlock } from "./blocks/LinkBlock";
+import { ContainerBlock } from "./blocks/ContainerBlock";
 
 export const Renderer = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
@@ -34,6 +42,10 @@ export const Renderer = ({ id }: { id: string }) => {
   let content = null;
 
   switch (block.type) {
+  case "container":
+  
+    content = <ContainerBlock block={block} />;
+    break;
   case "button":
     content = <ButtonBlock block={block} />;
     break;
@@ -45,6 +57,24 @@ export const Renderer = ({ id }: { id: string }) => {
     break;
   case "image":
     content = <ImageBlock block={block} />;
+    break;
+  case "video":
+    content = <VideoBlock block={block} />;
+    break;
+  case "divider":
+    content = <DividerBlock block={block} />;
+    break;
+  case "quote":
+    content = <QuoteBlock block={block} />;
+    break;
+  case "list":
+    content = <ListBlock block={block} />;
+    break;
+  case "input":
+    content = <InputBlock block={block} />;
+    break;
+  case "link":
+    content = <LinkBlock block={block} />;
     break;
   default:
     content = <div>Unknown block: {block.type}</div>;
