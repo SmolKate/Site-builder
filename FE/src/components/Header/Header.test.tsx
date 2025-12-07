@@ -5,19 +5,20 @@ import { describe, expect, test, vi } from "vitest";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Header } from "./Header";
 
-type AuthState = { isAuthenticated: boolean };
-let mockAuthState: AuthState = { isAuthenticated: false };
+const mockAuthState: { isAuthenticated: boolean } = { isAuthenticated: false };
+const mockLogoutUser = vi.fn();
 
-vi.mock("@/store", () => ({
-  useAppDispatch: () => vi.fn(),
-  useAppSelector: (selector: (state: { auth: AuthState }) => unknown) =>
-    selector({ auth: mockAuthState }),
+vi.mock("@/store/auth", () => ({
+  useGetAuthStatusQuery: () => ({
+    data: mockAuthState.isAuthenticated,
+  }),
+  useLogoutUserMutation: () => [mockLogoutUser],
 }));
 
 const renderHeader = (options?: { isAuthenticated?: boolean; initialEntries?: string[] }) => {
   const { isAuthenticated = false, initialEntries = ["/login"] } = options || {};
 
-  mockAuthState = { isAuthenticated };
+  mockAuthState.isAuthenticated = isAuthenticated;
 
   return render(
     <ThemeProvider>
