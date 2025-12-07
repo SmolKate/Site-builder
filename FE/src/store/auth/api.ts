@@ -5,6 +5,7 @@ import type { IUser } from "@/utils/types";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { getAuth, removeAuth, removeUser, setAuth, setUser } from "@/utils/helpers";
 import { FirebaseError } from "firebase/app";
+import { usersApiSlice } from "../users/api";
 
 // Тип для ответа при авторизации
 interface ILoginResponse {
@@ -81,7 +82,7 @@ export const authApiSlice = createApi({
     }),
     // Авторизация пользователя
     loginUser: builder.mutation<ILoginResponse, ILoginProps>({
-      async queryFn(credentials) {
+      async queryFn(credentials, api) {
         try {
           // Авторизуем пользователя через Firebase Authentication
           const userCredential = await signInWithEmailAndPassword(
@@ -101,6 +102,9 @@ export const authApiSlice = createApi({
             setUser(user.uid);
             setAuth();
           }
+          api.dispatch(
+            usersApiSlice.util.invalidateTags(["CurrentUser"])
+          );
 
           return {
             data: {
@@ -144,11 +148,14 @@ export const authApiSlice = createApi({
 
     // Выход пользователя
     logoutUser: builder.mutation<void, void>({
-      async queryFn() {
+      async queryFn(_, api) {
         try {
           await signOut(auth);
           removeAuth();
           removeUser();
+          api.dispatch(
+            usersApiSlice.util.invalidateTags(["CurrentUser"])
+          );
           return { data: undefined };
         } catch (error) {
           return {
