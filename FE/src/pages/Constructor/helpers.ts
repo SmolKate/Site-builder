@@ -225,7 +225,7 @@ const processBlock = (blockId: string, components: {[key: string]: IBlock}): IEx
       if (!finalStyles.alignItems) layoutStyles.alignItems = "stretch"; 
     }
       
-    finalStyles = { ...finalStyles, ...layoutStyles };
+    finalStyles = { ...layoutStyles, ...finalStyles };
     break;
   }
 

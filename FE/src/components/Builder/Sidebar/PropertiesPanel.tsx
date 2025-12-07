@@ -31,7 +31,7 @@ export const PropertiesPanel = () => {
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
           gap: "15px",
-          alignItems: "start",
+          alignItems: "center",
           width: "100%"
         };
       } else if (value === "three-columns") {
@@ -39,7 +39,7 @@ export const PropertiesPanel = () => {
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
           gap: "15px",
-          alignItems: "start",
+          alignItems: "center",
           width: "100%"
         };
       } else {
