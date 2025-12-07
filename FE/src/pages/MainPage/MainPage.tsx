@@ -87,7 +87,7 @@ export function MainPage() {
     const { data: idSite } = await addSite({ newSite, siteContent });
 
     if (currentUser && idSite) {
-      updateUser({ uid: currentUser.uid, updates: { sites: idSite } });
+      updateUser({ uid: currentUser.uid!, updates: { sites: idSite } });
       navigate(`/sites/${idSite}`);
     }
   };
