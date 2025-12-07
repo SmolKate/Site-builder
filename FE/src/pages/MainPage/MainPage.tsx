@@ -76,7 +76,7 @@ export function MainPage() {
     }
   }, [location.key]);
 
-  const onSubmit = async (data: SiteFormData) => {
+  const onSubmit = async(data: SiteFormData) => {
     const newSite: Omit<ISiteDTO, "id"> = {
       title: data.title,
       description: data.description,

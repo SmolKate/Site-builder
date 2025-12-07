@@ -7,7 +7,6 @@ import {
   HeadingIcon,
   ImageIcon,
   VideoIcon,
-  InputIcon,
   Link2Icon,
   DividerHorizontalIcon,
   QuoteIcon,
@@ -75,7 +74,7 @@ export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelPro
         <div className="components-panel__section-title">Макет</div>
         <div className="components-panel__grid">
           <DraggableItem type="container" label="Секция" icon={<BoxIcon width={24} height={24} />} />
-          <DraggableItem type="page" label="Страница" icon={<BoxIcon width={24} height={24} />} /> 
+          {/* <DraggableItem type="page" label="Страница" icon={<BoxIcon width={24} height={24} />} />  */}
         </div>
 
         <div className="components-panel__section-title">Типографика</div>
@@ -89,7 +88,7 @@ export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelPro
           <DraggableItem type="image" label="Картинка" icon={<ImageIcon width={24} height={24} />} />
           <DraggableItem type="button" label="Кнопка" icon={<ButtonIcon width={24} height={24} />} />
           <DraggableItem type="video" label="Видео" icon={<VideoIcon width={24} height={24} />} />
-          <DraggableItem type="input" label="Инпут" icon={<InputIcon width={24} height={24} />} />
+          {/* <DraggableItem type="input" label="Инпут" icon={<InputIcon width={24} height={24} />} /> */}
           <DraggableItem type="link" label="Ссылка" icon={<Link2Icon width={24} height={24} />} />
         </div>
         <div className="components-panel__section-title">Элементы</div>
