@@ -101,7 +101,7 @@ export const Profile = () => {
   if (isLoading) return messages.loading;
   const { firstName, lastName, avatarURL, email } = currentUser as IUser;
 
-  const onSubmit = async (data: EditProfileFormData) => {
+  const onSubmit = async(data: EditProfileFormData) => {
     clearErrors();
     if (isPasswordChanged) {
       const isValid = await trigger(["password", "confirmPassword", "currentPassword"]);
