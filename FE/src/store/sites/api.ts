@@ -25,7 +25,7 @@ interface IAddSite {
 export const sitesApiSlice = createApi({
   reducerPath: "sitesApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["Sites"],
+  tagTypes: ["Sites", "SIteById"],
   endpoints: (builder) => ({
     fetchSites: builder.query<ISiteDTO[], void>({
       async queryFn() {
@@ -64,6 +64,7 @@ export const sitesApiSlice = createApi({
           };
         }
       },
+      providesTags: ["SIteById"],
     }),
 
     addSite: builder.mutation<string, IAddSite>({
@@ -138,7 +139,7 @@ export const sitesApiSlice = createApi({
           };
         }
       },
-      invalidatesTags: ["Sites"],
+      invalidatesTags: ["SIteById"],
     }),
 
     deleteSite: builder.mutation<void, string>({
