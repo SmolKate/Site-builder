@@ -9,6 +9,7 @@ import {
 import { getUser, removeAuth, removeUser } from "@/utils/helpers";
 import type { IUser } from "@/utils/types";
 import { db, auth } from "@/config";
+import { sitesApiSlice } from "../sites/api";
 
 interface IUpdateUserProps {
   uid: string;
@@ -81,7 +82,7 @@ export const usersApiSlice = createApi({
 
     // Редактирование пользователя
     updateUser: builder.mutation<void, IUpdateUserProps>({
-      async queryFn({ uid, updates }) {
+      async queryFn({ uid, updates }, api) {
         try {
           const userRef = doc(db, "users", uid);
           const userDoc = await getDoc(userRef);
@@ -138,6 +139,10 @@ export const usersApiSlice = createApi({
             if (updates.sites) {
               updates = { ...updates, sites: sites };
             }
+
+            api.dispatch(
+              sitesApiSlice.util.invalidateTags(["Sites"])
+            );
           }
 
           await updateDoc(userRef, {

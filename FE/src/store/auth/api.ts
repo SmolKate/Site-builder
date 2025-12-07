@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } f
 import { getAuth, removeAuth, removeUser, setAuth, setUser } from "@/utils/helpers";
 import { FirebaseError } from "firebase/app";
 import { usersApiSlice } from "../users/api";
+import { sitesApiSlice } from "../sites/api";
 
 // Тип для ответа при авторизации
 interface ILoginResponse {
@@ -68,6 +69,9 @@ export const authApiSlice = createApi({
           api.dispatch(
             usersApiSlice.util.invalidateTags(["CurrentUser"])
           );
+          api.dispatch(
+            sitesApiSlice.util.invalidateTags(["Sites"])
+          );
           return { data: { uid: user.uid } };
         } catch (error) {
           const { message, code } = error as IAuthError;
@@ -106,6 +110,9 @@ export const authApiSlice = createApi({
           }
           api.dispatch(
             usersApiSlice.util.invalidateTags(["CurrentUser"])
+          );
+          api.dispatch(
+            sitesApiSlice.util.invalidateTags(["Sites"])
           );
 
           return {
@@ -157,6 +164,9 @@ export const authApiSlice = createApi({
           removeUser();
           api.dispatch(
             usersApiSlice.util.invalidateTags(["CurrentUser"])
+          );
+          api.dispatch(
+            sitesApiSlice.util.invalidateTags(["Sites"])
           );
           return { data: undefined };
         } catch (error) {

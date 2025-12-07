@@ -163,7 +163,7 @@ export function MainPage() {
                   </div>
 
                   <div className="site-card__actions">
-                    <button
+                    {/* <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDeleteSite(site.id);
@@ -171,7 +171,7 @@ export function MainPage() {
                       className="ui-btn ui-btn--danger ui-btn--sm"
                     >
                       Удалить
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               ))}

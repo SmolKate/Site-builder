@@ -11,6 +11,8 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "@/config";
+import { getUser } from "@/utils/helpers";
+import { usersApiSlice } from "../users/api";
 
 interface IUpdateSiteProps {
   id: string;
@@ -30,14 +32,26 @@ export const sitesApiSlice = createApi({
     fetchSites: builder.query<ISiteDTO[], void>({
       async queryFn() {
         try {
-          const querySnapshot = await getDocs(collection(db, "sites"));
+          const userUid = getUser();
+          
+          const userDoc = await getDoc(doc(db, "users", userUid ?? ""));
+          let userData = null;
+          const userSites = [];
+          if (userDoc.exists()) {
+            userData = userDoc.data();
+          
+            const sites = userData.sites;
+            sites.forEach(async(siteId: string) => {
+              
+              const userSite = await getDoc(doc(db, "sites", siteId));
+              userSites.push( {id: siteId, ...userSite.data()});
+              
+            });
+            // eslint-disable-next-line max-len
+            await getDocs(collection(db, "sites")); // TODO тут какая-то фигня, если удалить сайты на главной не грузятся
+          }
 
-          const data = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          })) as ISiteDTO[];
-
-          return { data };
+          return { data: userSites };
         } catch (error) {
           return {
             error: { message: "Ошибка получения данных о сайтах:", error },
