@@ -24,7 +24,7 @@ interface IUpdateUserProps {
 export const usersApiSlice = createApi({
   reducerPath: "usersApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["Users", "Auth"],
+  tagTypes: ["Users", "Auth", "CurrentUser"],
   endpoints: (builder) => ({
     getUsers: builder.query<IUser[], void>({
       async queryFn() {
@@ -76,7 +76,7 @@ export const usersApiSlice = createApi({
           };
         }
       },
-      providesTags: ["Users"],
+      providesTags: ["CurrentUser"],
     }),
 
     // Редактирование пользователя
