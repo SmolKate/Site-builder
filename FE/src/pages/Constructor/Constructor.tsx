@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect,  useState } from "react";
 import GridLayout from "react-grid-layout";
 import clsx from "clsx";
 import {
@@ -32,10 +32,7 @@ import {
 import { GRID_COLUMN_NUMBER, ROW_HEIGHT, TOTAL_WIDTH } from "@/utils/constants";
 import { ComponentsPanel } from "@/components/Builder/Sidebar/ComponentsPanel";
 import { PropertiesPanel } from "@/components/Builder/Sidebar/PropertiesPanel";
-import { BuilderToolbar } from "@/components/Builder/Sidebar/BuilderToolbar";
 import { GridSection } from "@/components/Builder/Canvas/GridSection";
-import { Button } from "@/ui";
-import { TButtonSize } from "@/ui/types";
 import { createHtmlElement, createLayoutObj, insertHtmlIntoTemplate, uploadHtmlFile } from "./helpers";
 import { constructorMessages } from "./messages";
 import "react-grid-layout/css/styles.css";
@@ -51,21 +48,19 @@ export const Constructor = () => {
   const selectedId = useAppSelector(selectSelectedId);
 
   const [draggedType, setDraggedType] = useState<string | null>(null);
-  const [activePanel, setActivePanel] = useState<string | null>(null);
 
   const [updateSite] = useUpdateSiteMutation();
   const { data: siteData } = useFetchSiteByIdQuery(siteId ?? "");
 
-  const drawerRef = useRef<HTMLDivElement>(null);  
-  const toolbarRef = useRef<HTMLDivElement>(null);
-
   const { 
     setNodeRef: setCanvasRef,
     isOver: isOverCanvas,
-  } = useDroppable({ id: "canvas-root", data: { accept: ["container"] }});
+  } = useDroppable({ id: "canvas-root", data: { accept: ["container", "page"] }});
+  
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
   );
+  
   const { siteContent, siteInfo } = siteData ?? {};
   const { title: siteTitle = "", description: siteDescription = "" } = siteInfo ?? {};
 
@@ -83,30 +78,6 @@ export const Constructor = () => {
     };
   }, [siteContent]);
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (activePanel !== "components") return;
-
-    const target = event.target as Node;
-
-    const isOutsideDrawer = drawerRef.current && !drawerRef.current.contains(target);
-    const isOutsideToolbar = toolbarRef.current && !toolbarRef.current.contains(target);
-
-    if (isOutsideDrawer && isOutsideToolbar) {
-      setActivePanel(null);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [activePanel]);
-
-  const handleTogglePanel = (panel: string) => {
-    setActivePanel(prev => prev === panel ? null : panel);
-  };
-
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     setDraggedType(null);
@@ -116,8 +87,9 @@ export const Constructor = () => {
     const draggedType = active.data.current.type as string;
     const overData = over?.data.current as { accept?: string[] } | undefined;
 
-    if (draggedType === "container" && (!over || !overData?.accept)) {
-      dispatch(addSection());
+    if ((draggedType === "container" || draggedType === "page") && 
+        (!over || !overData?.accept)) {
+      dispatch(addSection(draggedType as BlockType));
       return;
     }
 
@@ -159,31 +131,14 @@ export const Constructor = () => {
       onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
       <div className="builder">
         <div className="builder__body">
-          <div ref={toolbarRef}>
-            <BuilderToolbar 
-              activePanel={activePanel} 
-              onTogglePanel={handleTogglePanel} 
+          <div className="builder__components-panel">
+            <ComponentsPanel 
+              onSiteSave={onSiteSave}
+              onSiteUpload={onSiteUpload}
             />
           </div>
-          <div 
-            ref={drawerRef}
-            className={clsx("builder__drawer", { "is-open": activePanel === "components" })}
-          >
-            <ComponentsPanel />
-          </div>
+          
           <div className="builder__controls">
-            <div className="builder__control-btns">
-              <Button
-                buttonText={constructorMessages.save}
-                size={TButtonSize.SMALL}
-                onClick={onSiteSave}
-              />
-              <Button
-                buttonText={constructorMessages.upload}
-                size={TButtonSize.SMALL}
-                onClick={onSiteUpload}
-              />
-            </div>         
             <main 
               ref={setCanvasRef}
               className={clsx(

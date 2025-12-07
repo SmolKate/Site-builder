@@ -4,7 +4,6 @@ import { type SectionVariant } from "@/store/builder/types";
 type StyleValue = string | number | undefined;
 type PropValue = unknown;
 type VariantValue = SectionVariant | undefined;
-
 interface FieldProps {
   field: PropertyField;
   value: StyleValue | PropValue | VariantValue;
@@ -78,7 +77,6 @@ export const SelectField = ({ field, value, onChange }: FieldProps) => {
   );
 };
 
-// Главный компонент поля
 interface PropertyFieldComponentProps {
   field: PropertyField;
   value: StyleValue | PropValue | VariantValue;

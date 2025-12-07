@@ -14,31 +14,14 @@
     gap: var(--space-md);
   }
 
-  &__drawer {
+  &__components-panel {
     @include mix.glass-container;
-
-    position: absolute;
-    left: calc(var(--sidebar-left) + var(--space-2xl));
+    border-radius: var(--radius-lg);
     width: var(--sidebar-left-width);
-
-    z-index: 1;
-
-    transition:
-      transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 0.25s ease,
-      visibility 0s linear 0.25s;
-    will-change: transform, opacity;
-
-    transform: translateX(-20px);
-    opacity: 0;
-    visibility: hidden;
-
-    &.is-open {
-      transform: translateX(0);
-      opacity: 1;
-      visibility: visible;
-      transition-delay: 0s;
-    }
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
   &__sidebar-right {
@@ -139,6 +122,7 @@
     z-index: 100;
     border-radius: var(--radius-md);
   }
+  
   &__empty-state {
     position: absolute;
     top: 50%;
@@ -155,13 +139,9 @@
   &__controls {
     display: flex;
     flex-direction: column;
-    align-content: center;
-    align-items: start;
-    gap: var(--space-sm);
-  }
-
-  &__control-btns {
-    display: flex;
-    gap: var(--space-sm);
+    flex: 1;       
+    min-width: 0;  
+    width: 100%;
+  
   }
 }

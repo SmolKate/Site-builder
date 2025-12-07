@@ -32,7 +32,7 @@ export const CanvasSection = ({
   
   const { setNodeRef, isOver } = useDroppable({ 
     id,
-    data: { accept: ["button", "text", "heading", "image"] }
+    data: { accept: ["button", "text", "heading", "image", "divider", "quote", "list", "input", "link", "video"] }
   });
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -43,8 +43,11 @@ export const CanvasSection = ({
     const resizeObserver = new ResizeObserver((entries) => {
       window.requestAnimationFrame(() => {
         for (const entry of entries) {
-          const contentHeight = entry.contentRect.height;
-          onContentResize(contentHeight);
+
+          const target = entry.target as HTMLElement;
+          const height = target.scrollHeight;
+          
+          onContentResize(height);
         }
       });
     });
@@ -52,6 +55,7 @@ export const CanvasSection = ({
     resizeObserver.observe(contentRef.current);
     return () => resizeObserver.disconnect();
   }, [onContentResize]);
+
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -80,39 +84,31 @@ export const CanvasSection = ({
           "canvas-section__handle--visible": isHovered || isSelected
         })}
       >
-        <div className="canvas-section__handle-icon">
-          <MoveIcon width={12} height={12} />
-        </div>
-        
+        <div className="canvas-section__handle-icon"><MoveIcon width={12} height={12} /></div>
         <div className="canvas-section__handle-divider" />
-        
-        <div
-          className="canvas-section__delete-btn no-drag"
-          onMouseDown={(e) => e.stopPropagation()} 
-          onClick={handleDelete}
-          title="Удалить секцию"
-        >
+        <div className="canvas-section__delete-btn no-drag"
+          onMouseDown={(e) => e.stopPropagation()} onClick={handleDelete}>
           <Cross2Icon width={14} height={14} />
         </div>
       </div>
 
-      <div ref={contentRef} className="canvas-section__content no-drag">
-        {block.childrenIds.length > 0 && <div style={{...block.style}}>
-          {block.childrenIds.map((id) => (
-            <Renderer key={id} id={id} />
-          ))}
-        </div>
-        }
+      <div ref={contentRef} className="canvas-section__content no-drag"  style={{
+        ...block.style, 
+      }}>
+        {block.childrenIds.length > 0 && (
+          <>
+            {block.childrenIds.map((id) => (
+              <Renderer key={id} id={id} />
+            ))}
+          </>
+        )}
+        
         {block.childrenIds.length === 0 && !isOver && (
-          <div className="canvas-section__placeholder">
-            Перетащите компоненты сюда
-          </div>
+          <div className="canvas-section__placeholder">Перетащите компоненты сюда</div>
         )}
         
         {isOver && (
-          <div className="canvas-section__drop-indicator">
-            Бросьте сюда!
-          </div>
+          <div className="canvas-section__drop-indicator">Бросьте сюда!</div>
         )}
       </div>
     </section>

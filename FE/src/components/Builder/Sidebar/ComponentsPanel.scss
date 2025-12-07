@@ -3,7 +3,25 @@
 .components-panel {
   display: flex;
   flex-direction: column;
+  height: 100%;
   overflow: hidden;
+
+  &__header {
+    padding: var(--space-md);
+    flex-shrink: 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: center;
+  }
+
+  &__btn {
+    flex: 1;
+    max-width: 120px;
+    font-size:  var(--font-size-xs);
+  }
 
   &__content {
     flex: 1;
@@ -35,6 +53,7 @@
   backdrop-filter: blur(10px);
   padding: var(--space-xl) var(--space-xs);
   border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.1);
 
   cursor: grab;
   transition: all 0.2s ease;

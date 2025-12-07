@@ -1,4 +1,16 @@
-export type BlockType = "text" | "button" | "container" | "heading" | "image";
+export type BlockType =
+  | "text"
+  | "button"
+  | "container"
+  | "heading"
+  | "image"
+  | "video"
+  | "divider"
+  | "quote"
+  | "list"
+  | "input"
+  | "link"
+  | "page";
 export type SectionVariant = "default" | "two-columns" | "three-columns";
 
 export interface IBlockStyles {
@@ -29,6 +41,6 @@ export interface BuilderState {
   components: Record<string, IBlock>;
   layout: ILayoutItem[];
   selectedId: string | null;
-  siteTitle: string
-  siteDescription: string
+  siteTitle: string;
+  siteDescription: string;
 }

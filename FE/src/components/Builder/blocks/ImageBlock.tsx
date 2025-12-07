@@ -1,56 +1,49 @@
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import { type IBlock } from "@/store/builder/types";
-import { useAppDispatch } from "@/store";
-import { updateComponent } from "@/store/builder/builderSlice";
-import { useEffect } from "react";
-import type { Level } from "@tiptap/extension-heading";
 
 interface Props {
   block: IBlock;
-  readOnly?: boolean;
+  readOnly?: boolean; 
 }
 
-export const ImageBlock = ({ block, readOnly = false }: Props) => {
-  const dispatch = useAppDispatch();
-  
-  const level = (parseInt(String(block.props.level)) || 2) as Level;
-
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: block.content,
-    editable: !readOnly,
-    editorProps: {
-      attributes: {
-        class: "heading-editor",
-        style: "outline: none;", 
-      },
-    },
-    onBlur: ({ editor }) => {
-      dispatch(updateComponent({
-        id: block.id,
-        changes: { content: editor.getHTML() }
-      }));
-    },
-  });
-
-  useEffect(() => {
-    if (editor && block.content !== editor.getHTML() && !editor.isFocused) {
-      editor.commands.setContent(block.content || "");
-    }
-  }, [block.content, editor]);
-
-  useEffect(() => {
-    if (editor) {
-      editor.commands.toggleHeading({ level: level });
-    }
-  }, [level, editor]);
-
-  if (!editor) return null;
+export const ImageBlock = ({ block }: Props) => {
+  const src = (block.props.src as string) || "";
+  const alt = (block.props.alt as string) || "image";
 
   return (
-    <div style={{ ...block.style }} className="heading-block-wrapper">
-      <EditorContent editor={editor} />
+    <div 
+      style={{ 
+        ...block.style,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%", 
+        height: "100%",
+        overflow: "hidden"
+      }} 
+      className="image-block-wrapper"
+    >
+      {src ? (
+        <img
+          src={src}
+          alt={alt}
+          style={{
+            maxWidth: "100%",
+            height: "auto",
+            display: "block",
+            objectFit: "cover"
+          }}
+        />
+      ) : (
+        <div style={{ 
+          padding: "20px", 
+          backgroundColor: "#f0f0f0", 
+          color: "#999",
+          width: "100%",
+          textAlign: "center"
+        }}>
+          Нет изображения
+        </div>
+      )}
     </div>
   );
 };
