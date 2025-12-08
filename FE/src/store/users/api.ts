@@ -12,7 +12,7 @@ import { db, auth } from "@/config";
 import { sitesApiSlice } from "../sites/api";
 
 interface IUpdateUserProps {
-  uid: string;
+  uid: string | undefined;
   updates: Partial<
     Omit<IUser, "sites"> & {
       sites?: string; // Переопределяем тип с string[] на string
@@ -84,7 +84,7 @@ export const usersApiSlice = createApi({
     updateUser: builder.mutation<void, IUpdateUserProps>({
       async queryFn({ uid, updates }, api) {
         try {
-          const userRef = doc(db, "users", uid);
+          const userRef = doc(db, "users", uid!);
           const userDoc = await getDoc(userRef);
           if (!userDoc.exists()) {
             return {
@@ -140,9 +140,7 @@ export const usersApiSlice = createApi({
               updates = { ...updates, sites: sites };
             }
 
-            api.dispatch(
-              sitesApiSlice.util.invalidateTags(["Sites"])
-            );
+            api.dispatch(sitesApiSlice.util.invalidateTags(["Sites"]));
           }
 
           await updateDoc(userRef, {

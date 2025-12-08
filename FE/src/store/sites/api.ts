@@ -1,18 +1,8 @@
 import type { ISiteContentDTO, ISiteDTO } from "@/utils/types";
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/config";
 import { getUser } from "@/utils/helpers";
-import { usersApiSlice } from "../users/api";
 
 interface IUpdateSiteProps {
   id: string;
@@ -33,22 +23,22 @@ export const sitesApiSlice = createApi({
       async queryFn() {
         try {
           const userUid = getUser();
-          
+
           const userDoc = await getDoc(doc(db, "users", userUid ?? ""));
           let userData = null;
-          const userSites = [];
+          let userSites: ISiteDTO[] = [];
           if (userDoc.exists()) {
             userData = userDoc.data();
-          
+
             const sites = userData.sites;
-            sites.forEach(async(siteId: string) => {
-              
+
+            // eslint-disable-next-line space-before-function-paren
+            const sitePromises = sites.map(async (siteId: string) => {
               const userSite = await getDoc(doc(db, "sites", siteId));
-              userSites.push( {id: siteId, ...userSite.data()});
-              
+              return { id: siteId, ...userSite.data() };
             });
-            // eslint-disable-next-line max-len
-            await getDocs(collection(db, "sites")); // TODO тут какая-то фигня, если удалить сайты на главной не грузятся
+
+            userSites = await Promise.all(sitePromises);
           }
 
           return { data: userSites };
@@ -160,6 +150,23 @@ export const sitesApiSlice = createApi({
       async queryFn(siteId) {
         try {
           await deleteDoc(doc(db, "sites", siteId));
+
+          const userUid = getUser();
+          const userDoc = await getDoc(doc(db, "users", userUid ?? ""));
+          let userData = null;
+          if (userDoc.exists()) {
+            userData = userDoc.data();
+
+            const sites = userData.sites;
+            const corpSites = sites.filter((site: string) => site !== siteId);
+
+            if (userUid) {
+              await updateDoc(doc(db, "users", userUid), {
+                sites: corpSites,
+                updatedAt: new Date().toISOString(),
+              });
+            }
+          }
 
           return { data: undefined };
         } catch (error) {

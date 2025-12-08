@@ -73,7 +73,8 @@ export function MainPage() {
     }
   }, [location.key]);
 
-  const onSubmit = async(data: SiteFormData) => {
+  // eslint-disable-next-line space-before-function-paren
+  const onSubmit = async (data: SiteFormData) => {
     const newSite: Omit<ISiteDTO, "id"> = {
       title: data.title,
       description: data.description,
@@ -106,9 +107,17 @@ export function MainPage() {
         primaryButton={{
           label: "Да",
           onClick: () => {
-            if(siteId) deleteSite(siteId);
+            if (siteId) {
+              deleteSite(siteId);
+              setIsInfoOpen(false);
+            }
           },
           variant: "primary",
+        }}
+        secondaryButton={{
+          label: "Нет",
+          onClick: () => setIsInfoOpen(false),
+          variant: "secondary",
         }}
       />
 
@@ -172,7 +181,7 @@ export function MainPage() {
                   </div>
 
                   <div className="site-card__actions">
-                    {/* <button
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         setSiteId(site.id);
@@ -181,7 +190,7 @@ export function MainPage() {
                       className="ui-btn ui-btn--danger ui-btn--sm"
                     >
                       Удалить
-                    </button> */}
+                    </button>
                   </div>
                 </div>
               ))}
