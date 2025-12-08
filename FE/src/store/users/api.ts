@@ -158,7 +158,7 @@ export const usersApiSlice = createApi({
           };
         }
       },
-      invalidatesTags: ["Users"],
+      invalidatesTags: ["Users", "CurrentUser"],
     }),
     deleteUser: builder.mutation<void, string>({
       async queryFn(userId) {
