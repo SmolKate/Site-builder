@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { orderBy } from "lodash";
@@ -6,10 +6,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useFetchSitesQuery, useAddSiteMutation, useDeleteSiteMutation } from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, Button, Pagination, Dropdown, UniversalPopover } from "@/ui";
+import { InputField, Button, Pagination, Dropdown, UniversalPopover, SearchInputField } from "@/ui";
 import { TVariant } from "@/ui/types";
 import { paginate } from "@/utils";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
+import { useDebounce } from "@/utils/hooks";
 import { useGetCurrentUserQuery, useUpdateUserMutation } from "@/store/users";
 import "./styles.scss";
 
@@ -17,6 +18,8 @@ export function MainPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery);
   const [sortAlg, setSortAlg] = useState("alphabet-asc");
   const [accessError, setAccessError] = useState<null | string>(null);
   const { data: sites, isLoading } = useFetchSitesQuery();
@@ -34,8 +37,11 @@ export function MainPage() {
     iter === "alphabet" ? "title" : "createdAt",
     order === "asc" ? "asc" : "desc"
   );
-  const pageCount = Math.ceil(sortedSites.length / ITEMS_PER_PAGE);
-  const sitesCrop = paginate(sortedSites, page, ITEMS_PER_PAGE);
+  const filteredSites = sortedSites?.filter((site) =>
+    site?.title?.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
+  );
+  const pageCount = Math.ceil(filteredSites.length / ITEMS_PER_PAGE);
+  const sitesCrop = paginate(filteredSites, page, ITEMS_PER_PAGE);
 
   const handlePageChange = ({ selected }: ISelectedPage) => {
     setPage(selected + 1);
@@ -43,6 +49,10 @@ export function MainPage() {
 
   const handleSortSites = (alg: string) => {
     setSortAlg(alg);
+  };
+
+  const handleSearchQuery = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
   };
 
   const createdAt = (site: ISiteDTO) => new Date(site.createdAt).toLocaleDateString("ru-RU");
@@ -148,6 +158,7 @@ export function MainPage() {
             <h2 className="sites-section__title">Мои сайты</h2>
           </div>
           <div className="sites-section__query">
+            <SearchInputField value={searchQuery} onChange={handleSearchQuery} />
             <Dropdown sortAlg={sortAlg} onSortSites={handleSortSites} />
           </div>
           {isLoading || currentUserLoading ? (

@@ -36,6 +36,7 @@
   // --- Обводки ---
   --border-color-default: #{$brand-purple-border};
   --border-color-btn: rgba(127, 141, 209, 0.2);
+  --border-color-input-search: rgba(127, 141, 209, 0.2);
 
   // --- Статусы ---
   --color-error: #{$error};
@@ -120,6 +121,7 @@ html[data-theme="dark"] {
   );
   --border-color-default: #{$grey-soft};
   --border-color-btn: rgba(255, 255, 255, 0.1);
+  --border-color-input-search: rgba(255, 255, 255, 0.1);
 
   --gradient-btn-primary: linear-gradient(135deg, #{$brand-blue-mid} 0%, #{$brand-blue-light} 100%);
 
