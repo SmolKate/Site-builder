@@ -5,6 +5,7 @@ import { Pagination } from "./Pagination";
 import { Dropdown } from "./Dropdown";
 import { RadioField } from "./RadioField";
 import { UniversalPopover } from "./Popover";
+import { SearchInputField } from "./SearchInputField";
 
 export {
   InputField,
@@ -14,4 +15,5 @@ export {
   Dropdown,
   RadioField,
   UniversalPopover,
+  SearchInputField,
 };
