@@ -2,10 +2,20 @@ import { useAppSelector, useAppDispatch } from "@/store";
 import { updateComponent } from "@/store/builder/builderSlice";
 import { selectSelectedComponent, selectSelectedId } from "@/store/builder";
 import { PROPERTIES_CONFIG, type FieldTarget, type PropertyField } from "@/config/builder/propertiesConfig";
-
-import { type SectionVariant } from "@/store/builder/types";
-import "./PropertiesPanel.scss";
+import { type SectionVariant, type IBlock } from "@/store/builder/types";
 import { PropertyFieldComponent } from "../Properties/PropertyFields";
+import "./PropertiesPanel.scss";
+
+const getPropertyValue = (block: IBlock, field: PropertyField) => {
+  if (field.target === "style") {
+    return block.style[field.key];
+  } else if (field.target === "props") {
+    return block.props[field.key];
+  } else if (field.target === "variant") {
+    return block.variant;
+  }
+  return "";
+};
 
 export const PropertiesPanel = () => {
   const dispatch = useAppDispatch();
@@ -69,52 +79,29 @@ export const PropertiesPanel = () => {
   const commonFields = PROPERTIES_CONFIG.common;
   const specificFields = PROPERTIES_CONFIG.specific[block.type] || [];
 
-  const fieldsMap = new Map<string, PropertyField>();
-
-  [...commonFields, ...specificFields].forEach((field) => {
-    const uniqueKey = `${field.target}-${field.key}`;
-    fieldsMap.set(uniqueKey, field);
-  });
-  const isOnGrid = block.parentId === null;
-
-  const allFields = Array.from(fieldsMap.values()).filter((field) => {
+  const allFields = [...commonFields, ...specificFields].filter((field) => {
+    const isOnGrid = block.parentId === null;
     const resizableProps = ["width", "height", "minHeight"];
 
     if (isOnGrid && field.target === "style" && resizableProps.includes(field.key)) {
       return false;
     }
 
-    return true; 
+    return true;
   });
-
-  const getFieldValue = (field: PropertyField) => {
-    if (field.target === "style") {
-      return block.style[field.key];
-    } else if (field.target === "props") {
-      return block.props[field.key];
-    } else if (field.target === "variant") {
-      return block.variant;
-    }
-    return undefined;
-  };
 
   return (
     <div className="properties-panel">
-      {allFields.map((field) => {
-        const uniqueKey = `${field.target}-${field.key}`;
-        const value = getFieldValue(field);
-
-        return (
-          <div className="panel-group" key={uniqueKey}>
-            <label>{field.label}</label>
-            <PropertyFieldComponent
-              field={field}
-              value={value}
-              onChange={handleFieldChange}
-            />
-          </div>
-        );
-      })}
+      {allFields.map((field) => (
+        <div className="panel-group" key={`${field.target}-${field.key}`}>
+          <label>{field.label}</label>
+          <PropertyFieldComponent
+            field={field}
+            value={getPropertyValue(block, field)}
+            onChange={handleFieldChange}
+          />
+        </div>
+      ))}
 
       {allFields.length === 0 && (
         <div className="properties-panel__empty">
