@@ -255,7 +255,21 @@
 
 .auth-page__error {
   margin-bottom: var(--space-lg);
-  
+
   color: red;
   text-align: center;
+}
+
+.dialog {
+  &__content {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-3xl);
+  }
+  &__actions {
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+  }
 }

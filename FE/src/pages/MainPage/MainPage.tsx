@@ -6,12 +6,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useFetchSitesQuery, useAddSiteMutation, useDeleteSiteMutation } from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, Button, Pagination, Dropdown, UniversalPopover, SearchInputField } from "@/ui";
+import { InputField, Button, Pagination, Dropdown } from "@/ui";
 import { TVariant } from "@/ui/types";
 import { paginate } from "@/utils";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
 import { useDebounce } from "@/utils/hooks";
 import { useGetCurrentUserQuery, useUpdateUserMutation } from "@/store/users";
+import { RaDialog } from "@/components/Dialog";
+import { MainDialogContent } from "./MainDialogContent";
 import "./styles.scss";
 
 export function MainPage() {
@@ -27,8 +29,8 @@ export function MainPage() {
   const [deleteSite] = useDeleteSiteMutation();
   const [updateUser] = useUpdateUserMutation();
   const { data: currentUser, isLoading: currentUserLoading } = useGetCurrentUserQuery();
-  const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [siteId, setSiteId] = useState<null | string>(null);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [site, setSite] = useState<{ id: string; title: string }>({ id: "", title: "" });
 
   const iter = sortAlg.split("-")[0];
   const order = sortAlg.split("-")[1];
@@ -109,26 +111,17 @@ export function MainPage() {
 
       {accessError && <p className="auth-page__error">{accessError}</p>}
 
-      <UniversalPopover
-        isOpen={isInfoOpen}
-        onClose={() => setIsInfoOpen(false)}
-        title="Вы точно хотите удалить сайт"
-        bodyText="Его нельзя будет восстановить"
-        primaryButton={{
-          label: "Да",
-          onClick: () => {
-            if (siteId) {
-              deleteSite(siteId);
-              setIsInfoOpen(false);
-            }
-          },
-          variant: "primary",
-        }}
-        secondaryButton={{
-          label: "Нет",
-          onClick: () => setIsInfoOpen(false),
-          variant: "secondary",
-        }}
+      <RaDialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        title="Удаление сайта"
+        content={
+          <MainDialogContent
+            site={site}
+            onDelete={deleteSite}
+            onClose={() => setOpenDialog(false)}
+          />
+        }
       />
 
       <main className="main-page__content">
@@ -195,8 +188,8 @@ export function MainPage() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setSiteId(site.id);
-                        setIsInfoOpen(true);
+                        setSite({ id: site.id, title: site.title });
+                        setOpenDialog(true);
                       }}
                       className="ui-btn ui-btn--danger ui-btn--sm"
                     >
