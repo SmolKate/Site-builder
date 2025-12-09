@@ -3,7 +3,7 @@
 @use "@/styles/abstracts/sizes";
 
 .main-page {
-  max-width: 1440px;
+  max-width: var(--layout-max-width);
   margin: 0 auto;
   padding: var(--space-xl) var(--space-md);
 
