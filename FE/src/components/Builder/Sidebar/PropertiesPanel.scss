@@ -41,20 +41,13 @@
     width: 100%;
     height: var(--input-height);
     padding: 0 var(--space-sm);
-
     border: var(--border-width-md) solid var(--border-color-btn);
     border-radius: var(--radius-md);
-
     font-size: var(--font-size-xs);
     color: var(--text-primary);
     transition: all 0.2s;
     outline: none;
-
-    -webkit-appearance: none;
     margin: 0;
-
-    -moz-appearance: textfield;
-    appearance: textfield;
 
     &:hover {
       border-color: var(--bg-app);
@@ -69,6 +62,7 @@
 
   select {
     background-color: var(--bg-dark);
+
 
     option {
       background-color: var(--bg-pagination);
