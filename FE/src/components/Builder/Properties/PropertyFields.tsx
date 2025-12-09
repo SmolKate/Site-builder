@@ -1,5 +1,6 @@
 import { type PropertyField, type FieldTarget } from "@/config/builder/propertiesConfig";
 import { type SectionVariant } from "@/store/builder/types";
+import { useEffect, useState } from "react";
 
 type StyleValue = string | number | undefined;
 type PropValue = unknown;
@@ -26,24 +27,37 @@ export const ColorField = ({ field, value, onChange }: FieldProps) => {
 };
 
 export const NumberField = ({ field, value, onChange }: FieldProps) => {
-  const numericValue = typeof value === "number" 
-    ? value 
-    : parseInt(String(value)) || 0; 
-  
+  const [localValue, setLocalValue] = useState(() => {
+    const parsed = parseFloat(String(value));
+    return isNaN(parsed) ? "" : String(parsed);
+  });
+
+  useEffect(() => {
+    const parsedProp = parseFloat(String(value));
+    const propNum = isNaN(parsedProp) ? 0 : parsedProp;
+    
+    const localNum = localValue === "" ? 0 : parseFloat(localValue);
+
+    if (propNum !== localNum) {
+      setLocalValue(String(propNum));
+    }
+  }, [value, localValue]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
     
-    const cleanNumber = rawValue === "" ? 0 : Number(rawValue);
+    setLocalValue(rawValue);
 
+    const cleanNumber = rawValue === "" ? 0 : Number(rawValue);
     onChange(field.key, `${cleanNumber}px`, field.target);
   };
 
   return (
     <input 
       type="number" 
-      min={0}
-      value={numericValue}
+      value={localValue}
       onChange={handleInputChange} 
+      placeholder="0" 
     />
   );
 };
@@ -76,7 +90,6 @@ export const SelectField = ({ field, value, onChange }: FieldProps) => {
     </select>
   );
 };
-
 interface PropertyFieldComponentProps {
   field: PropertyField;
   value: StyleValue | PropValue | VariantValue;
