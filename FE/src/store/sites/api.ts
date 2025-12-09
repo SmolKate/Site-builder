@@ -150,6 +150,7 @@ export const sitesApiSlice = createApi({
       async queryFn(siteId) {
         try {
           await deleteDoc(doc(db, "sites", siteId));
+          await deleteDoc(doc(db, "siteContent", siteId));
 
           const userUid = getUser();
           const userDoc = await getDoc(doc(db, "users", userUid ?? ""));
