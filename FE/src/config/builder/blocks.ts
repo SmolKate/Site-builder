@@ -35,7 +35,7 @@ export const BLOCK_DEFAULTS: Record<BlockType, BlockConfig> = {
   },
   container: {
     style: {
-      backgroundColor: "#5aa7c6ff",
+      backgroundColor: "#5aa7c6",
       padding: "0",
       display: "grid",
       alignItems: "center",
@@ -79,10 +79,10 @@ export const BLOCK_DEFAULTS: Record<BlockType, BlockConfig> = {
   divider: {
     props: {},
     style: {
-      width: "100%",
-      height: "2px",
+      width: "50px",  
+      height: "2px", 
       backgroundColor: "#e0e0e0",
-      margin: "20px 0",
+      padding: "0"
     },
   },
   quote: {

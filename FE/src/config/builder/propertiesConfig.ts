@@ -41,27 +41,6 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
       defaultValue: 0,
     },
     {
-      type: "color",
-      label: "Фон",
-      key: "backgroundColor",
-      target: "style",
-      defaultValue: "#ffffff",
-    },
-    {
-      type: "number",
-      label: "Внутренний отступ (px)",
-      key: "padding",
-      target: "style",
-      defaultValue: 20,
-    },
-    {
-      type: "number",
-      label: "Скругление (px)",
-      key: "borderRadius",
-      target: "style",
-      defaultValue: 0,
-    },
-    {
       type: "number",
       label: "Внешний отступ (px)",
       key: "margin",
@@ -73,23 +52,41 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
     container: [
       {
         type: "select",
-        label: "Макет",
+        label: "Тип макета",
         key: "variant",
         target: "variant",
         options: [
-          { value: "default", label: "Вертикальный стек" },
-          { value: "two-columns", label: "2 колонки" },
-          { value: "three-columns", label: "3 колонки" },
+          { value: "default", label: "Стек (Flex)" },
+          { value: "two-columns", label: "Сетка (2 колонки)" },
+          { value: "three-columns", label: "Сетка (3 колонки)" },
         ],
       },
-      { type: "text", label: "Ширина (px/%)", key: "width", target: "style", defaultValue: "100%" },
-      { type: "text", label: "Мин. Высота (px)", key: "minHeight", target: "style", defaultValue: "100px" },
-      { type: "color", label: "Цвет фона", key: "backgroundColor", target: "style" },
-      { type: "number", label: "Padding (px)", key: "padding", target: "style" },
-      { type: "select", label: "Выравнивание", key: "alignItems", target: "style", 
-        options: [{value: "start", label: "Сверху"}, {value: "center", label: "По центру"},
-          {value: "end", label: "Снизу"}] 
+      
+      { 
+        type: "select", 
+        label: "По горизонтали (X)", 
+        key: "align_x", 
+        target: "style", 
+        options: [
+          {value: "start", label: "Слева"}, 
+          {value: "center", label: "По центру"}, 
+          {value: "end", label: "Справа"},
+          {value: "stretch", label: "Растянуть"} 
+        ] 
       },
+
+      { 
+        type: "select", 
+        label: "По вертикали (Y)", 
+        key: "align_y", 
+        target: "style", 
+        options: [
+          {value: "start", label: "Сверху"}, 
+          {value: "center", label: "По центру"},
+          {value: "end", label: "Снизу"},
+          {value: "space-between", label: "Распределить"}, 
+        ] 
+      }
     ],
     page: [
       { 
@@ -100,7 +97,6 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
         options: [{value: "1", label: "Показать"}, {value: "0", label: "Скрыть"}]
       },
       { type: "text", label: "Ширина сайдбара (px/%)", key: "sidebarWidth", target: "style" },
-      
       {
         type: "select",
         label: "Макет центра",
@@ -112,7 +108,6 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
           { value: "three-columns", label: "3 колонки" },
         ]
       },
-
       { type: "color", label: "Фон Header", key: "headerBg", target: "style" },
       { type: "color", label: "Фон Footer", key: "footerBg", target: "style" },
       { type: "color", label: "Фон Sidebar", key: "sidebarBg", target: "style" },
@@ -151,7 +146,22 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
       { type: "text", label: "Текст", key: "text", target: "props" },
       { type: "color", label: "Цвет текста", key: "color", target: "style" },
     ],
-    text: [],
+    
+    text: [
+      { type: "color", label: "Цвет текста", key: "color", target: "style" },
+      { 
+        type: "select", 
+        label: "Выравнивание", 
+        key: "textAlign", 
+        target: "style",
+        options: [
+          { value: "left", label: "Слева" },
+          { value: "center", label: "По центру" },
+          { value: "right", label: "Справа" },
+          { value: "justify", label: "По ширине" },
+        ]
+      }
+    ],
 
     video: [
       { type: "text", label: "Ссылка YouTube", key: "src", target: "props" },
@@ -159,8 +169,18 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
       { type: "number", label: "Высота", key: "height", target: "style" },
     ],
     divider: [
-      { type: "color", label: "Цвет линии", key: "backgroundColor", target: "style" },
-      { type: "number", label: "Толщина (px)", key: "height", target: "style" },
+      { 
+        type: "number", 
+        label: "Ширина (X)", 
+        key: "width", 
+        target: "style" 
+      },
+      { 
+        type: "number", 
+        label: "Высота/Толщина (Y)", 
+        key: "height", 
+        target: "style"
+      }
     ],
     quote: [
       { type: "text", label: "Текст цитаты", key: "text", target: "props" },
