@@ -41,7 +41,7 @@ export const ListBlock = ({ block, readOnly = false }: Props) => {
   if (!editor) return null;
 
   return (
-    <div style={{ ...block.style }} className="list-block-wrapper">
+    <div style={{ ...block.style }} className="list-block-wrapper" onClick={() => editor.commands.focus()}>
       <EditorContent editor={editor} />
     </div>
   );

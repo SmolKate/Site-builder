@@ -4,7 +4,7 @@ import { selectComponentById } from "../../../store/builder";
 import { updateSectionDimensions, selectComponent } from "@/store/builder/builderSlice";
 import { ROW_HEIGHT } from "@/utils/constants";
 import { CanvasSection } from "./CanvasSection";
-import { PageSection } from "./PageSection"; // <-- Импорт
+import { PageSection } from "./PageSection";
 import { type ILayoutItem } from "@/store/builder/types";
 interface GridSectionProps {
   item: ILayoutItem;

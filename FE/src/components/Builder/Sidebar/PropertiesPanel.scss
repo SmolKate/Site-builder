@@ -42,7 +42,7 @@
     height: var(--input-height);
     padding: 0 var(--space-sm);
 
-    border: var(--border-width-md) solid var(--border-color-default);
+    border: var(--border-width-md) solid var(--border-color-btn);
     border-radius: var(--radius-md);
 
     font-size: var(--font-size-xs);
@@ -57,12 +57,12 @@
     appearance: textfield;
 
     &:hover {
-      border-color: var(--border-color-btn);
+      border-color: var(--bg-app);
     }
 
     &:focus-within {
       outline: none;
-      border-color: var(--bg-app);
+      border-color: var(--border-color-default);
       background: rgba(255, 255, 255, 0.07);
     }
   }
