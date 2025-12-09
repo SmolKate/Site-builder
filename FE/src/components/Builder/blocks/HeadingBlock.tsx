@@ -57,7 +57,15 @@ export const HeadingBlock = ({ block, readOnly = false }: Props) => {
   if (!editor) return null;
 
   return (
-    <div style={{ ...block.style }} className="heading-block-wrapper">
+    <div 
+      className="heading-block-wrapper"
+      style={{ 
+        minWidth: "60px",   
+        cursor: "text",
+        ...block.style 
+      }}
+      onClick={() => editor.commands.focus()} 
+    >
       <EditorContent editor={editor} />
     </div>
   );

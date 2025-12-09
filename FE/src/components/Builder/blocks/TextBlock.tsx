@@ -36,7 +36,15 @@ export const TextBlock = ({ block, readOnly = false }: Props) => {
   if (!editor) return null;
 
   return (
-    <div style={{ ...block.style }}>
+    <div 
+      style={{ 
+        minHeight: "1.5em", 
+        minWidth: "60px",  
+        cursor: "text",    
+        ...block.style   
+      }}
+      onClick={() => editor.commands.focus()}
+    >
       <EditorContent editor={editor} />
     </div>
   );

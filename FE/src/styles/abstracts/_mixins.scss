@@ -1,19 +1,15 @@
 @mixin glass-container {
   position: relative;
 
-  // 1. Фон и Размытие
   background: var(--bg-surface);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
 
-  // 2. Форма
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-surface);
 
-  // Убираем стандартную границу
   border: none;
 
-  // 3. Градиентная рамка через ::before
   &::before {
     content: "";
     position: absolute;

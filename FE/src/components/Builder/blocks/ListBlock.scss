@@ -1,4 +1,7 @@
 .list-block-wrapper {
+  min-width: 60px;
+  min-height: "1.5em";
+  
   .list-editor-content {
     ul {
       list-style-type: disc;
