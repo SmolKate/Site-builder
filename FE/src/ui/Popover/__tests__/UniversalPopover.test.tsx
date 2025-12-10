@@ -2,6 +2,7 @@ import "@testing-library/jest-dom/vitest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
+import { popoverMessages } from "@/locales";
 import { UniversalPopover } from "../UniversalPopover";
 import type { PopoverButtonConfig, UniversalPopoverProps } from "../types";
 
@@ -49,7 +50,7 @@ describe("UniversalPopup", () => {
     renderPopup({ onClose });
 
     const user = userEvent.setup();
-    const closeButton = screen.getByRole("button", { name: "Закрыть" });
+    const closeButton = screen.getByRole("button", { name: popoverMessages.closeAria });
 
     await user.click(closeButton);
 

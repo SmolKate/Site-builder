@@ -3,6 +3,7 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { addDoc, collection, deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/config";
 import { getUser } from "@/utils/helpers";
+import { sitesApiErrors } from "@/locales";
 
 interface IUpdateSiteProps {
   id: string;
@@ -44,7 +45,7 @@ export const sitesApiSlice = createApi({
           return { data: userSites };
         } catch (error) {
           return {
-            error: { message: "Ошибка получения данных о сайтах:", error },
+            error: { message: sitesApiErrors.fetchSites, error },
           };
         }
       },
@@ -64,7 +65,7 @@ export const sitesApiSlice = createApi({
           return { data: { siteContent, siteInfo } };
         } catch (error) {
           return {
-            error: { message: "Ошибка получения данных о сайтах:", error },
+            error: { message: sitesApiErrors.fetchSites, error },
           };
         }
       },
@@ -84,7 +85,7 @@ export const sitesApiSlice = createApi({
           return { data: id };
         } catch (error) {
           return {
-            error: { message: "Упс, ошибка создания сайта:", error },
+            error: { message: sitesApiErrors.createSite, error },
           };
         }
       },
@@ -107,7 +108,7 @@ export const sitesApiSlice = createApi({
         } catch (error) {
           return {
             error: {
-              message: "Ошибка получения данных о контенте сайта:",
+              message: sitesApiErrors.fetchContent,
               error,
             },
           };
@@ -137,7 +138,7 @@ export const sitesApiSlice = createApi({
         } catch (error) {
           return {
             error: {
-              message: "Ошибка обновления сайта:",
+              message: sitesApiErrors.updateSite,
               error,
             },
           };
@@ -172,7 +173,7 @@ export const sitesApiSlice = createApi({
           return { data: undefined };
         } catch (error) {
           return {
-            error: { message: "Ошибка удаления сайта:", error },
+            error: { message: sitesApiErrors.deleteSite, error },
           };
         }
       },

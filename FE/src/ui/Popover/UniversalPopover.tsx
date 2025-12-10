@@ -1,4 +1,5 @@
 import * as Popover from "@radix-ui/react-popover";
+import { popoverMessages } from "@/locales";
 import { Button } from "@/ui/Button";
 import type { PopoverButtonConfig, UniversalPopoverProps } from "./types";
 import "./styles.scss";
@@ -36,7 +37,7 @@ export const UniversalPopover = ({
               <button
                 type="button"
                 className="ui-popover__close"
-                aria-label="Закрыть"
+                aria-label={popoverMessages.closeAria}
                 onClick={onClose}
               >
                 ×

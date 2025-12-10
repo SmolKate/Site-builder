@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, InputField, PasswordField } from "@/ui";
 import { signupSchema, type SignupFormData } from "@/utils/helpers";
 import { useRegisterUserMutation } from "@/store/auth";
-import { authMessages } from "@/locales";
+import { authMessages, authPageMessages } from "@/locales";
 import "../authStyles.scss";
 
 export const Signup = () => {
@@ -53,51 +53,51 @@ export const Signup = () => {
     <div className="auth-page">
       <div className="container">
         <div className="auth-page__inner">
-          <h2 className="auth-page__title">Зарегистрироваться</h2>
+          <h2 className="auth-page__title">{authPageMessages.signup.title}</h2>
 
           <form className="auth-page__form" onSubmit={handleSubmit(onSubmit)}>
             <InputField
               register={register}
               errors={errors}
               fieldName="firstName"
-              label="Имя"
-              placeholder="Введите имя..."
+              label={authPageMessages.signup.firstNameLabel}
+              placeholder={authPageMessages.signup.firstNamePlaceholder}
             />
             <InputField
               register={register}
               errors={errors}
               fieldName="lastName"
-              label="Фамилия"
-              placeholder="Введите фамилию..."
+              label={authPageMessages.signup.lastNameLabel}
+              placeholder={authPageMessages.signup.lastNamePlaceholder}
             />
             <InputField
               register={register}
               errors={errors}
               fieldName="email"
-              label="Электронная почта"
-              placeholder="Введите электронную почту..."
+              label={authPageMessages.signup.emailLabel}
+              placeholder={authPageMessages.signup.emailPlaceholder}
             />
             <PasswordField
               register={register}
               errors={errors}
               fieldName="password"
-              label="Пароль"
-              placeholder="Введите пароль..."
+              label={authPageMessages.signup.passwordLabel}
+              placeholder={authPageMessages.signup.passwordPlaceholder}
             />
             <PasswordField
               register={register}
               errors={errors}
               fieldName="confirmPassword"
-              label="Повторить пароль"
-              placeholder="Повторите пароль..."
+              label={authPageMessages.signup.confirmPasswordLabel}
+              placeholder={authPageMessages.signup.confirmPasswordPlaceholder}
             />
-            <Button buttonText="Зарегистрироваться" disabled={!isValid} />
+            <Button buttonText={authPageMessages.signup.submit} disabled={!isValid} />
           </form>
 
           {registerError && <p className="auth-page__error">{registerError}</p>}
 
           <p className="text-center">
-            Есть аккаунт? <Link to="/login">Войти</Link>
+            {authPageMessages.signup.linkText} <Link to="/login">{authPageMessages.signup.linkCta}</Link>
           </p>
         </div>
       </div>

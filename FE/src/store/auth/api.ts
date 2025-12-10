@@ -5,6 +5,7 @@ import type { IUser } from "@/utils/types";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { getAuth, removeAuth, removeUser, setAuth, setUser } from "@/utils/helpers";
 import { FirebaseError } from "firebase/app";
+import { authApiErrors } from "@/locales";
 import { usersApiSlice } from "../users/api";
 import { sitesApiSlice } from "../sites/api";
 
@@ -124,20 +125,20 @@ export const authApiSlice = createApi({
           };
         } catch (error) {
           const { message, code } = error as IAuthError;
-          let errorMessage = "Ошибка авторизации:";
+          let errorMessage = authApiErrors.loginPrefix;
 
           // Проверяем, является ли ошибка FirebaseError
           if (error instanceof FirebaseError) {
             // Более конкретные сообщения об ошибках
             switch (error.code) {
             case "auth/user-not-found":
-              errorMessage = "Пользователь не найден";
+              errorMessage = authApiErrors.notFound;
               break;
             case "auth/wrong-password":
-              errorMessage = "Неверный пароль";
+              errorMessage = authApiErrors.wrongPassword;
               break;
             default:
-              errorMessage = `Ошибка авторизации: ${error.code}`;
+              errorMessage = `${authApiErrors.loginPrefix} ${error.code}`;
             }
           } else if (error instanceof Error) {
             // Обычная JavaScript ошибка
@@ -172,7 +173,7 @@ export const authApiSlice = createApi({
         } catch (error) {
           return {
             error: {
-              message: "Ошибка выхода:",
+              message: authApiErrors.logout,
               error,
             },
           };

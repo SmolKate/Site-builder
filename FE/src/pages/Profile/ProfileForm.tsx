@@ -1,4 +1,4 @@
-import { editProfileDialog } from "@/locales";
+import { editProfileDialog, profileMessages } from "@/locales";
 import { Button, InputField, PasswordField } from "@/ui";
 import type { EditProfileFormData } from "@/ui/types";
 import type { IUser } from "@/utils/types";
@@ -34,7 +34,7 @@ export const ProfileForm = ({
   return (
     <form onSubmit={onSubmit}>
       <div className="dialog-email">
-        <Box className="dialog-email__label">Электронная почта</Box>
+        <Box className="dialog-email__label">{profileMessages.emailLabel}</Box>
         <Box className="dialog-email__content">
           <div>{currentUser?.email}</div>
           <div className="dialog-email__icon" title={editProfileDialog.emailTooltip}>
@@ -44,14 +44,14 @@ export const ProfileForm = ({
       </div>
 
       <InputField
-        label="Имя"
+        label={profileMessages.labels.firstName}
         register={register}
         fieldName="firstName"
         placeholder=""
         errors={errors}
       />
       <InputField
-        label="Фамилия"
+        label={profileMessages.labels.lastName}
         register={register}
         fieldName="lastName"
         placeholder=""
@@ -66,12 +66,12 @@ export const ProfileForm = ({
         onChange={handleChangeCheck}
       />
       <label htmlFor="isChangePass" className="dialog-checkbox__label">
-        Хотите поменять пароль?
+        {profileMessages.changePasswordQuestion}
       </label>
       {isChecked && (
         <>
           <PasswordField
-            label="Пароль"
+            label={profileMessages.labels.password}
             register={register}
             fieldName="password"
             placeholder=""
@@ -80,14 +80,14 @@ export const ProfileForm = ({
           {isPasswordChanged && (
             <>
               <PasswordField
-                label="Подтвердите пароль"
+                label={profileMessages.labels.confirmPassword}
                 register={register}
                 fieldName="confirmPassword"
                 placeholder=""
                 errors={errors}
               />
               <PasswordField
-                label="текущий пароль"
+                label={profileMessages.labels.currentPassword}
                 register={register}
                 fieldName="currentPassword"
                 placeholder=""
@@ -99,9 +99,9 @@ export const ProfileForm = ({
       )}
 
       <div className="main-dialog__footer">
-        <Button buttonText="Сохранить" variant="primary" type="submit" disabled={disableSubmit} />
+        <Button buttonText={profileMessages.actions.save} variant="primary" type="submit" disabled={disableSubmit} />
         <Button
-          buttonText="Отменить"
+          buttonText={profileMessages.actions.cancel}
           type="button"
           variant="secondary"
           onClick={handleCancelClick}
