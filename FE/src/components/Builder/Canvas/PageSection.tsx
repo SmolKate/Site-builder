@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
 import { useDroppable } from "@dnd-kit/core";
-import type { IBlock } from "@/store/builder/types"; 
+import type { IBlock } from "@/store/builder/types";
 import { useAppDispatch } from "@/store";
 import { deleteComponent } from "@/store/builder/builderSlice";
 import { Cross2Icon, MoveIcon } from "@radix-ui/react-icons";
@@ -29,11 +29,24 @@ export const PageSection = ({
 }: PageSectionProps) => {
   const dispatch = useAppDispatch();
   const [isHovered, setIsHovered] = useState(false);
-  
-  const { setNodeRef, isOver } = useDroppable({ 
+
+  const { setNodeRef, isOver } = useDroppable({
     id,
-    data: { accept: ["button", "text", "heading", "image", "video", "divider",
-      "quote", "list", "input", "link", "container"] }
+    data: {
+      accept: [
+        "button",
+        "text",
+        "heading",
+        "image",
+        "video",
+        "divider",
+        "quote",
+        "list",
+        "input",
+        "link",
+        "container",
+      ],
+    },
   });
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -67,69 +80,65 @@ export const PageSection = ({
       ref={setNodeRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={clsx(
-        "page-section",
-        className,
-        {
-          "page-section--selected": isSelected,
-          "page-section--hovered": isHovered && !isSelected,
-          "page-section--over": isOver
-        }
-      )}
-      style={style} 
+      className={clsx("page-section", className, {
+        "page-section--selected": isSelected,
+        "page-section--hovered": isHovered && !isSelected,
+        "page-section--over": isOver,
+      })}
+      style={style}
       onClick={onSelect}
     >
-      <div 
+      <div
         className={clsx("page-section__handle", "grid-drag-handle", {
-          "page-section__handle--visible": isHovered || isSelected
+          "page-section__handle--visible": isHovered || isSelected,
         })}
       >
-        <div className="page-section__handle-icon"><MoveIcon width={12} height={12} /></div>
+        <div className="page-section__handle-icon">
+          <MoveIcon width={12} height={12} />
+        </div>
         <div className="page-section__handle-divider" />
-        <div className="page-section__delete-btn no-drag"
-          onMouseDown={(e) => e.stopPropagation()} onClick={handleDelete}>
+        <div
+          className="page-section__delete-btn no-drag"
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={handleDelete}
+        >
           <Cross2Icon width={14} height={14} />
         </div>
       </div>
 
       <div ref={contentRef} className="page-section__container no-drag">
-        
-        <header 
+        <header
           className="page-section__header"
-          style={{ 
+          style={{
             backgroundColor: block.style.headerBg as string,
-            color: block.style.headerColor as string
+            color: block.style.headerColor as string,
           }}
         >
-          <h3>{block.props.headerText as string || "Header"}</h3>
+          <h3>{(block.props.headerText as string) || "Header"}</h3>
         </header>
 
         <div className="page-section__body">
-          
           {hasSidebar && (
-            <aside 
+            <aside
               className="page-section__sidebar"
-              style={{ 
+              style={{
                 width: sidebarWidth as string,
                 backgroundColor: block.style.sidebarBg as string,
-                flexShrink: 0
+                flexShrink: 0,
               }}
             >
               <div style={{ padding: "10px", opacity: 0.6 }}>Sidebar</div>
             </aside>
           )}
 
-          <main 
+          <main
             className="page-section__main"
-            style={{ 
+            style={{
               backgroundColor: block.style.backgroundColor as string,
             }}
           >
             {block.childrenIds.length > 0 ? (
-              <SectionContent 
-                variant={block.variant} 
-                childrenIds={block.childrenIds} 
-              />
+              <SectionContent variant={block.variant} childrenIds={block.childrenIds} />
             ) : (
               <div className="page-section__placeholder">
                 {isOver ? "Отпустите здесь" : "Перетащите блоки в центр"}
@@ -138,16 +147,15 @@ export const PageSection = ({
           </main>
         </div>
 
-        <footer 
+        <footer
           className="page-section__footer"
-          style={{ 
+          style={{
             backgroundColor: block.style.footerBg as string,
-            color: block.style.footerColor as string
+            color: block.style.footerColor as string,
           }}
         >
-          <p>{block.props.footerText as string || "Footer"}</p>
+          <p>{(block.props.footerText as string) || "Footer"}</p>
         </footer>
-
       </div>
     </section>
   );

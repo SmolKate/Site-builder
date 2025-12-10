@@ -12,3 +12,10 @@ export const editProfileDialog = {
   emailTooltip: "В данный момент изменение e-mail не доступно",
   errorPassword: "Проверьте правильность введения пароля",
 };
+
+export const themeToggle = {
+  switchToDark: "Переключить на тёмную тему",
+  switchToLight: "Переключить на светлую тему",
+  darkTheme: "Тёмная тема",
+  lightTheme: "Светлая тема",
+};

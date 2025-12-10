@@ -7,7 +7,7 @@ import { deleteComponent, selectComponent } from "@/store/builder/builderSlice";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { SectionContent } from "../Canvas/SectionContent";
 
-import "./ContainerBlock.scss"; 
+import "./ContainerBlock.scss";
 
 interface Props {
   block: IBlock;
@@ -16,11 +16,24 @@ interface Props {
 export const ContainerBlock = ({ block }: Props) => {
   const dispatch = useAppDispatch();
   const selectedId = useAppSelector(selectSelectedId);
-  
+
   const { setNodeRef, isOver } = useDroppable({
     id: block.id,
-    data: { accept: ["button", "text", "heading", "image", "video", "divider", "quote", "list",
-      "input", "link", "container"] }
+    data: {
+      accept: [
+        "button",
+        "text",
+        "heading",
+        "image",
+        "video",
+        "divider",
+        "quote",
+        "list",
+        "input",
+        "link",
+        "container",
+      ],
+    },
   });
 
   const isSelected = selectedId === block.id;
@@ -48,7 +61,7 @@ export const ContainerBlock = ({ block }: Props) => {
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        minHeight: block.style.minHeight || "50px", 
+        minHeight: block.style.minHeight || "50px",
       }}
     >
       {isSelected && (
@@ -60,14 +73,9 @@ export const ContainerBlock = ({ block }: Props) => {
       {isSelected && <div className="container-block__label">Container</div>}
 
       {block.childrenIds.length > 0 ? (
-        <SectionContent 
-          variant={block.variant} 
-          childrenIds={block.childrenIds} 
-        />
+        <SectionContent variant={block.variant} childrenIds={block.childrenIds} />
       ) : (
-        <div className="container-block__empty">
-          {isOver ? "Бросайте сюда!" : "Контейнер"}
-        </div>
+        <div className="container-block__empty">{isOver ? "Бросайте сюда!" : "Контейнер"}</div>
       )}
     </div>
   );
