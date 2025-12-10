@@ -47,6 +47,21 @@
   }
 }
 
+.renderer__dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.renderer__dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
 @keyframes fadeIn {
   to {
     opacity: 1;
