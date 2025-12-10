@@ -1,8 +1,12 @@
 import { useAppSelector, useAppDispatch } from "@/store";
 import { updateComponent } from "@/store/builder/builderSlice";
 import { selectSelectedComponent, selectSelectedId } from "@/store/builder";
-import { PROPERTIES_CONFIG, type FieldTarget, type PropertyField } from "@/config/builder/propertiesConfig";
 import { type SectionVariant, type IBlock } from "@/store/builder/types";
+import {
+  PROPERTIES_CONFIG,
+  type FieldTarget,
+  type PropertyField,
+} from "@/config/builder/propertiesConfig";
 import { PropertyFieldComponent } from "../Properties/PropertyFields";
 import "./PropertiesPanel.scss";
 
@@ -68,7 +72,7 @@ export const PropertiesPanel = () => {
           flexDirection: undefined,
           justifyContent: undefined,
           alignItems: "start",
-          justifyItems: "start"
+          justifyItems: "start",
         }
         : {
           display: "flex",
@@ -78,7 +82,7 @@ export const PropertiesPanel = () => {
           gridTemplateColumns: undefined,
           justifyItems: undefined,
           alignItems: "stretch",
-          justifyContent: "flex-start"
+          justifyContent: "flex-start",
         };
 
       componentChanges = { 
@@ -111,7 +115,7 @@ export const PropertiesPanel = () => {
 
     dispatch(updateComponent({ 
       id: selectedId, 
-      changes: componentChanges as unknown as Partial<IBlock> 
+      changes: componentChanges as unknown as Partial<IBlock>,
     }));
   };
 

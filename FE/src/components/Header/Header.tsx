@@ -6,6 +6,7 @@ import { getSiteTitle } from "@/store/builder";
 import { useAppSelector } from "@/store";
 
 import "./styles.scss";
+import { headerMessages } from "@/locales";
 
 export const Header = () => {
   const [logoutUser] = useLogoutUserMutation();
@@ -36,14 +37,14 @@ export const Header = () => {
     <header className="auth-header">
       <nav className="auth-header__nav">
         <NavLink to="/" className={getPillNavLinkClass}>
-          Main
+          {headerMessages.main}
         </NavLink>
         <NavLink to="/me" className={getPillNavLinkClass}>
-          Profile
+          {headerMessages.profile}
         </NavLink>
         {!isAuthenticated && (
           <NavLink to="/login" className={getPillNavLinkClass}>
-            Login page
+            {headerMessages.login}
           </NavLink>
         )}
       </nav>
@@ -61,7 +62,7 @@ export const Header = () => {
             className="auth-header__button auth-header__button--ghost"
             onClick={handleClickLogout}
           >
-            Logout
+            {headerMessages.logout}
           </button>
         ) : (
           <>
@@ -70,14 +71,14 @@ export const Header = () => {
               className="auth-header__button auth-header__button--ghost"
               onClick={handleClickLogin}
             >
-              Login
+              {headerMessages.login}
             </button>
             <button
               type="button"
               className="auth-header__button auth-header__button--primary"
               onClick={handleClickSignup}
             >
-              Register
+              {headerMessages.register}
             </button>
           </>
         )}

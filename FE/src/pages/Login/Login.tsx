@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, InputField, PasswordField } from "@/ui";
 import { loginSchema, type LoginFormData } from "@/utils/helpers";
 import { useLoginUserMutation } from "@/store/auth";
-import { authMessages } from "@/locales";
+import { authMessages, authPageMessages } from "@/locales";
 import "../authStyles.scss";
 
 export const Login = () => {
@@ -58,31 +58,31 @@ export const Login = () => {
     <div className="auth-page">
       <div className="container">
         <div className="auth-page__inner">
-          <h2 className="auth-page__title">Войти</h2>
+          <h2 className="auth-page__title">{authPageMessages.login.title}</h2>
 
           <form className="auth-page__form" onSubmit={handleSubmit(onSubmit)}>
             <InputField
               register={register}
               errors={errors}
               fieldName="email"
-              label="Электронная почта"
-              placeholder="Введите электронную почту..."
+              label={authPageMessages.login.emailLabel}
+              placeholder={authPageMessages.login.emailPlaceholder}
             />
             <PasswordField
               register={register}
               errors={errors}
               fieldName="password"
-              label="Пароль"
-              placeholder="Введите пароль..."
+              label={authPageMessages.login.passwordLabel}
+              placeholder={authPageMessages.login.passwordPlaceholder}
             />
-            <Button buttonText="Войти" disabled={!isValid} />
+            <Button buttonText={authPageMessages.login.submit} disabled={!isValid} />
           </form>
 
           {loginError && <p className="auth-page__error">{loginError}</p>}
           {accessError && <p className="auth-page__error">{accessError}</p>}
 
           <p className="text-center">
-            Нет аккаунта? <Link to="/signup">Зарегистрироваться</Link>
+            {authPageMessages.login.linkText} <Link to="/signup">{authPageMessages.login.linkCta}</Link>
           </p>
         </div>
       </div>

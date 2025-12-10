@@ -3,10 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { orderBy } from "lodash";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { mainPageMessages } from "@/locales";
 import { useFetchSitesQuery, useAddSiteMutation, useDeleteSiteMutation } from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, Button, Pagination, Dropdown } from "@/ui";
+import { InputField, Button, Pagination, Dropdown, SearchInputField } from "@/ui";
 import { TVariant } from "@/ui/types";
 import { paginate } from "@/utils";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
@@ -105,8 +106,8 @@ export function MainPage() {
   return (
     <div className="main-page">
       <header className="main-page__header">
-        <h1 className="main-page__title">Site Builder</h1>
-        <p className="main-page__subtitle">Панель управления проектами</p>
+        <h1 className="main-page__title">{mainPageMessages.title}</h1>
+        <p className="main-page__subtitle">{mainPageMessages.subtitle}</p>
       </header>
 
       {accessError && <p className="auth-page__error">{accessError}</p>}
@@ -114,7 +115,7 @@ export function MainPage() {
       <RaDialog
         open={openDialog}
         onClose={() => setOpenDialog(false)}
-        title="Удаление сайта"
+        title={mainPageMessages.confirmDelete.title}
         content={
           <MainDialogContent
             site={site}
@@ -126,39 +127,39 @@ export function MainPage() {
 
       <main className="main-page__content">
         <div className="create-card">
-          <h2 className="create-card__title">Создать новый сайт</h2>
+          <h2 className="create-card__title">{mainPageMessages.createCard.title}</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="create-card__form">
             <InputField
               register={register}
               errors={errors}
               fieldName="title"
-              placeholder="Название проекта"
+              placeholder={mainPageMessages.createCard.titlePlaceholder}
               variant={TVariant.SECONDARY}
             />
             <InputField
               register={register}
               errors={errors}
               fieldName="description"
-              placeholder="Краткое описание"
+              placeholder={mainPageMessages.createCard.descriptionPlaceholder}
               variant={TVariant.SECONDARY}
             />
-            <Button buttonText="Создать сайт" type="submit" disabled={!isValid || isSubmitting} />
+            <Button buttonText={mainPageMessages.createCard.submit} type="submit" disabled={!isValid || isSubmitting} />
           </form>
         </div>
 
         <div className="sites-section">
           <div className="sites-section__header">
-            <h2 className="sites-section__title">Мои сайты</h2>
+            <h2 className="sites-section__title">{mainPageMessages.sitesSection.title}</h2>
           </div>
           <div className="sites-section__query">
             <SearchInputField value={searchQuery} onChange={handleSearchQuery} />
             <Dropdown sortAlg={sortAlg} onSortSites={handleSortSites} />
           </div>
           {isLoading || currentUserLoading ? (
-            <h2>Загрузка...</h2>
+            <h2>{mainPageMessages.sitesSection.loading}</h2>
           ) : sitesCrop?.length === 0 ? (
             <div className="sites-section__empty">
-              <p>Нет сайтов для отображения. Создайте свой первый проект!</p>
+              <p>{mainPageMessages.sitesSection.empty}</p>
             </div>
           ) : (
             <div className="sites-section__grid">
@@ -179,7 +180,10 @@ export function MainPage() {
                           site.published ? "status-badge--published" : "status-badge--draft"
                         }`}
                       >
-                        {site.published ? "Live" : "Draft"}
+                        {site.published
+                          ? mainPageMessages.sitesSection.status.live
+                          : mainPageMessages.sitesSection.status.draft
+                        }
                       </span>
                     </div>
                   </div>

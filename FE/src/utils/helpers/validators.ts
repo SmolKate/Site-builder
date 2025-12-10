@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { validationErrors } from "./validationErrors";
+import { validationMessages } from "@/locales";
 
 // Очищает ввод, оставляя только буквы (латиница/кириллица), цифры и дефис
 const COMMON_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9- ]+$/;
@@ -15,29 +15,29 @@ export const emailSchema = () =>
   yup
     .string()
     .trim()
-    .required(validationErrors.email.required)
-    .matches(EMAIL_REGEX, validationErrors.common.notSpecialSymbols)
-    .email(validationErrors.email.invalid);
+    .required(validationMessages.email.required)
+    .matches(EMAIL_REGEX, validationMessages.common.notSpecialSymbols)
+    .email(validationMessages.email.invalid);
 
 export const passwordSchema = (minLength: number = MIN_PASSWORD_LENGTH) =>
   yup
     .string()
     .trim()
-    .required(validationErrors.password.required)
-    .matches(PASSWORD_REGEX, validationErrors.common.notSpecialSymbols)
-    .min(minLength, validationErrors.password.minLength(minLength));
+    .required(validationMessages.password.required)
+    .matches(PASSWORD_REGEX, validationMessages.common.notSpecialSymbols)
+    .min(minLength, validationMessages.password.minLength(minLength));
 
 export const passwordSchemaEdit = (minLength: number = MIN_PASSWORD_LENGTH) =>
-  yup.string().trim().min(minLength, validationErrors.password.minLength(minLength));
+  yup.string().trim().min(minLength, validationMessages.password.minLength(minLength));
 
 export const firstNameSchema = (params?: { minLength?: number }) => {
   const { minLength = MIN_TEXT_LENGTH } = params ?? {};
   return yup
     .string()
     .trim()
-    .required(validationErrors.firstName.required)
-    .matches(COMMON_REGEX, validationErrors.common.notSpecialSymbols)
-    .min(minLength, validationErrors.firstName.minLength(minLength));
+    .required(validationMessages.firstName.required)
+    .matches(COMMON_REGEX, validationMessages.common.notSpecialSymbols)
+    .min(minLength, validationMessages.firstName.minLength(minLength));
 };
 
 export const lastNameSchema = (params?: { minLength?: number }) => {
@@ -45,28 +45,28 @@ export const lastNameSchema = (params?: { minLength?: number }) => {
   return yup
     .string()
     .trim()
-    .required(validationErrors.lastName.required)
-    .matches(COMMON_REGEX, validationErrors.common.notSpecialSymbols)
-    .min(minLength, validationErrors.lastName.minLength(minLength));
+    .required(validationMessages.lastName.required)
+    .matches(COMMON_REGEX, validationMessages.common.notSpecialSymbols)
+    .min(minLength, validationMessages.lastName.minLength(minLength));
 };
 
 export const confirmPasswordSchema = (minLength: number = MIN_PASSWORD_LENGTH) =>
   yup
     .string()
     .trim()
-    .oneOf([yup.ref("password")], validationErrors.confirmPassword.invalid)
-    .required(validationErrors.confirmPassword.required)
-    .min(minLength, validationErrors.password.minLength(minLength));
+    .oneOf([yup.ref("password")], validationMessages.confirmPassword.invalid)
+    .required(validationMessages.confirmPassword.required)
+    .min(minLength, validationMessages.password.minLength(minLength));
 
 export const requiredTextSchema = (params?: { minLength?: number; maxLength?: number }) => {
   const { minLength = MIN_TEXT_LENGTH, maxLength = MAX_TEXT_LENGTH } = params ?? {};
   return yup
     .string()
     .trim()
-    .required(validationErrors.text.required)
-    .matches(COMMON_REGEX, validationErrors.common.notSpecialSymbols)
-    .min(minLength, validationErrors.text.minLength(minLength))
-    .max(maxLength, validationErrors.text.maxLength(maxLength));
+    .required(validationMessages.text.required)
+    .matches(COMMON_REGEX, validationMessages.common.notSpecialSymbols)
+    .min(minLength, validationMessages.text.minLength(minLength))
+    .max(maxLength, validationMessages.text.maxLength(maxLength));
 };
 
 // Комбинированные схемы

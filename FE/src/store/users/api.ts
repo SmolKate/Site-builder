@@ -9,6 +9,7 @@ import {
 import { getUser, removeAuth, removeUser } from "@/utils/helpers";
 import type { IUser } from "@/utils/types";
 import { db, auth } from "@/config";
+import { usersApiErrors } from "@/locales";
 import { sitesApiSlice } from "../sites/api";
 
 interface IUpdateUserProps {
@@ -39,7 +40,7 @@ export const usersApiSlice = createApi({
         } catch (error) {
           return {
             error: {
-              message: "Ошибка получения данных о пользователях:",
+              message: usersApiErrors.fetchUsers,
               error,
             },
           };
@@ -71,7 +72,7 @@ export const usersApiSlice = createApi({
         } catch (error) {
           return {
             error: {
-              message: "Ошибка получения данных о пользователях:",
+              message: usersApiErrors.fetchUsers,
               error,
             },
           };
@@ -89,7 +90,7 @@ export const usersApiSlice = createApi({
           if (!userDoc.exists()) {
             return {
               error: {
-                message: "Пользователь не найден",
+                message: usersApiErrors.notFound,
               },
             };
           }
@@ -98,12 +99,12 @@ export const usersApiSlice = createApi({
 
           // Проверяем, что текущий пользователь совпадает с обновляемым
           if (!currentUser) {
-            throw new Error("Пользователь не авторизован");
+            throw new Error(usersApiErrors.unauthorized);
           }
           if (currentUser?.uid !== uid) {
             return {
               error: {
-                message: "Нет прав для обновления этого пользователя",
+                message: usersApiErrors.forbidden,
               },
             };
           }
@@ -126,7 +127,7 @@ export const usersApiSlice = createApi({
             } catch (error: unknown) {
               return {
                 error: {
-                  message: "Ошибка при смене пароля. Проверьте текущий пароль",
+                  message: usersApiErrors.changePassword,
                   error,
                 },
               };
@@ -152,7 +153,7 @@ export const usersApiSlice = createApi({
         } catch (error) {
           return {
             error: {
-              message: "Ошибка обновления пользователя:",
+              message: usersApiErrors.updateUser,
               error,
             },
           };
@@ -177,7 +178,7 @@ export const usersApiSlice = createApi({
         } catch (error) {
           return {
             error: {
-              message: "Ошибка удаления пользователя:",
+              message: usersApiErrors.deleteUser,
               error,
             },
           };

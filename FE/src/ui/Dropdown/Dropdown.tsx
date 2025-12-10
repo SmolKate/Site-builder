@@ -1,5 +1,6 @@
 import { type ChangeEvent, type FC } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { dropdownMessages } from "@/locales";
 import { RadioField } from "../RadioField";
 import "./styles.scss";
 
@@ -10,10 +11,10 @@ interface IDropdownProps {
 
 const Dropdown: FC<IDropdownProps> = ({ sortAlg, onSortSites }) => {
   const options = [
-    { name: "a-z", value: "alphabet-asc" },
-    { name: "z-a", value: "alphabet-desc" },
-    { name: "сначала новые", value: "date-desc" },
-    { name: "сначала старые", value: "date-asc" },
+    { name: dropdownMessages.options.alphabetAsc, value: "alphabet-asc" },
+    { name: dropdownMessages.options.alphabetDesc, value: "alphabet-desc" },
+    { name: dropdownMessages.options.newest, value: "date-desc" },
+    { name: dropdownMessages.options.oldest, value: "date-asc" },
   ];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +24,7 @@ const Dropdown: FC<IDropdownProps> = ({ sortAlg, onSortSites }) => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger className="dropdown-button">
-        Сортировка
+        {dropdownMessages.trigger}
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
