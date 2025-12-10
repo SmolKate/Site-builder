@@ -75,7 +75,7 @@ describe("Header", () => {
   test("кнопка переключения темы кликается без ошибок", () => {
     renderHeader();
 
-    const toggleButton = screen.getByRole("button", { name: /Light|Dark/i });
+    const toggleButton = screen.getByRole("button", { name: /Переключить на/i });
 
     fireEvent.click(toggleButton);
 

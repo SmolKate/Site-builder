@@ -1,12 +1,10 @@
 import { NavLink, useNavigate } from "react-router-dom";
-
 import { useTheme } from "@/context/ThemeContext";
 import { useGetAuthStatusQuery, useLogoutUserMutation } from "@/store/auth";
 import { getSiteTitle } from "@/store/builder";
 import { useAppSelector } from "@/store";
-
+import { themeToggle , headerMessages } from "@/locales";
 import "./styles.scss";
-import { headerMessages } from "@/locales";
 
 export const Header = () => {
   const [logoutUser] = useLogoutUserMutation();
@@ -52,8 +50,13 @@ export const Header = () => {
       {siteTitle}
 
       <div className="auth-header__controls">
-        <button type="button" className="auth-header__theme-toggle" onClick={toggleTheme}>
-          {theme === "light" ? "Dark" : "Light"}
+        <button
+          type="button"
+          className="auth-header__theme-toggle"
+          onClick={toggleTheme}
+          aria-label={theme === "light" ? themeToggle.switchToDark : themeToggle.switchToLight}
+        >
+          {theme === "light" ? "🌙" : "☀️"}
         </button>
 
         {isAuthenticated ? (

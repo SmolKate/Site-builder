@@ -79,13 +79,17 @@
   }
 
   &__theme-toggle {
-    min-width: var(--space-4xl);
-    padding: calc(var(--space-sm) / 2) var(--space-sm);
+    width: calc(var(--space-xl) + var(--space-sm));
+    height: calc(var(--space-xl) + var(--space-sm));
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: var(--radius-md);
     border: var(--border-width-sm) solid var(--border-color-btn);
     background: #{rgba($black-text, 0.15)};
     color: var(--text-on-primary);
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-lg);
     cursor: pointer;
     transition:
       background 0.2s ease,
