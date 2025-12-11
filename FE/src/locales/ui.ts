@@ -25,6 +25,7 @@ export const mainPageMessages = {
     titlePlaceholder: "Название проекта",
     descriptionPlaceholder: "Краткое описание",
     submit: "Создать сайт",
+    save: "Сохранить",
   },
   sitesSection: {
     title: "Мои сайты",
@@ -35,6 +36,9 @@ export const mainPageMessages = {
       draft: "Draft",
     },
   },
+  confirmChange: {
+    title: "Изменить описание сайта"
+  }
 };
 
 export const authPageMessages = {

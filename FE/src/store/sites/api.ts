@@ -8,7 +8,7 @@ import { sitesApiErrors } from "@/locales";
 interface IUpdateSiteProps {
   id: string;
   updatesSite: Partial<ISiteDTO>;
-  updatesContent: Partial<ISiteContentDTO>;
+  updatesContent?: Partial<ISiteContentDTO>;
 }
 interface IAddSite {
   newSite: Omit<ISiteDTO, "id">;
@@ -148,7 +148,7 @@ export const sitesApiSlice = createApi({
           };
         }
       },
-      invalidatesTags: ["SIteById"],
+      invalidatesTags: ["SIteById", "Sites"],
     }),
 
     deleteSite: builder.mutation<void, string>({

@@ -17,6 +17,8 @@ import { useGetCurrentUserQuery, useUpdateUserMutation } from "@/store/users";
 import { RaDialog } from "@/components/Dialog";
 import { MainDialogContent } from "./MainDialogContent";
 import { MAIN_SITES } from "@/locales/mainPage";
+import { GearIcon } from "@radix-ui/react-icons";
+import { FormDialogContent } from "./FormDialogContent";
 import "./styles.scss";
 
 export function MainPage() {
@@ -33,7 +35,8 @@ export function MainPage() {
   const [updateUser] = useUpdateUserMutation();
   const { data: currentUser } = useGetCurrentUserQuery();
   const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const [site, setSite] = useState<{ id: string; title: string }>({ id: "", title: "" });
+  const [site, setSite] = useState<{ id: string; title: string, description?: string}>({ id: "", title: "" });
+  const [isFormDialog, setIsFormDialog] = useState(false);
 
   const iter = sortAlg.split("-")[0];
   const order = sortAlg.split("-")[1];
@@ -105,6 +108,12 @@ export function MainPage() {
     }
   };
 
+  const onTitleChange = (e: React.MouseEvent<HTMLDivElement>, siteInfo: ISiteDTO) => {
+    setSite({ id: siteInfo.id, title: siteInfo.title, description: siteInfo.description });
+    e.stopPropagation();
+    setIsFormDialog(true);
+  };
+
   return (
     <div className="main-page">
       <header className="main-page__header">
@@ -123,6 +132,17 @@ export function MainPage() {
             site={site}
             onDelete={deleteSite}
             onClose={() => setOpenDialog(false)}
+          />
+        }
+      />
+      <RaDialog
+        open={isFormDialog}
+        onClose={() => setIsFormDialog(false)}
+        title={mainPageMessages.confirmChange.title}
+        content={
+          <FormDialogContent
+            site={site}
+            onClose={() => setIsFormDialog(false)}
           />
         }
       />
@@ -177,7 +197,9 @@ export function MainPage() {
                   <div className="site-card__info">
                     <h3 className="site-card__title">{site.title}</h3>
                     <p className="site-card__desc">{site.description}</p>
-
+                    <div className="site-card__settings-btn" onClick={(e) => onTitleChange(e, site)}>
+                      <GearIcon className="site-card__settings-icon" />
+                    </div>
                     <div className="site-card__meta">
                       <span className="site-card__date">{createdAt(site)}</span>
                       <span
