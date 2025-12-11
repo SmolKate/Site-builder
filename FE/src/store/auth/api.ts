@@ -59,20 +59,16 @@ export const authApiSlice = createApi({
             avatarURL: `https://api.dicebear.com/9.x/avataaars/svg?seed=${(Math.random() + 1)
               .toString(36)
               .substring(7)}`,
-            createdAt: Timestamp.now(),
-            updatedAt: Timestamp.now(),
+            createdAt: Timestamp.now().toMillis(),
+            updatedAt: Timestamp.now().toMillis(),
           };
 
           await setDoc(doc(db, "users", user.uid), userDoc);
 
           setUser(user.uid);
           setAuth();
-          api.dispatch(
-            usersApiSlice.util.invalidateTags(["CurrentUser"])
-          );
-          api.dispatch(
-            sitesApiSlice.util.invalidateTags(["Sites"])
-          );
+          api.dispatch(usersApiSlice.util.invalidateTags(["CurrentUser"]));
+          api.dispatch(sitesApiSlice.util.invalidateTags(["Sites"]));
           return { data: { uid: user.uid } };
         } catch (error) {
           const { message, code } = error as IAuthError;
@@ -109,12 +105,8 @@ export const authApiSlice = createApi({
             setUser(user.uid);
             setAuth();
           }
-          api.dispatch(
-            usersApiSlice.util.invalidateTags(["CurrentUser"])
-          );
-          api.dispatch(
-            sitesApiSlice.util.invalidateTags(["Sites"])
-          );
+          api.dispatch(usersApiSlice.util.invalidateTags(["CurrentUser"]));
+          api.dispatch(sitesApiSlice.util.invalidateTags(["Sites"]));
 
           return {
             data: {
@@ -131,14 +123,14 @@ export const authApiSlice = createApi({
           if (error instanceof FirebaseError) {
             // Более конкретные сообщения об ошибках
             switch (error.code) {
-            case "auth/user-not-found":
-              errorMessage = authApiErrors.notFound;
-              break;
-            case "auth/wrong-password":
-              errorMessage = authApiErrors.wrongPassword;
-              break;
-            default:
-              errorMessage = `${authApiErrors.loginPrefix} ${error.code}`;
+              case "auth/user-not-found":
+                errorMessage = authApiErrors.notFound;
+                break;
+              case "auth/wrong-password":
+                errorMessage = authApiErrors.wrongPassword;
+                break;
+              default:
+                errorMessage = `${authApiErrors.loginPrefix} ${error.code}`;
             }
           } else if (error instanceof Error) {
             // Обычная JavaScript ошибка
@@ -163,12 +155,8 @@ export const authApiSlice = createApi({
           await signOut(auth);
           removeAuth();
           removeUser();
-          api.dispatch(
-            usersApiSlice.util.invalidateTags(["CurrentUser"])
-          );
-          api.dispatch(
-            sitesApiSlice.util.invalidateTags(["Sites"])
-          );
+          api.dispatch(usersApiSlice.util.invalidateTags(["CurrentUser"]));
+          api.dispatch(sitesApiSlice.util.invalidateTags(["Sites"]));
           return { data: undefined };
         } catch (error) {
           return {
