@@ -1,5 +1,4 @@
 import type { LANGUAGE_ENUM, THEME_ENUM } from "@/utils/constants";
-import type { FieldValue } from "firebase/firestore";
 
 export interface IUser {
   uid?: string;
@@ -8,8 +7,8 @@ export interface IUser {
   lastName: string;
   sites: string[];
   avatarURL: string;
-  createdAt: FieldValue;
-  updatedAt: FieldValue;
+  createdAt: number;
+  updatedAt: number;
   preferences?: {
     theme: typeof THEME_ENUM;
     language: typeof LANGUAGE_ENUM;
