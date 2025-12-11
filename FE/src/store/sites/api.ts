@@ -25,7 +25,11 @@ export const sitesApiSlice = createApi({
         try {
           const userUid = getUser();
 
-          const userDoc = await getDoc(doc(db, "users", userUid ?? ""));
+          if (!userUid) {
+            return { data: undefined };
+          }
+
+          const userDoc = await getDoc(doc(db, "users", userUid));
           let userData = null;
           let userSites: ISiteDTO[] = [];
           if (userDoc.exists()) {
