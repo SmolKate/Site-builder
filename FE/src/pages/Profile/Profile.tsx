@@ -2,7 +2,7 @@ import { Avatar } from "radix-ui";
 import { Box, Flex } from "@radix-ui/themes";
 import { GearIcon } from "@radix-ui/react-icons";
 import type { IUser } from "@/utils/types";
-import { editProfileDialog, messages } from "@/locales";
+import { editProfileDialog } from "@/locales";
 import { useGetCurrentUserQuery, useUpdateUserMutation } from "@/store/users";
 import { useForm } from "react-hook-form";
 import { getEditProfileSchema } from "@/utils/helpers";
@@ -12,6 +12,7 @@ import { RaDialog } from "@/components/Dialog";
 import "./styles.scss";
 import { ProfileForm } from "./ProfileForm";
 import type { EditProfileFormData } from "@/ui/types";
+import Loader, { LVariant, LSize } from "@/ui/Loader/Loader";
 
 export const Profile = () => {
   const [open, setOpenDialog] = useState(false);
@@ -48,7 +49,6 @@ export const Profile = () => {
     }
   }, [currentUser, reset]);
 
-  // Обработка ошибок от сервера
   useEffect(() => {
     if (updateUserError) {
       setError("currentPassword", {
@@ -58,53 +58,64 @@ export const Profile = () => {
     }
   }, [updateUserError, setError]);
 
-  // Получаем значения полей для сравнения
   const formValues: EditProfileFormData = watch();
 
-  // Проверяем, изменились ли поля по сравнению с исходными данными
   const isFirstNameChanged = currentUser && formValues.firstName !== currentUser.firstName;
+
   const isLastNameChanged = currentUser && formValues.lastName !== currentUser.lastName;
+
   useEffect(() => {
     const subscription = watch((value) => {
       setIsPasswordChanged(!!value.password || !!value.confirmPassword);
     });
+
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  // Проверяем совпадение паролей
   const isPasswordMatching = () => {
     if (!isPasswordChanged) return true;
+
     return formValues.password === formValues.confirmPassword;
   };
 
-  // Проверяем, заполнено ли поле текущего пароля при изменении пароля
   const isCurrentPasswordFilled = () => {
     if (!isPasswordChanged) return true;
+
     return !!formValues.currentPassword && formValues.currentPassword.trim().length > 0;
   };
 
-  // Проверяем, есть ли изменения для отправки
   const hasChanges = () => {
     const hasNameChanges = isFirstNameChanged || isLastNameChanged;
+
     return isPasswordChanged ? hasNameChanges || isPasswordChanged : hasNameChanges;
   };
 
-  // Проверяем, можно ли отправлять форму
   const isSubmitEnabled = () => {
-    if (!hasChanges) return false;
-    if (isPasswordChanged && (!isPasswordMatching || !isCurrentPasswordFilled)) {
+    if (!hasChanges()) return false;
+
+    if (isPasswordChanged && (!isPasswordMatching() || !isCurrentPasswordFilled())) {
       return false;
     }
+
     return true;
   };
 
-  if (isLoading) return messages.loading;
+  if (isLoading) {
+    return (
+      <Box className="profile-wrapper">
+        <Loader variant={LVariant.SPINNER} size={LSize.MD} className="profile-loader" />
+      </Box>
+    );
+  }
+
   const { firstName, lastName, avatarURL, email } = currentUser as IUser;
 
   const onSubmit = async(data: EditProfileFormData) => {
     clearErrors();
+
     if (isPasswordChanged) {
       const isValid = await trigger(["password", "confirmPassword", "currentPassword"]);
+
       if (!isValid) return;
     }
 
@@ -121,12 +132,13 @@ export const Profile = () => {
   const handleToggleDialog = () => {
     setOpenDialog((prev) => !prev);
   };
+
   const handleCancelClick = () => {
     reset();
     handleToggleDialog();
   };
 
-  const disableSubmit = !isSubmitEnabled || isSubmitting;
+  const disableSubmit = !isSubmitEnabled() || isSubmitting;
 
   return (
     <Box className="profile-wrapper">
@@ -138,7 +150,7 @@ export const Profile = () => {
           description={editProfileDialog.description}
           content={
             <ProfileForm
-              currentUser={currentUser}
+              currentUser={currentUser as IUser}
               onSubmit={handleSubmit(onSubmit)}
               register={register}
               errors={errors}
@@ -148,19 +160,23 @@ export const Profile = () => {
             />
           }
         />
+
         <Box className="profile-card__settings-btn" onClick={handleToggleDialog}>
           <GearIcon className="profile-card__settings-icon" />
         </Box>
+
         <Avatar.Root className="profile-card__avatar-root">
           <Avatar.Image
             className="profile-card__avatar-image"
-            src={avatarURL}
+            src={avatarURL ?? undefined}
             alt={`${firstName} ${lastName}`}
           />
           <Avatar.Fallback className="profile-card__avatar-fallback">
-            {firstName?.charAt(0).toUpperCase() + lastName?.charAt(0).toUpperCase()}
+            {firstName?.charAt(0).toUpperCase()}
+            {lastName?.charAt(0).toUpperCase()}
           </Avatar.Fallback>
         </Avatar.Root>
+
         <Flex direction="column">
           <h3 className="profile-name">{`${firstName} ${lastName}`}</h3>
           <p className="profile-email">{email}</p>
