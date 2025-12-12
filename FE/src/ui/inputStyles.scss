@@ -77,7 +77,8 @@
     height: var(--input-height);
     padding-left: var(--space-3xl);
 
-    background: rgba(255, 255, 255, 0.05) url("../assets/icons/magnifying-glass.svg") top 13px left 13px no-repeat;
+    background: rgba(255, 255, 255, 0.05) url("../assets/icons/magnifying-glass.svg") top 13px left
+      13px no-repeat;
     border: var(--border-width-sm) solid var(--border-color-input-search);
     border-radius: var(--radius-xl);
     color: var(--text-primary);
@@ -146,20 +147,7 @@
     }
   }
 
-  // стиль ounline
-
   &__wrapper--outline {
-    #{$root}__input-root {
-      background-color: transparent;
-      border: none;
-      margin: 0;
-      padding: 0;
-
-      &:hover {
-        box-shadow: none;
-      }
-    }
-
     #{$root}__input {
       color: var(--text-form-primary);
 

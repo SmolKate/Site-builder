@@ -63,10 +63,10 @@
   );
   // --- Градиент для особой кнопки ---
   --gradient-special: linear-gradient(
-    40deg,
-    #{$accent-blue} -50%,
-    #{$accent-cyan} 10%,
-    #{$accent-blue} 70%,
+    30deg,
+    #{$accent-blue} -70%,
+    #{$accent-cyan} 0%,
+    #{$accent-blue} 60%,
     #{$accent-pink} 110%
   );
 
