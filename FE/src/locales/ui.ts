@@ -5,10 +5,10 @@ export const popoverMessages = {
 export const dropdownMessages = {
   trigger: "Сортировка",
   options: {
-    alphabetAsc: "a-z",
-    alphabetDesc: "z-a",
-    newest: "сначала новые",
-    oldest: "сначала старые",
+    alphabetAsc: "A-z",
+    alphabetDesc: "Z-a",
+    newest: "Сначала новые",
+    oldest: "Сначала старые",
   },
 };
 
@@ -21,7 +21,7 @@ export const mainPageMessages = {
     confirm: "Да",
   },
   createCard: {
-    title: "Удаление сайта",
+    title: "Создание сайта",
     titlePlaceholder: "Название проекта",
     descriptionPlaceholder: "Краткое описание",
     submit: "Создать сайт",
