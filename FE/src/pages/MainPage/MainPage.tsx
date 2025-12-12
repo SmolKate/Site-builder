@@ -16,6 +16,7 @@ import { useDebounce } from "@/utils/hooks";
 import { useGetCurrentUserQuery, useUpdateUserMutation } from "@/store/users";
 import { RaDialog } from "@/components/Dialog";
 import { MainDialogContent } from "./MainDialogContent";
+import { MAIN_SITES } from "@/locales/mainPage";
 import "./styles.scss";
 
 export function MainPage() {
@@ -172,11 +173,7 @@ export function MainPage() {
           ) : (
             <div className="sites-section__grid">
               {sitesCrop?.map((site) => (
-                <div
-                  key={site.id}
-                  className="site-card"
-                  onClick={() => navigate(`/sites/${site.id}`)}
-                >
+                <div key={site.id} className="site-card">
                   <div className="site-card__info">
                     <h3 className="site-card__title">{site.title}</h3>
                     <p className="site-card__desc">{site.description}</p>
@@ -197,6 +194,12 @@ export function MainPage() {
 
                   <div className="site-card__actions">
                     <button
+                      onClick={() => navigate(`/sites/${site.id}`)}
+                      className="ui-btn ui-btn--primary ui-btn--sm"
+                    >
+                      {MAIN_SITES.actions.primaryButton}
+                    </button>
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         setSite({ id: site.id, title: site.title });
@@ -204,7 +207,7 @@ export function MainPage() {
                       }}
                       className="ui-btn ui-btn--danger ui-btn--sm"
                     >
-                      Удалить
+                      {MAIN_SITES.actions.secondaryButton}
                     </button>
                   </div>
                 </div>

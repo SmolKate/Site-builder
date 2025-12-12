@@ -243,6 +243,7 @@
 
   &__actions {
     display: flex;
+    gap: var(--space-md);
     justify-content: flex-end;
   }
 }

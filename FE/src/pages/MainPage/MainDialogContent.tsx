@@ -1,4 +1,4 @@
-import { Dialog } from "@/locales/mainPage";
+import { MAIN_DIALOG } from "@/locales/mainPage";
 import { Button } from "@/ui";
 import { Box, Flex } from "@radix-ui/themes";
 import "./styles.scss";
@@ -16,14 +16,14 @@ export const MainDialogContent = ({ site, onDelete, onClose }: IMainDialogConten
   };
   return (
     <Flex>
-      <Box className="dialog__content">{`${Dialog.notification} "${site.title}"`}</Box>
+      <Box className="dialog__content">{`${MAIN_DIALOG.notification} "${site.title}"`}</Box>
       <Box className="dialog__actions">
         <Button
-          buttonText={Dialog.primaryButton}
+          buttonText={MAIN_DIALOG.primaryButton}
           variant="danger"
           onClick={() => handleDelete(site.id)}
         />
-        <Button buttonText={Dialog.secondaryButton} variant="secondary" onClick={onClose} />
+        <Button buttonText={MAIN_DIALOG.secondaryButton} variant="secondary" onClick={onClose} />
       </Box>
     </Flex>
   );
