@@ -78,6 +78,22 @@ export const Constructor = () => {
     };
   }, [siteContent]);
 
+  useEffect(() => {
+    const handleGlobalClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+
+      if (!selectedId) return;
+      if (target.closest(".builder__sidebar-right")) return;
+      dispatch(selectComponent(null));
+    };
+
+    document.addEventListener("mousedown", handleGlobalClick);
+    
+    return () => {
+      document.removeEventListener("mousedown", handleGlobalClick);
+    };
+  }, [selectedId, dispatch]);
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     setDraggedType(null);
@@ -145,7 +161,6 @@ export const Constructor = () => {
                 "builder__canvas-area", 
                 {"builder__canvas-area--active": isOverCanvas && draggedType === "container"},
               )}
-              onClick={() => dispatch(selectComponent(null))}
             >
               {isOverCanvas && draggedType === "container" && (
                 <div className="builder__drop-hint">

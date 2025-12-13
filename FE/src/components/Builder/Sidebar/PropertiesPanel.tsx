@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from "@/store";
 import { updateComponent } from "@/store/builder/builderSlice";
-import { selectSelectedComponent, selectSelectedId } from "@/store/builder";
+import { getAllComponents, selectSelectedComponent, selectSelectedId } from "@/store/builder";
 import { type SectionVariant, type IBlock } from "@/store/builder/types";
 import {
   PROPERTIES_CONFIG,
@@ -23,12 +23,47 @@ const fromCssValue = (val: unknown) => {
   return str;
 };
 
+const getBlockLabel = (block: IBlock): string => {
+  const typeMap: Record<string, string> = {
+    container: "Контейнер",
+    text: "Текст",
+    heading: "Заголовок",
+    button: "Кнопка",
+    image: "Изображение",
+    video: "Видео",
+    divider: "Разделитель",
+    quote: "Цитата",
+    list: "Список",
+    input: "Поле ввода",
+    link: "Ссылка",
+    page: "Страница"
+  };
+
+  const typeName = typeMap[block.type] || block.type;
+  
+  let contentPreview = "";
+  if (block.props.text) contentPreview = String(block.props.text);
+  else if (block.props.headerText) contentPreview = String(block.props.headerText);
+  else if (block.content) {
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = block.content;
+    contentPreview = tmp.textContent || tmp.innerText || "";
+  }
+
+  if (contentPreview.length > 20) {
+    contentPreview = contentPreview.substring(0, 20) + "...";
+  }
+
+  return contentPreview ? `${typeName}: ${contentPreview}` : `${typeName} (${block.id.slice(0, 4)})`;
+};
+
 type StyleChanges = Record<string, string | number | undefined>;
 
 export const PropertiesPanel = () => {
   const dispatch = useAppDispatch();
   const selectedId = useAppSelector(selectSelectedId);
   const block: IBlock | null | undefined = useAppSelector(selectSelectedComponent);
+  const allComponents = useAppSelector(getAllComponents);
 
   if (!selectedId || !block) return null;
 
@@ -124,14 +159,50 @@ export const PropertiesPanel = () => {
 
   const allFields = [...commonFields, ...specificFields].filter((field) => {
     if (block.type === "divider") return true;
-
     const isOnGrid = block.parentId === null;
     const resizableProps = ["width", "height", "minHeight"];
-    
     if (isOnGrid && field.target === "style" && resizableProps.includes(field.key)) {
       return false;
     }
+
+    if (block.type === "button") {
+      const actionType = block.props.actionType;
+      if (actionType === "none") {
+        if (field.key === "actionValue" || field.key === "openInNewTab") return false;
+      }
+      if ((actionType === "anchor" || actionType === "email") && field.key === "openInNewTab") {
+        return false;
+      }
+    }
+
     return true;
+  }).map(field => {
+    if (block.type === "button" && field.key === "actionValue") {
+      const actionType = block.props.actionType;
+
+      if (actionType === "anchor") {
+        const options = Object.values(allComponents)
+          .filter(c => c.id !== block.id)
+          .map(c => ({
+            value: c.id,
+            label: getBlockLabel(c)
+          }));
+
+        options.unshift({ value: "top", label: "▲ Наверх страницы" });
+
+        return {
+          ...field,
+          type: "select" as const, 
+          label: "Выберите блок для скролла",
+          options: options
+        };
+      } else if (actionType === "email") {
+        return { ...field, label: "Email адрес" };
+      } else if (actionType === "link") {
+        return { ...field, label: "URL ссылки (https://...)" };
+      }
+    }
+    return field;
   });
 
   return (

@@ -25,12 +25,21 @@ export const BLOCK_DEFAULTS: Record<BlockType, BlockConfig> = {
     style: {},
   },
   button: {
-    props: { text: "Кнопка" },
+    props: { 
+      text: "Кнопка",
+      actionType: "none",
+      actionValue: "",
+      openInNewTab: "0"
+    },
     style: {
       backgroundColor: "#007bff",
       color: "#fff",
       padding: "10px 20px",
       borderRadius: "4px",
+      display: "inline-block", 
+      textAlign: "center",
+      border: "none",
+      textDecoration: "none" 
     },
   },
   container: {

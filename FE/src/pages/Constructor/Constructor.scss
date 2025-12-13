@@ -55,7 +55,7 @@
 
   &__canvas-area {
     flex: 1;
-    overflow-x: hidden;
+    overflow-x: auto;
     position: relative;
 
     border-radius: var(--radius-lg);
