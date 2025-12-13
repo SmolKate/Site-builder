@@ -1,12 +1,10 @@
 import * as yup from "yup";
 import { validationMessages } from "@/locales";
 
-// Очищает ввод, оставляя только буквы (латиница/кириллица), цифры и дефис
 const COMMON_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9- ]+$/;
 const EMAIL_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9!@#$%^&*()-_=+.]+$/;
 const PASSWORD_REGEX = /^[a-zA-Zа-яА-ЯёЁ0-9!@#$%^&*()-_=+]+$/;
 
-// Константы валидации
 const MIN_PASSWORD_LENGTH = 6;
 const MIN_TEXT_LENGTH = 2;
 const MAX_TEXT_LENGTH = 15;
@@ -69,8 +67,6 @@ export const requiredTextSchema = (params?: { minLength?: number; maxLength?: nu
     .max(maxLength, validationMessages.text.maxLength(maxLength));
 };
 
-// Комбинированные схемы
-
 export const loginSchema = yup.object({
   email: emailSchema(),
   password: passwordSchema(),
@@ -94,7 +90,6 @@ export const siteSchema = yup.object({
   description: requiredTextSchema({ maxLength: 150 }),
 });
 
-// Типы для TypeScript
 export type LoginFormData = yup.InferType<typeof loginSchema>;
 export type SignupFormData = yup.InferType<typeof signupSchema>;
 export type ProfileFormData = yup.InferType<typeof profileSchema>;

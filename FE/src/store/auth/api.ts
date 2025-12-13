@@ -9,7 +9,6 @@ import { authApiErrors } from "@/locales";
 import { usersApiSlice } from "../users/api";
 import { sitesApiSlice } from "../sites/api";
 
-// Тип для ответа при авторизации
 interface ILoginResponse {
   uid: string;
   email: string;
@@ -38,11 +37,9 @@ export const authApiSlice = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
-    // Регистрация пользователя (создание в Authentication + Firestore)
     registerUser: builder.mutation<{ uid: string }, IRegisterProps>({
       async queryFn(userData, api) {
         try {
-          // Создаем пользователя в Firebase Authentication
           const userCredential = await createUserWithEmailAndPassword(
             auth,
             userData.email,
@@ -50,7 +47,6 @@ export const authApiSlice = createApi({
           );
           const user = userCredential.user;
 
-          //  Создаем запись в Firestore
           const userDoc: IUser = {
             email: userData.email,
             firstName: userData.firstName,
@@ -83,11 +79,9 @@ export const authApiSlice = createApi({
       },
       invalidatesTags: ["Auth"],
     }),
-    // Авторизация пользователя
     loginUser: builder.mutation<ILoginResponse, ILoginProps>({
       async queryFn(credentials, api) {
         try {
-          // Авторизуем пользователя через Firebase Authentication
           const userCredential = await signInWithEmailAndPassword(
             auth,
             credentials.email,
@@ -96,7 +90,6 @@ export const authApiSlice = createApi({
 
           const user = userCredential.user;
 
-          // Получаем дополнительные данные пользователя из Firestore
           const userDoc = await getDoc(doc(db, "users", user.uid));
           let userData = null;
 
@@ -119,9 +112,7 @@ export const authApiSlice = createApi({
           const { message, code } = error as IAuthError;
           let errorMessage = authApiErrors.loginPrefix;
 
-          // Проверяем, является ли ошибка FirebaseError
           if (error instanceof FirebaseError) {
-            // Более конкретные сообщения об ошибках
             switch (error.code) {
               case "auth/user-not-found":
                 errorMessage = authApiErrors.notFound;
@@ -133,7 +124,6 @@ export const authApiSlice = createApi({
                 errorMessage = `${authApiErrors.loginPrefix} ${error.code}`;
             }
           } else if (error instanceof Error) {
-            // Обычная JavaScript ошибка
             errorMessage = message;
           }
 
@@ -148,7 +138,6 @@ export const authApiSlice = createApi({
       invalidatesTags: ["Auth"],
     }),
 
-    // Выход пользователя
     logoutUser: builder.mutation<void, void>({
       async queryFn(_, api) {
         try {
@@ -170,7 +159,6 @@ export const authApiSlice = createApi({
       invalidatesTags: ["Auth"],
     }),
 
-    // Проверка статуса аутентификации
     getAuthStatus: builder.query<{ isAuth: boolean }, void>({
       queryFn: () => {
         const isAuth = getAuth();
