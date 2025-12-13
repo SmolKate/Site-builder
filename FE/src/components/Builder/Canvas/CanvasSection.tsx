@@ -45,6 +45,7 @@ export const CanvasSection = ({
         "input",
         "link",
         "video",
+        "container",
       ],
     },
   });

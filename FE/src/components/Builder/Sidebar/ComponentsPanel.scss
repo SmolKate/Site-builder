@@ -41,6 +41,65 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--space-sm);
   }
+
+  &__footer {
+    padding: var(--space-md);
+  }
+
+  &__color-label {
+    display: block;
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xs);
+    text-transform: uppercase;
+  }
+
+  &__color-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  &__color-input {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: none;
+    
+    &::-webkit-color-swatch-wrapper { padding: 0; }
+    &::-webkit-color-swatch { border: none; border-radius: 4px; }
+  }
+
+  &__color-value {
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    font-family: monospace;
+  }
+   &__reset-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: 24px;
+    height: 24px;
+    
+    border: none;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--text-primary);
+    }
+  }
 }
 
 .component-card {

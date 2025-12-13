@@ -26,7 +26,8 @@ import {
   selectComponent,
   resetSiteConstructor,
   updateSiteConstructor,
-  getLayout
+  getLayout,
+  getSiteBackgroundColor
 } from "@/store/builder";
 
 import { GRID_COLUMN_NUMBER, ROW_HEIGHT, TOTAL_WIDTH } from "@/utils/constants";
@@ -41,6 +42,7 @@ import "./Constructor.scss";
 
 export const Constructor = () => {
   const { siteId } = useParams();
+  const siteBackgroundColor = useAppSelector(getSiteBackgroundColor);
 
   const dispatch = useAppDispatch();
   const layout = useAppSelector(getLayout);
@@ -71,6 +73,7 @@ export const Constructor = () => {
         components: siteContent.components,
         siteTitle: siteTitle,
         siteDescription: siteDescription,
+        siteBackgroundColor: siteContent.siteBackgroundColor,
       }));
     }
     return () => {
@@ -130,7 +133,8 @@ export const Constructor = () => {
         updatesSite: { published: true },
         updatesContent: {
           components: JSON.parse(JSON.stringify(components)),
-          layout: JSON.parse(JSON.stringify(layout))
+          layout: JSON.parse(JSON.stringify(layout)),
+          siteBackgroundColor,
         }
       });
     }
@@ -138,7 +142,8 @@ export const Constructor = () => {
 
   const onSiteUpload = () => {
     const layoutObj = createLayoutObj(layout, components);
-    const htmlString = insertHtmlIntoTemplate(createHtmlElement(layoutObj).getHTML(), siteTitle, siteDescription);
+    const htmlString = insertHtmlIntoTemplate(createHtmlElement(layoutObj)
+      .getHTML(), siteTitle, siteDescription, siteBackgroundColor);
     uploadHtmlFile(htmlString, siteTitle);
   };
 
@@ -161,6 +166,9 @@ export const Constructor = () => {
                 "builder__canvas-area", 
                 {"builder__canvas-area--active": isOverCanvas && draggedType === "container"},
               )}
+              style={{ 
+                backgroundColor: siteBackgroundColor 
+              }} 
             >
               {isOverCanvas && draggedType === "container" && (
                 <div className="builder__drop-hint">
