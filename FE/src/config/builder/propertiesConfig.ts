@@ -143,7 +143,44 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
       },
     ],
     button: [
-      { type: "text", label: "Текст", key: "text", target: "props" },
+      { type: "text", label: "Текст кнопки", key: "text", target: "props" },
+      { 
+        type: "number", 
+        label: "Ширина (px/%)", 
+        key: "width", 
+        target: "style"
+      },
+      {
+        type: "select",
+        label: "Действие по клику",
+        key: "actionType",
+        target: "props",
+        options: [
+          { value: "none", label: "Нет действия" },
+          { value: "link", label: "Открыть ссылку (URL)" },
+          { value: "anchor", label: "Скролл к блоку (ID)" },
+          { value: "email", label: "Отправить Email" },
+        ],
+        defaultValue: "none",
+      },
+      { 
+        type: "text", 
+        label: "Значение", 
+        key: "actionValue", 
+        target: "props",
+        defaultValue: "" 
+      },
+      {
+        type: "select",
+        label: "Открыть в новой вкладке",
+        key: "openInNewTab",
+        target: "props",
+        options: [
+          { value: "0", label: "Нет" },
+          { value: "1", label: "Да" },
+        ],
+        defaultValue: "0",
+      },
       { type: "color", label: "Цвет текста", key: "color", target: "style" },
     ],
     

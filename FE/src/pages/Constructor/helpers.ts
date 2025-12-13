@@ -241,13 +241,46 @@ const processBlock = (blockId: string, components: {[key: string]: IBlock}): IEx
     break;
 
   case "button":
-    tag = "button";
+    if (!finalStyles.width) finalStyles.width = "auto";
+    if (!finalStyles.display) finalStyles.display = "inline-block";
+    if (!finalStyles.cursor) finalStyles.cursor = "pointer";
+    if (!finalStyles.textDecoration) finalStyles.textDecoration = "none";
+    if (!finalStyles.border) finalStyles.border = "none";
+
     content = block.props.text as string;
-    if (!finalStyles.width) {
-      finalStyles.width = "auto";
-    }
-    if (!finalStyles.display) {
-      finalStyles.display = "inline-block";
+
+    if (["link", "anchor", "email"].includes(block.props.actionType as string)) {
+      tag = "a";
+      let href = "#";
+      const val = (block.props.actionValue as string) || "";
+      const actionType = block.props.actionType as string;
+
+      if (actionType === "link") {
+        
+        if (val.startsWith("http://") || val.startsWith("https://") || val.startsWith("/")) {
+          href = val;
+        } else {
+          href = `https://${val}`;
+        }
+      } else if (actionType === "email") {
+        href = `mailto:${val}`;
+      } else if (actionType === "anchor") {
+        if (val === "top") {
+          href = "#";
+        } else {
+          href = val.startsWith("#") ? val : `#${val}`;
+        }
+      }
+
+      attributes = { href };
+
+      if (actionType === "link" && block.props.openInNewTab === "1") {
+        attributes.target = "_blank";
+        attributes.rel = "noopener noreferrer";
+      }
+    } else {
+      tag = "button";
+      attributes = { type: "button" };
     }
     break;
 
