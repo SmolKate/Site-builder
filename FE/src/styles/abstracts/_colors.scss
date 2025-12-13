@@ -5,11 +5,39 @@
 
   // --- Фоны ---
   --bg-app: #{$white-soft};
-  --bg-surface: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(243, 243, 243, 0.05) 100%
-  );
+
+  --main-bg-app: 
+    radial-gradient(
+      circle at 0% 0%, 
+      #{rgba($brand-purple-light, 0.10)} 0%, 
+      #{rgba($white, 0.3)} 50%
+    ),
+
+    radial-gradient(
+      circle at 120% 70%, 
+      #{rgba($accent-pink, 0.20)} 0%, 
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at 95% 95%, 
+      #{rgba($accent-cyan, 0.05)} 10%, 
+      transparent 50%
+    ),
+
+    radial-gradient(
+      circle at 5% 85%, 
+      #{rgba($accent-blue, 0.10)} 0%, 
+      transparent 35%
+    ),
+
+    linear-gradient(
+      180deg, 
+      #{$white} 0%, 
+      #{$white-soft} 100%
+    );
+
+  --bg-surface:  #{rgba($white-off, 0.1)};
   --bg-form-secondary: #{$purple-light};
   --bg-pagination: #{$white-soft};
   --bg-pagination-hover: #{$purple-light};
@@ -20,6 +48,7 @@
   // --- Текст ---
   --text-primary: #{$black-text};
   --text-secondary: #{rgba($black-text, 0.7)};
+  --text-tertiary: #{rgba($brand-blue-mid, 0.9)};
   --text-inverse: #{$white};
   --text-on-primary: #{$white};
   --text-form-secondary: #{$brand-purple-border};
@@ -27,9 +56,9 @@
 
   // --- Градиентная обводка (для миксина) ---
   --border-glass-gradient: linear-gradient(
-    65deg,
-    rgba(124, 159, 255, 0.15),
-    rgba(175, 228, 255, 0.05)
+    155deg,
+    rgba(231, 237, 255, 0.05),
+    rgba(255, 255, 255, 0)
   );
   --border-blue-gradient: linear-gradient(90deg, #{$brand-purple-light}, #{$brand-purple-border});
 
@@ -63,11 +92,11 @@
   );
   // --- Градиент для особой кнопки ---
   --gradient-special: linear-gradient(
-    30deg,
+    45deg,
     #{$accent-blue} -70%,
-    #{$accent-cyan} 0%,
-    #{$accent-blue} 60%,
-    #{$accent-pink} 110%
+    #{$accent-cyan} -30%,
+    #{$accent-blue} 50%,
+    #{$accent-pink} 120%
   );
 
   // --- Градиент для основной кнопки (Синий -> Фиолетовый/Светло-синий) ---
@@ -100,24 +129,33 @@ html[data-theme="dark"] {
   color-scheme: dark;
 
   --bg-app: radial-gradient(circle at center, #{$brand-blue-mid} 0%, #{$brand-blue-deep} 100%);
-  --bg-surface: #{rgba($dark-surface, 0.5)};
+
+  --main-bg-app: 
+      radial-gradient(circle at 0% 15%, #{rgba($brand-blue-light, 0.75)} 0%, #{rgba($brand-blue-deep, 0.45)} 50%),
+      radial-gradient(circle at 95% 5%, #{rgba($accent-pink, 0.20)} 5%, #{rgba($brand-blue-deep, 0.25)} 55%),
+      radial-gradient(circle at 90% 110%, #{rgba($brand-purple-light, 0.45)} 0%, #{rgba($brand-blue-deep, 0.25)} 40%),
+      radial-gradient(circle at 0% 125%, #{rgba($accent-cyan, 0.55)} 0%, #{rgba($brand-blue-deep, 0.75)} 40%),
+      radial-gradient(circle at center, #{$brand-blue-deep} 0%, #{$dark-surface} 100%);
+
+  --bg-surface: #{rgba($white-off, 0.025)};
   --bg-pagination: #171a38;
   --bg-pagination-hover: #171a38;
 
-  --brand-primary-color: #{$purple-light};
+  --brand-primary-color: #{$brand-purple-light};
   --bg-sort: rgba(24, 27, 57);
 
   --text-primary: #{$white-soft};
   --text-secondary: #{$light-text};
+  --text-tertiary: #{$light-text};
   --text-inverse: #{$black-text};
   --text-on-primary: #{$white-soft};
   --text-pagination: #{$white-soft};
 
   // --- Градиентная обводка (для миксина) ---
   --border-glass-gradient: linear-gradient(
-    145deg,
-    rgba(124, 159, 255, 0.25),
-    rgba(175, 228, 255, 0.05)
+    155deg,
+    rgba(194, 210, 255, 0.05),
+    rgba(175, 228, 255, 0)
   );
   --border-color-default: #{$grey-soft};
   --border-color-btn: rgba(255, 255, 255, 0.1);

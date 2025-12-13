@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  
 
   &__body {
     display: flex;
@@ -12,6 +13,7 @@
     position: relative;
     padding: var(--space-2xl) var(--space-md);
     gap: var(--space-md);
+    
   }
 
   &__components-panel {
@@ -70,8 +72,18 @@
       background-color: rgba(33, 150, 243, 0.05);
     }
 
-    scrollbar-width: thin;
-
+    &::-webkit-scrollbar {
+      width: 8px;
+      scrollbar-width: thin;
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba(120, 110, 255, 0.3);
+        border-radius: 4px;
+      }
+      
     &::before {
       content: "";
       position: absolute;
@@ -109,6 +121,7 @@
     min-height: 100%;
     background: transparent;
     position: relative;
+    
   }
 
   &__drag-overlay {
@@ -121,6 +134,7 @@
     pointer-events: none;
     z-index: 100;
     border-radius: var(--radius-md);
+    
   }
   
   &__empty-state {
@@ -142,6 +156,7 @@
     flex: 1;       
     min-width: 0;  
     width: 100%;
+    
   
   }
 }

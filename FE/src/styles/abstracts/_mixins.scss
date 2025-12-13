@@ -2,8 +2,8 @@
   position: relative;
 
   background: var(--bg-surface);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-surface);
@@ -15,7 +15,7 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    padding: var(--border-width-sm, 1px);
+    padding: var(--border-width-md, 1px);
     background: var(--border-glass-gradient);
     -webkit-mask:
       linear-gradient(#fff 0 0) content-box,
@@ -103,6 +103,12 @@
   &:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+
+    &:hover {
+      background: none;
+      border-color: var(--border-color-nav-pill);
+      color: var(--text-primary);
+    }
   }
 
   &:hover:not(:disabled) {

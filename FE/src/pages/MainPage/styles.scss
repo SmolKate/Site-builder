@@ -13,13 +13,21 @@
 
   &__header {
     text-align: center;
-    margin-bottom: var(--space-lg);
+    margin-top: var(--space-xl);
+  }
+
+  &__logo {
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: var(--space-xl);
   }
 
   &__title {
     @include mix.text-h1;
     font-weight: 800;
-    margin-bottom: var(--space-xs);
 
     background: var(--gradient-special);
     background-clip: text;
@@ -29,6 +37,7 @@
 
   &__subtitle {
     color: var(--text-secondary);
+    margin-top: var(--space-xl);
   }
 
   &__content {
@@ -40,7 +49,6 @@
 
 .create-card {
   @include mix.glass-container;
-  background-color: var(--bg-app);
   border-radius: var(--radius-xxl);
   padding: var(--space-4xl);
 
@@ -100,9 +108,14 @@
   @include mix.btn-base;
 
   &--primary {
-    background: var(--gradient-btn-primary);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-on-primary);
+    border: 2px solid var(--border-color-nav-pill);
+    color: var(--text-tertiary);
+
+     &:hover {
+      background: var(--brand-primary-color);
+      border-color: var(--brand-primary-color);
+      color: var(--text-on-primary);
+    }
   }
 
   &--special {

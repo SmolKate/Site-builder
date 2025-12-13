@@ -52,7 +52,6 @@
   backdrop-filter: blur(10px);
   padding: var(--space-xl) var(--space-xs);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.1);
 
   cursor: grab;
   transition: all 0.2s ease;
@@ -69,7 +68,7 @@
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--bg-pagination-hover);
     border-color: var(--border-color-default);
   }
 
