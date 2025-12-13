@@ -16,7 +16,7 @@ interface IUpdateUserProps {
   uid: string | undefined;
   updates: Partial<
     Omit<IUser, "sites"> & {
-      sites?: string; // Переопределяем тип с string[] на string
+      sites?: string;
       password?: string;
       currentPassword?: string;
     }
@@ -54,7 +54,6 @@ export const usersApiSlice = createApi({
         try {
           const userUid = getUser();
           if (userUid) {
-            // Получаем дополнительные данные пользователя из Firestore
             const userDoc = await getDoc(doc(db, "users", userUid));
             let userData = null;
 
@@ -81,7 +80,6 @@ export const usersApiSlice = createApi({
       providesTags: ["CurrentUser"],
     }),
 
-    // Редактирование пользователя
     updateUser: builder.mutation<void, IUpdateUserProps>({
       async queryFn({ uid, updates }, api) {
         try {
@@ -97,7 +95,6 @@ export const usersApiSlice = createApi({
           const existingUserData = userDoc.data() as IUser;
           const currentUser = auth.currentUser;
 
-          // Проверяем, что текущий пользователь совпадает с обновляемым
           if (!currentUser) {
             throw new Error(usersApiErrors.unauthorized);
           }
@@ -109,20 +106,16 @@ export const usersApiSlice = createApi({
             };
           }
 
-          // Обновление пароля в Firebase Authentication
           if (updates.password && updates.currentPassword) {
             try {
-              // Re-authenticate пользователя
               const credential = EmailAuthProvider.credential(
                 existingUserData.email,
                 updates.currentPassword
               );
               await reauthenticateWithCredential(currentUser, credential);
 
-              // Обновляем пароль в Firebase Auth
               await updatePassword(currentUser, updates.password);
 
-              // Удаляем пароль из обновлений для Firestore
               delete updates.password;
             } catch (error: unknown) {
               return {
@@ -164,10 +157,8 @@ export const usersApiSlice = createApi({
     deleteUser: builder.mutation<void, string>({
       async queryFn(userId) {
         try {
-          // Удаляем из Firestore
           await deleteDoc(doc(db, "users", userId));
 
-          // Удаляем из Authentication:
           const user = auth.currentUser;
           if (user && user.uid === userId) {
             await deleteUser(user);

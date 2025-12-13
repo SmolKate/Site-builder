@@ -1,1 +1,0 @@
-export { SitesList } from "./SitesList";
