@@ -11,6 +11,7 @@ export interface ISiteDTO {
 export interface ISiteContentDTO {
   components: {[key: string]: IBlock}
   layout: ILayoutItem[]
+  siteBackgroundColor?: string; 
 }
 
 export interface IAuthState {

@@ -24,7 +24,7 @@ const uploadHtmlFile = (content: string, siteTitle?: string) => {
   URL.revokeObjectURL(url);
 };
 
-const insertHtmlIntoTemplate = (body: string, siteTitle?: string, siteDescription?: string) => `
+const insertHtmlIntoTemplate = (body: string, siteTitle?: string, siteDescription?: string, bgColor: string = "transparent") => `
   <!DOCTYPE html>
   <html lang="ru">
     <head>
@@ -44,8 +44,8 @@ const insertHtmlIntoTemplate = (body: string, siteTitle?: string, siteDescriptio
         iframe { border: 0; }
       </style>
     </head>
-    <body style="background-color:#f5f5f5;min-height:100vh;width:100%;display:flex;align-items:flex-start;justify-content:center;padding:0px;">
-      <div style="position:relative;height:100%;width:100%;max-width:${TOTAL_WIDTH}px;background-color:white;box-shadow:0 0 20px rgba(0,0,0,0.1);min-height:100vh;">
+    <body style="background-color:${bgColor};min-height:100vh;width:100%;display:flex;align-items:flex-start;justify-content:center;padding:0px;">
+      <div style="position:relative;height:100%;width:100%;max-width:${TOTAL_WIDTH}px;min-height:100vh;">
         ${body}
       </div>
     </body>

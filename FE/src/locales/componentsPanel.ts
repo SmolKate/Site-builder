@@ -24,5 +24,9 @@ export const componentsPanel = {
     divider: "Линия",
     quote: "Цитата",
     list: "Список",
+    chooseColor: "Выберите цвет",
+    siteBG: "Фон сайта",
+    transparent: "Прозрачный",
+    makeTransparent: "Сделать прозрачным",
   },
 };
