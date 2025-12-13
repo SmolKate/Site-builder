@@ -17,6 +17,7 @@ import { useGetCurrentUserQuery, useUpdateUserMutation } from "@/store/users";
 import { RaDialog } from "@/components/Dialog";
 import { MainDialogContent } from "./MainDialogContent";
 import { MAIN_SITES } from "@/locales/mainPage";
+import gridlyLogo from "@/assets/icons/gridly-logo.svg";
 import { GearIcon } from "@radix-ui/react-icons";
 import { FormDialogContent } from "./FormDialogContent";
 import "./styles.scss";
@@ -117,7 +118,7 @@ export function MainPage() {
   return (
     <div className="main-page">
       <header className="main-page__header">
-        <h1 className="main-page__title">{mainPageMessages.title}</h1>
+        <img src={gridlyLogo} alt="Gridly logo" className="main-page__logo" />
         <p className="main-page__subtitle">{mainPageMessages.subtitle}</p>
       </header>
 

@@ -12,8 +12,6 @@
     position: fixed;
     top: 0;
 
-    //эти приседания для того чтобы ограничить по ширине
-    //по другому не сработало из-за  position: fixed;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;

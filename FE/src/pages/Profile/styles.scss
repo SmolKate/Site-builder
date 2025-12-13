@@ -2,6 +2,7 @@
 
 .profile-wrapper {
   @include mix.flex-center;
+  margin-top: var(--space-4xl);
 }
 
 .profile-card {
