@@ -16,6 +16,9 @@ import { Button } from "@/ui";
 import { TButtonSize } from "@/ui/types";
 import { componentsPanel } from "@/locales";
 import "./ComponentsPanel.scss";
+import { getSiteBackgroundColor } from "@/store/builder";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { setSiteBackgroundColor } from "@/store/builder/builderSlice";
 
 interface DraggableItemProps {
   type: string;
@@ -53,6 +56,9 @@ const DraggableItem = ({ type, label, icon }: DraggableItemProps) => {
 
 export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelProps) => {
   const t = componentsPanel;
+  const dispatch = useAppDispatch();
+  const siteBackgroundColor = useAppSelector(getSiteBackgroundColor);
+  const isTransparent = siteBackgroundColor === "transparent" || !siteBackgroundColor;
 
   return (
     <div className="components-panel">
@@ -81,7 +87,6 @@ export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelPro
             label={t.components.container}
             icon={<BoxIcon width={24} height={24} />}
           />
-          {/* <DraggableItem type="page" label={t.components.page} icon={<BoxIcon width={24} height={24} />} />  */}
         </div>
 
         <div className="components-panel__section-title">{t.sections.typography}</div>
@@ -115,7 +120,6 @@ export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelPro
             label={t.components.video}
             icon={<VideoIcon width={24} height={24} />}
           />
-          {/* <DraggableItem type="input" label={t.components.input} icon={<InputIcon width={24} height={24} />} /> */}
           <DraggableItem
             type="link"
             label={t.components.link}
@@ -140,6 +144,32 @@ export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelPro
             label={t.components.list}
             icon={<ListBulletIcon width={24} height={24} />}
           />
+        </div>
+      </div>
+      <div className="components-panel__footer">
+        <label className="components-panel__color-label">{t.components.siteBG}</label>
+        <div className="components-panel__color-wrapper">
+          <input 
+            type="color" 
+            value={isTransparent ? "#ffffff" : siteBackgroundColor}
+            onChange={(e) => dispatch(setSiteBackgroundColor(e.target.value))}
+            className="components-panel__color-input"
+            title={t.components.chooseColor}
+          />
+          
+          <span className="components-panel__color-value">
+            {isTransparent ? t.components.transparent : siteBackgroundColor}
+          </span>
+
+          {!isTransparent && (
+            <button
+              onClick={() => dispatch(setSiteBackgroundColor("transparent"))}
+              className="components-panel__reset-btn"
+              title={t.components.makeTransparent}
+            >
+              ✕
+            </button>
+          )}
         </div>
       </div>
     </div>

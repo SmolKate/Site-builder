@@ -43,4 +43,5 @@ export interface BuilderState {
   selectedId: string | null;
   siteTitle: string;
   siteDescription: string;
+  siteBackgroundColor: string;
 }

@@ -16,6 +16,7 @@ interface ISiteConstructor {
   components: {[key: string]: IBlock};
   siteTitle: string;
   siteDescription: string;
+  siteBackgroundColor?: string;
 }
 
 const initialState: BuilderState = {
@@ -24,6 +25,7 @@ const initialState: BuilderState = {
   selectedId: null,
   siteTitle: "",
   siteDescription: "",
+  siteBackgroundColor: "transparent",
 };
 
 const getAllDescendantIds = (
@@ -88,12 +90,17 @@ export const builderSlice = createSlice({
       state.layout = action.payload;
     },
 
+    setSiteBackgroundColor: (state, action: PayloadAction<string>) => {
+      state.siteBackgroundColor = action.payload;
+    },
+
     updateSiteConstructor: (state, action: PayloadAction<ISiteConstructor>) => {
-      const {layout, components, siteTitle, siteDescription} = action.payload;
+      const {layout, components, siteTitle, siteDescription, siteBackgroundColor} = action.payload;
       state.layout = layout;
       state.components = components;
       state.siteTitle = siteTitle;
       state.siteDescription = siteDescription;
+      state.siteBackgroundColor = siteBackgroundColor || "transparent";
     },
 
     resetSiteConstructor: (state) => {
@@ -101,6 +108,7 @@ export const builderSlice = createSlice({
       state.components = {};
       state.siteTitle = "";
       state.siteDescription = "";
+      state.siteBackgroundColor = "transparent";
     },
 
     addBlockToContainer: {
@@ -198,6 +206,7 @@ export const {
   deleteComponent,
   updateSectionDimensions,
   resetSiteConstructor,
+  setSiteBackgroundColor,
 } = builderSlice.actions;
 
 export default builderSlice.reducer;
