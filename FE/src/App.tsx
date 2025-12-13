@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
+import { ToastContainer } from 'react-toastify';
 import { Login, MainPage, Constructor, NotFound, Profile, Signup } from "@/pages";
 import { MainLayout, ProtectedLayout, UnauthorizedLayout } from "@/layouts";
 import { ErrorBoundary } from "@/components";
@@ -32,6 +33,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
+      <ToastContainer position="top-center" />
     </ErrorBoundary>
   );
 }

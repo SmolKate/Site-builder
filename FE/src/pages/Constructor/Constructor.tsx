@@ -11,6 +11,7 @@ import {
   pointerWithin
 } from "@dnd-kit/core";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import type { DragEndEvent, DragStartEvent} from "@dnd-kit/core";
 import type { BlockType, ILayoutItem } from "@/store/builder/types";
@@ -36,6 +37,7 @@ import { PropertiesPanel } from "@/components/Builder/Sidebar/PropertiesPanel";
 import { GridSection } from "@/components/Builder/Canvas/GridSection";
 import { createHtmlElement, createLayoutObj, insertHtmlIntoTemplate, uploadHtmlFile } from "./helpers";
 import { constructorMessages } from "./messages";
+import { toastMessages } from "@/locales";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import "./Constructor.scss"; 
@@ -128,15 +130,19 @@ export const Constructor = () => {
 
   const onSiteSave = async() => {
     if (siteId) {
-      await updateSite({
-        id: siteId,
-        updatesSite: { published: true },
-        updatesContent: {
-          components: JSON.parse(JSON.stringify(components)),
-          layout: JSON.parse(JSON.stringify(layout)),
-          siteBackgroundColor,
-        }
-      });
+      try {
+        await updateSite({
+          id: siteId,
+          updatesSite: { published: true },
+          updatesContent: {
+            components: JSON.parse(JSON.stringify(components)),
+            layout: JSON.parse(JSON.stringify(layout))
+          }
+        });
+        toast.info(toastMessages.saveChangesSuccess)
+      } catch (error) {
+        toast.info(toastMessages.saveChangesError)
+      }
     }
   };
 
