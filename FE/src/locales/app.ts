@@ -5,12 +5,10 @@ export const messages = {
 };
 
 export const editProfileDialog = {
-  title: "Редактирование профиля пользователя",
-  description:
-    "Здесь можно отредактировать профиль пользователя. Нажмите сохранить чтобы принять изменения",
-  editPassword: "Отредактировать пароль",
-  emailTooltip: "В данный момент изменение e-mail не доступно",
-  errorPassword: "Проверьте правильность введения пароля",
+  title: "Редактировать профиль",
+  editPassword: "Поменять пароль",
+  emailTooltip: "В данный момент изменение электронной почты недоступно",
+  errorPassword: "Проверьте правильность введённого пароля",
 };
 
 export const themeToggle = {

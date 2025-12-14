@@ -1,19 +1,19 @@
 export const validationMessages = {
   email: {
-    required: "Email обязателен для заполнения",
-    invalid: "Введите корректный email адрес",
+    required: "Электронная почта обязательна для заполнения",
+    invalid: "Введите корректную электронную почту",
   },
   password: {
     required: "Пароль обязателен для заполнения",
-    minLength: (minLength: number) => `Пароль должен содержать минимум ${minLength} символа`,
+    minLength: (minLength: number) => `Пароль должен содержать минимум ${minLength} символов`,
   },
   firstName: {
     required: "Имя обязательно для заполнения",
-    minLength: (minLength: number) => `Имя должно содержать минимум ${minLength} символов`,
+    minLength: (minLength: number) => `Имя должно содержать минимум ${minLength} символа`,
   },
   lastName: {
     required: "Фамилия обязательна для заполнения",
-    minLength: (minLength: number) => `Фамилия должна содержать минимум ${minLength} символов`,
+    minLength: (minLength: number) => `Фамилия должна содержать минимум ${minLength} символа`,
   },
   confirmPassword: {
     invalid: "Пароли не совпадают",
@@ -26,6 +26,6 @@ export const validationMessages = {
     maxLength: (maxLength: number) => `Поле не должно превышать ${maxLength} символов`,
   },
   common: {
-    notSpecialSymbols: "Не может содержать специальные символы",
+    notSpecialSymbols: "Поле не может содержать специальные символы",
   },
 };

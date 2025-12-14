@@ -62,6 +62,7 @@
     border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
     border: none;
     border-left: var(--border-width-md) solid var(--border-color-default);
+    cursor: pointer;
 
     svg path {
       fill: var(--border-color-default);

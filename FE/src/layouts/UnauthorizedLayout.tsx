@@ -10,20 +10,15 @@ export const UnauthorizedLayout = () => {
 
   return (
     <UnauthorizedRoute>
-      <div className="unauth-layout">
-        <div className="unauth-layout__bar">
-          <button
-            type="button"
-            className="unauth-layout__theme-btn"
-            onClick={toggleTheme}
-            aria-label={ariaLabel}
-          >
-            {theme === "light" ? "🌙" : "☀️"}
-          </button>
-        </div>
-
-        <Outlet />
-      </div>
+      <button
+        className="toggle-theme-button"
+        type="button"
+        onClick={toggleTheme}
+        aria-label={ariaLabel}
+      >
+        {theme === "light" ? "🌙" : "☀️"}
+      </button>
+      <Outlet />
     </UnauthorizedRoute>
   );
 };

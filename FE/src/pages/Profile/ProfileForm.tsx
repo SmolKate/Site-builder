@@ -57,17 +57,19 @@ export const ProfileForm = ({
         placeholder=""
         errors={errors}
       />
-      <input
-        name="checkbox"
-        type="checkbox"
-        id="isChangePass"
-        className="dialog-checkbox"
-        checked={isChecked}
-        onChange={handleChangeCheck}
-      />
-      <label htmlFor="isChangePass" className="dialog-checkbox__label">
-        {profileMessages.changePasswordQuestion}
-      </label>
+      <div className="dialog-change-pass">
+        <input
+          name="checkbox"
+          type="checkbox"
+          id="isChangePass"
+          className="dialog-checkbox"
+          checked={isChecked}
+          onChange={handleChangeCheck}
+        />
+        <label htmlFor="isChangePass" className="dialog-checkbox__label">
+          {profileMessages.changePasswordQuestion}
+        </label>
+      </div>
       {isChecked && (
         <>
           <PasswordField

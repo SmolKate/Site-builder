@@ -1,11 +1,11 @@
 @use "@/styles/abstracts/mixins" as mix;
+@use "@/styles/abstracts/breakpoints" as *;
 
 .builder {
   display: flex;
   flex-direction: column;
   height: calc(100vh - var(--header-height));
   
-
   &__body {
     display: flex;
     flex: 1;
@@ -13,7 +13,6 @@
     position: relative;
     padding: var(--space-2xl) var(--space-md);
     gap: var(--space-md);
-    
   }
 
   &__components-panel {
@@ -57,7 +56,7 @@
 
   &__canvas-area {
     flex: 1;
-    overflow-x: auto;
+    overflow-x: hidden;
     scrollbar-color: rgba(120, 110,	255, 0.5) transparent;
     position: relative;
 
@@ -100,6 +99,10 @@
     &--active::before {
       border-color: #2196f3;
       background: rgba(33, 150, 243, 0.05);
+    }
+
+    @media (max-width: $bp-xl) {
+      overflow-x: auto;
     }
   }
 
