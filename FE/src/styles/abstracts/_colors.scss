@@ -43,6 +43,7 @@
   --bg-pagination-hover: #{$purple-light};
 
   --brand-primary-color: #{$brand-blue-light};
+  --brand-primary-color-transparent: #{rgba($brand-blue-light, 0.2)};
   --bg-sort: rgba(240, 246, 255);
 
   // --- Текст ---
@@ -64,6 +65,7 @@
 
   // --- Обводки ---
   --border-color-default: #{$brand-purple-border};
+  --border-color-default-transparent: #{rgba($grey-soft, 0.2)};
   --border-color-btn: rgba(127, 141, 209, 0.2);
   --border-color-input-search: rgba(127, 141, 209, 0.2);
 
@@ -142,6 +144,7 @@ html[data-theme="dark"] {
   --bg-pagination-hover: #171a38;
 
   --brand-primary-color: #{$brand-purple-light};
+  --brand-primary-color-transparent: #{rgba($brand-purple-light, 0.2)};
   --bg-sort: rgba(24, 27, 57);
 
   --text-primary: #{$white-soft};

@@ -104,45 +104,6 @@
   }
 }
 
-.ui-btn {
-  @include mix.btn-base;
-
-  &--primary {
-    border: 2px solid var(--border-color-nav-pill);
-    color: var(--text-tertiary);
-
-     &:hover {
-      background: var(--brand-primary-color);
-      border-color: var(--brand-primary-color);
-      color: var(--text-on-primary);
-    }
-  }
-
-  &--special {
-    background: var(--gradient-special);
-    color: #fff;
-    border: none;
-  }
-
-  &--danger {
-    background: transparent;
-    color: var(--color-error);
-    border: 2px solid var(--border-error-soft);
-    box-shadow: none;
-
-    &:hover {
-      background: var(--color-error);
-      border-color: var(--color-error);
-      color: #fff;
-    }
-  }
-
-  &--sm {
-    padding: 8px 16px;
-    min-height: 32px;
-  }
-}
-
 .sites-section {
   &__header {
     display: flex;

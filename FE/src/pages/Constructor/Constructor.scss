@@ -3,7 +3,7 @@
 .builder {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc(100vh - var(--header-height));
   
 
   &__body {
@@ -58,6 +58,7 @@
   &__canvas-area {
     flex: 1;
     overflow-x: auto;
+    scrollbar-color: rgba(120, 110,	255, 0.5) transparent;
     position: relative;
 
     border-radius: var(--radius-lg);

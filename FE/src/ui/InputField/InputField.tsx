@@ -50,6 +50,7 @@ const InputField = <TFieldValues extends FieldValues>(props: IInputFieldProps<TF
           className={`field__input ${inputClassName}`}
           placeholder={placeholder}
           disabled={isDisabled}
+          autoComplete="off"
           {...inputProps}
         />
       </div>
