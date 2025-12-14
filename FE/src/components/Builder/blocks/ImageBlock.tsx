@@ -32,6 +32,7 @@ export const ImageBlock = ({ block }: Props) => {
             height: "auto",
             display: "block",
             objectFit: "cover",
+            ...block.style,
           }}
         />
       ) : (

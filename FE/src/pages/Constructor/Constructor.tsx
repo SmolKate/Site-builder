@@ -139,9 +139,9 @@ export const Constructor = () => {
             layout: JSON.parse(JSON.stringify(layout))
           }
         });
-        toast.info(toastMessages.saveChangesSuccess)
+        toast.info(toastMessages.saveChangesSuccess);
       } catch (error) {
-        toast.info(toastMessages.saveChangesError)
+        toast.info(toastMessages.saveChangesError);
       }
     }
   };
