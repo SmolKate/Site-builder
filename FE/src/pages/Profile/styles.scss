@@ -66,17 +66,19 @@
 }
 
 .dialog-email {
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-lg);
+
   &__label {
-    font-size: var(--font-size-sm);
     margin-bottom: var(--space-xxs);
   }
+
   &__content {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     color: var(--text-secondary);
   }
+  
   &__icon:hover {
     cursor: pointer;
   }
@@ -84,7 +86,15 @@
 
 .dialog-checkbox {
   margin-right: var(--space-md);
+
+  cursor: pointer;
+
   &__label {
     user-select: none;
+    cursor: pointer;
   }
+}
+
+.dialog-change-pass {
+  margin-bottom: var(--space-sm);
 }

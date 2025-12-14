@@ -5,10 +5,10 @@ export const popoverMessages = {
 export const dropdownMessages = {
   trigger: "Сортировка",
   options: {
-    alphabetAsc: "A-z",
-    alphabetDesc: "Z-a",
-    newest: "Сначала новые",
-    oldest: "Сначала старые",
+    alphabetAsc: "a-z",
+    alphabetDesc: "z-a",
+    newest: "сначала новые",
+    oldest: "сначала старые",
   },
 };
 
@@ -16,15 +16,15 @@ export const mainPageMessages = {
   title: "Site Builder",
   subtitle: "Панель управления проектами",
   confirmDelete: {
-    title: "Вы точно хотите удалить сайт",
+    title: "Удалить сайт",
     body: "Его нельзя будет восстановить",
     confirm: "Да",
   },
   createCard: {
-    title: "Создание сайта",
-    titlePlaceholder: "Название проекта",
+    title: "Создать сайт",
+    titlePlaceholder: "Название сайта",
     descriptionPlaceholder: "Краткое описание",
-    submit: "Создать сайт",
+    submit: "Создать",
     save: "Сохранить",
   },
   sitesSection: {
@@ -78,7 +78,7 @@ export const profileMessages = {
     lastName: "Фамилия",
     password: "Пароль",
     confirmPassword: "Подтвердите пароль",
-    currentPassword: "текущий пароль",
+    currentPassword: "Текущий пароль",
   },
   actions: {
     save: "Сохранить",

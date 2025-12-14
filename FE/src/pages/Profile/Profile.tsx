@@ -147,7 +147,6 @@ export const Profile = () => {
           open={open}
           onClose={handleToggleDialog}
           title={editProfileDialog.title}
-          description={editProfileDialog.description}
           content={
             <ProfileForm
               currentUser={currentUser as IUser}

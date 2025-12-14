@@ -24,4 +24,8 @@
     padding-top: var(--header-height);
     height: 100vh;
   }
+
+  &:has(.builder) {
+    overflow-y: hidden;
+  }
 }

@@ -1,5 +1,5 @@
 export const MAIN_DIALOG = {
-  notification: "Вы действительно хотите удалить сайт",
+  notification: "Вы точно хотите удалить сайт",
   primaryButton: "Удалить",
   secondaryButton: "Отменить",
 };

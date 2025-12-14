@@ -16,7 +16,7 @@ export const MainDialogContent = ({ site, onDelete, onClose }: IMainDialogConten
   };
   return (
     <Flex>
-      <Box className="dialog__content">{`${MAIN_DIALOG.notification} "${site.title}"`}</Box>
+      <Box className="dialog__content">{`${MAIN_DIALOG.notification} "${site.title}"?`}</Box>
       <Box className="dialog__actions">
         <Button
           buttonText={MAIN_DIALOG.primaryButton}
