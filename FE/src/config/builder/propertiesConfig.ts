@@ -115,6 +115,12 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
     image: [
       { type: "text", label: "URL изображения", key: "src", target: "props" },
       { type: "text", label: "Alt текст", key: "alt", target: "props" },
+      { 
+        type: "number", 
+        label: "Ширина (px/%)", 
+        key: "width", 
+        target: "style"
+      },
     ],
     heading: [
       {
