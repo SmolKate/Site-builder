@@ -4,7 +4,7 @@
   @include mix.btn-base;
 
   &--primary {
-    border: 2px solid var(--border-color-nav-pill);
+    border: 2px solid var(--brand-primary-color-transparent);
     color: var(--text-tertiary);
 
      &:hover {
@@ -15,9 +15,12 @@
   }
 
   &--secondary {
-    background: var(--gradient-btn-secondary);
-    color: #fff;
-    border: none;
+    color: var(--text-secondary);
+    border: 2px solid var(--border-color-default-transparent);
+
+    &:hover {
+      background: var(--gradient-btn-secondary);
+    }
   }
 
   &--special {

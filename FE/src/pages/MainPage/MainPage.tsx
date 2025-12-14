@@ -9,7 +9,7 @@ import type { ISelectedPage, ISiteDTO } from "@/utils/types";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
 import { InputField, Button, Pagination, Loader, Dropdown, SearchInputField } from "@/ui";
 import { LSize, LVariant } from "@/ui/Loader";
-import { TVariant } from "@/ui/types";
+import { TButtonSize, TButtonVariant, TVariant } from "@/ui/types";
 import { paginate } from "@/utils";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
 import { useDebounce } from "@/utils/hooks";
@@ -214,24 +214,23 @@ export function MainPage() {
                       </span>
                     </div>
                   </div>
-
                   <div className="site-card__actions">
-                    <button
+                    <Button
+                      buttonText={MAIN_SITES.actions.primaryButton}
+                      variant={TButtonVariant.PRIMARY}
+                      size={TButtonSize.SMALL}
                       onClick={() => navigate(`/sites/${site.id}`)}
-                      className="ui-btn ui-btn--primary ui-btn--sm"
-                    >
-                      {MAIN_SITES.actions.primaryButton}
-                    </button>
-                    <button
+                    />
+                    <Button
+                      buttonText={MAIN_SITES.actions.secondaryButton}
+                      variant={TButtonVariant.DANGER}
+                      size={TButtonSize.SMALL}
                       onClick={(e) => {
                         e.stopPropagation();
                         setSite({ id: site.id, title: site.title });
                         setOpenDialog(true);
                       }}
-                      className="ui-btn ui-btn--danger ui-btn--sm"
-                    >
-                      {MAIN_SITES.actions.secondaryButton}
-                    </button>
+                    />
                   </div>
                 </div>
               ))}
