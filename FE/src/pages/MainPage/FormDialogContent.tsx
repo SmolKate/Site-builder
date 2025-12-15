@@ -69,6 +69,7 @@ export const FormDialogContent = ({ site, onClose }: IFormDialogContent) => {
           fieldName="title"
           placeholder={mainPageMessages.createCard.titlePlaceholder}
           variant={TVariant.PRIMARY}
+          label={mainPageMessages.form.title}
         />
         <InputField
           register={register}
@@ -76,6 +77,7 @@ export const FormDialogContent = ({ site, onClose }: IFormDialogContent) => {
           fieldName="description"
           placeholder={mainPageMessages.createCard.descriptionPlaceholder}
           variant={TVariant.PRIMARY}
+          label={mainPageMessages.form.description}
         />
         <Button buttonText={mainPageMessages.createCard.save} type="submit" disabled={!isValid || isSubmitting} />
       </form>

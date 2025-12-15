@@ -38,6 +38,10 @@ export const mainPageMessages = {
   },
   confirmChange: {
     title: "Изменить описание сайта"
+  },
+  form: {
+    title: "Название сайта",
+    description: "Описание сайта",
   }
 };
 

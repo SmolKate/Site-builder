@@ -112,6 +112,7 @@
   backdrop-filter: blur(10px);
   padding: var(--space-xl) var(--space-xs);
   border-radius: var(--radius-md);
+  box-shadow: var(--shadow-surface);
 
   cursor: grab;
   transition: all 0.2s ease;
