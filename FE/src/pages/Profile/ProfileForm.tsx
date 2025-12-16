@@ -4,8 +4,13 @@ import type { EditProfileFormData } from "@/ui/types";
 import type { IUser } from "@/utils/types";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { Box } from "@radix-ui/themes";
-import { useState, type ChangeEvent } from "react";
-import { type FieldErrors, type UseFormRegister } from "react-hook-form";
+import { useEffect, useState, type ChangeEvent } from "react";
+import {
+  type FieldErrors,
+  type UseFormClearErrors,
+  type UseFormRegister,
+  type UseFormResetField,
+} from "react-hook-form";
 
 interface IProfileForm {
   currentUser: IUser | null | undefined;
@@ -15,6 +20,8 @@ interface IProfileForm {
   handleCancelClick: () => void;
   disableSubmit: boolean;
   isPasswordChanged: boolean;
+  resetField: UseFormResetField<EditProfileFormData>;
+  clearErrors: UseFormClearErrors<EditProfileFormData>;
 }
 
 export const ProfileForm = ({
@@ -25,8 +32,20 @@ export const ProfileForm = ({
   handleCancelClick,
   disableSubmit,
   isPasswordChanged,
+  resetField,
+  clearErrors,
 }: IProfileForm) => {
   const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    if (!isChecked) {
+      resetField("password");
+      resetField("confirmPassword");
+      resetField("currentPassword");
+      clearErrors(["password", "confirmPassword", "currentPassword"]);
+    }
+  }, [isChecked, resetField, clearErrors]);
+
   const handleChangeCheck = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setIsChecked(target.checked);
   };
@@ -101,7 +120,12 @@ export const ProfileForm = ({
       )}
 
       <div className="main-dialog__footer">
-        <Button buttonText={profileMessages.actions.save} variant="primary" type="submit" disabled={disableSubmit} />
+        <Button
+          buttonText={profileMessages.actions.save}
+          variant="primary"
+          type="submit"
+          disabled={disableSubmit}
+        />
         <Button
           buttonText={profileMessages.actions.cancel}
           type="button"
