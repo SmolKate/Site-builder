@@ -29,6 +29,7 @@ export const Profile = () => {
     register,
     handleSubmit,
     reset,
+    resetField,
     watch,
     setError,
     trigger,
@@ -110,7 +111,7 @@ export const Profile = () => {
 
   const { firstName, lastName, avatarURL, email } = currentUser as IUser;
 
-  const onSubmit = async(data: EditProfileFormData) => {
+  const onSubmit = async (data: EditProfileFormData) => {
     clearErrors();
 
     if (isPasswordChanged) {
@@ -119,10 +120,21 @@ export const Profile = () => {
       if (!isValid) return;
     }
 
+    const { password, confirmPassword, currentPassword, ...rest } = data;
+
+    const updates: Partial<EditProfileFormData> = {
+      ...rest,
+      ...(isPasswordChanged && {
+        password,
+        confirmPassword,
+        currentPassword,
+      }),
+    };
+
     if (currentUser) {
       updateUser({
         uid: currentUser?.uid,
-        updates: data,
+        updates,
       })
         .unwrap()
         .then(() => handleToggleDialog());
@@ -156,6 +168,8 @@ export const Profile = () => {
               handleCancelClick={handleCancelClick}
               disableSubmit={disableSubmit}
               isPasswordChanged={isPasswordChanged}
+              resetField={resetField}
+              clearErrors={clearErrors}
             />
           }
         />
