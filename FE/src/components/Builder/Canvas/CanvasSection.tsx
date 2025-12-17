@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
 import { useDroppable } from "@dnd-kit/core";
 import type { IBlock } from "@/store/builder/types";
+import { COMMON_ACCEPT_DATA } from "@/store/builder/types";
 import { useAppDispatch } from "@/store";
 import { deleteComponent } from "@/store/builder/builderSlice";
 import { Cross2Icon, MoveIcon } from "@radix-ui/react-icons";
@@ -34,19 +35,7 @@ export const CanvasSection = ({
   const { setNodeRef, isOver } = useDroppable({
     id,
     data: {
-      accept: [
-        "button",
-        "text",
-        "heading",
-        "image",
-        "divider",
-        "quote",
-        "list",
-        "input",
-        "link",
-        "video",
-        "container",
-      ],
+      accept: COMMON_ACCEPT_DATA,
     },
   });
 

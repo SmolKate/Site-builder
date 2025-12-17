@@ -1,6 +1,6 @@
 import { useDroppable } from "@dnd-kit/core";
 import clsx from "clsx";
-import { type IBlock } from "@/store/builder/types";
+import { type IBlock, COMMON_ACCEPT_DATA } from "@/store/builder/types";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { selectSelectedId } from "@/store/builder";
 import { deleteComponent, selectComponent } from "@/store/builder/builderSlice";
@@ -20,19 +20,7 @@ export const ContainerBlock = ({ block }: Props) => {
   const { setNodeRef, isOver } = useDroppable({
     id: block.id,
     data: {
-      accept: [
-        "button",
-        "text",
-        "heading",
-        "image",
-        "video",
-        "divider",
-        "quote",
-        "list",
-        "input",
-        "link",
-        "container",
-      ],
+      accept: COMMON_ACCEPT_DATA,
     },
   });
 

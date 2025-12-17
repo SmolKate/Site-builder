@@ -14,6 +14,7 @@ import "./Renderer.scss";
 import { VideoBlock } from "./blocks/VideoBlock";
 import { QuoteBlock } from "./blocks/QuoteBlock";
 import { ListBlock } from "./blocks/ListBlock";
+import { NumListBlock } from "./blocks/NumListBlock";
 import { InputBlock } from "./blocks/InputBlock";
 
 import { DividerBlock } from "./blocks/DividerBlock";
@@ -22,6 +23,7 @@ import { ContainerBlock } from "./blocks/ContainerBlock";
 
 import { RaDialog } from "@/components/Dialog";
 import { Button } from "@/ui";
+import { BLOCK_TYPES } from "@/store/builder/types";
 
 export const Renderer = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
@@ -50,37 +52,40 @@ export const Renderer = ({ id }: { id: string }) => {
   let content = null;
 
   switch (block.type) {
-  case "container":
+  case BLOCK_TYPES.CONTAINER:
     content = <ContainerBlock block={block} />;
     break;
-  case "button":
+  case BLOCK_TYPES.BUTTON:
     content = <ButtonBlock block={block} />;
     break;
-  case "text":
+  case BLOCK_TYPES.TEXT:
     content = <TextBlock block={block} />;
     break;
-  case "heading":
+  case BLOCK_TYPES.HEADING:
     content = <HeadingBlock block={block} />;
     break;
-  case "image":
+  case BLOCK_TYPES.IMAGE:
     content = <ImageBlock block={block} />;
     break;
-  case "video":
+  case BLOCK_TYPES.VIDEO:
     content = <VideoBlock block={block} />;
     break;
-  case "divider":
+  case BLOCK_TYPES.DIVIDER:
     content = <DividerBlock block={block} />;
     break;
-  case "quote":
+  case BLOCK_TYPES.QUOTE:
     content = <QuoteBlock block={block} />;
     break;
-  case "list":
+  case BLOCK_TYPES.LIST:
     content = <ListBlock block={block} />;
     break;
-  case "input":
+  case BLOCK_TYPES.NUM_LIST:
+    content = <NumListBlock block={block} />;
+    break;
+  case BLOCK_TYPES.INPUT:
     content = <InputBlock block={block} />;
     break;
-  case "link":
+  case BLOCK_TYPES.LINK:
     content = <LinkBlock block={block} />;
     break;
   default:
