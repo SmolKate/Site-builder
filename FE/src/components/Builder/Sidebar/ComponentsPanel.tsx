@@ -116,11 +116,6 @@ export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelPro
             icon={<ButtonIcon width={24} height={24} />}
           />
           <DraggableItem
-            type="video"
-            label={t.components.video}
-            icon={<VideoIcon width={24} height={24} />}
-          />
-          <DraggableItem
             type="link"
             label={t.components.link}
             icon={<Link2Icon width={24} height={24} />}
