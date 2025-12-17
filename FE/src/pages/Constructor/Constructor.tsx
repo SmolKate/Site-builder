@@ -136,7 +136,8 @@ export const Constructor = () => {
           updatesSite: { published: true },
           updatesContent: {
             components: JSON.parse(JSON.stringify(components)),
-            layout: JSON.parse(JSON.stringify(layout))
+            layout: JSON.parse(JSON.stringify(layout)),
+            siteBackgroundColor: JSON.parse(JSON.stringify(siteBackgroundColor)),
           }
         });
         toast.info(toastMessages.saveChangesSuccess);
