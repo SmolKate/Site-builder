@@ -12,6 +12,7 @@ import {
   QuoteIcon,
   ListBulletIcon,
 } from "@radix-ui/react-icons";
+import { ListOrdered } from 'lucide-react';
 import { Button } from "@/ui";
 import { TButtonSize } from "@/ui/types";
 import { componentsPanel } from "@/locales";
@@ -138,6 +139,11 @@ export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelPro
             type="list"
             label={t.components.list}
             icon={<ListBulletIcon width={24} height={24} />}
+          />
+          <DraggableItem
+            type="numList"
+            label={t.components.numList}
+            icon={<ListOrdered width={24} height={24} />}
           />
         </div>
       </div>

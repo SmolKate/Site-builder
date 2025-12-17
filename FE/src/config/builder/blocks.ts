@@ -121,6 +121,20 @@ export const BLOCK_DEFAULTS: Record<BlockType, BlockConfig> = {
       lineHeight: "1.5",
     },
   },
+  numList: {
+    content: `
+      <ol>
+        <li>Первый пункт списка</li>
+        <li>Второй пункт списка</li>
+        <li>Третий пункт списка</li>
+      </ol>
+    `,
+    props: {},
+    style: {
+      color: "#333",
+      lineHeight: "1.5",
+    },
+  },
   input: {
     props: {
       placeholder: "Введите ваш email...",
