@@ -119,4 +119,19 @@
     background: color-mix(in srgb, var(--text-inverse) 80%, transparent);
     backdrop-filter: blur(2px);
   }
+
+  &__dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+
+    transform: translate3d(-50%, -50%, 0);
+  }
+
+  &__dialog-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+  }
 }
