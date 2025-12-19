@@ -20,6 +20,7 @@ import "./ComponentsPanel.scss";
 import { getSiteBackgroundColor } from "@/store/builder";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { setSiteBackgroundColor } from "@/store/builder/builderSlice";
+import { BLOCK_TYPES } from "@/store/builder/types";
 
 interface DraggableItemProps {
   type: string;
@@ -84,7 +85,7 @@ export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelPro
         <div className="components-panel__section-title">{t.sections.layout}</div>
         <div className="components-panel__grid">
           <DraggableItem
-            type="container"
+            type={BLOCK_TYPES.CONTAINER}
             label={t.components.container}
             icon={<BoxIcon width={24} height={24} />}
           />
@@ -93,12 +94,12 @@ export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelPro
         <div className="components-panel__section-title">{t.sections.typography}</div>
         <div className="components-panel__grid">
           <DraggableItem
-            type="text"
+            type={BLOCK_TYPES.TEXT}
             label={t.components.text}
             icon={<TextIcon width={24} height={24} />}
           />
           <DraggableItem
-            type="heading"
+            type={BLOCK_TYPES.HEADING}
             label={t.components.heading}
             icon={<HeadingIcon width={24} height={24} />}
           />
@@ -107,17 +108,17 @@ export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelPro
         <div className="components-panel__section-title">{t.sections.basic}</div>
         <div className="components-panel__grid">
           <DraggableItem
-            type="image"
+            type={BLOCK_TYPES.IMAGE}
             label={t.components.image}
             icon={<ImageIcon width={24} height={24} />}
           />
           <DraggableItem
-            type="button"
+            type={BLOCK_TYPES.BUTTON}
             label={t.components.button}
             icon={<ButtonIcon width={24} height={24} />}
           />
           <DraggableItem
-            type="link"
+            type={BLOCK_TYPES.LINK}
             label={t.components.link}
             icon={<Link2Icon width={24} height={24} />}
           />
@@ -126,22 +127,22 @@ export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelPro
         <div className="components-panel__section-title">{t.sections.elements}</div>
         <div className="components-panel__grid">
           <DraggableItem
-            type="divider"
+            type={BLOCK_TYPES.DIVIDER}
             label={t.components.divider}
             icon={<DividerHorizontalIcon width={24} height={24} />}
           />
           <DraggableItem
-            type="quote"
+            type={BLOCK_TYPES.QUOTE}
             label={t.components.quote}
             icon={<QuoteIcon width={24} height={24} />}
           />
           <DraggableItem
-            type="list"
+            type={BLOCK_TYPES.LIST}
             label={t.components.list}
             icon={<ListBulletIcon width={24} height={24} />}
           />
           <DraggableItem
-            type="numList"
+            type={BLOCK_TYPES.NUM_LIST}
             label={t.components.numList}
             icon={<ListOrdered width={24} height={24} />}
           />

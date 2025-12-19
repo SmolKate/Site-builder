@@ -4,6 +4,7 @@ import {
   type IBlock,
   type ILayoutItem,
   type BlockType,
+  BLOCK_TYPES,
 } from "./types";
 import {
   BLOCK_DEFAULTS,
@@ -67,7 +68,7 @@ export const builderSlice = createSlice({
   initialState,
   reducers: {
     addSection: {
-      prepare: (type: BlockType = "container") => {
+      prepare: (type: BlockType = BLOCK_TYPES.CONTAINER) => {
         const id = crypto.randomUUID();
         return { payload: { id, type } };
       },
@@ -76,7 +77,7 @@ export const builderSlice = createSlice({
 
         state.components[id] = createBlockData(id, type);
 
-        const defaultLayout = type === "page" 
+        const defaultLayout = type === BLOCK_TYPES.PAGE 
           ? DEFAULT_PAGE_LAYOUT
           : DEFAULT_SECTION_LAYOUT;
     
@@ -156,7 +157,7 @@ export const builderSlice = createSlice({
 
       if (!component) return;
 
-      if (component.type === "container" || component.type === "page") {
+      if (component.type === BLOCK_TYPES.CONTAINER || component.type === BLOCK_TYPES.PAGE) {
         state.layout = state.layout.filter((l) => l.i !== idToDelete);
       }
 

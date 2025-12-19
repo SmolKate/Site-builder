@@ -5,7 +5,7 @@ import { updateSectionDimensions, selectComponent } from "@/store/builder/builde
 import { ROW_HEIGHT } from "@/utils/constants";
 import { CanvasSection } from "./CanvasSection";
 import { PageSection } from "./PageSection";
-import { type ILayoutItem } from "@/store/builder/types";
+import { type ILayoutItem, BLOCK_TYPES } from "@/store/builder/types";
 interface GridSectionProps {
   item: ILayoutItem;
 }
@@ -34,7 +34,7 @@ export const GridSection = ({ item }: GridSectionProps) => {
     }
   };
 
-  if (block.type === "page") {
+  if (block.type === BLOCK_TYPES.PAGE) {
     return (
       <PageSection
         id={item.i}
