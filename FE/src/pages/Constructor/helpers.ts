@@ -1,7 +1,7 @@
-/* eslint-disable max-len */
 import { InterBase64 } from "@/assets/InterBase64";
 import { GRID_COLUMN_NUMBER, ROW_HEIGHT, TOTAL_WIDTH } from "@/utils/constants";
 import type { IBlock, ILayoutItem } from "@/store/builder/types";
+import { BLOCK_TYPES } from "@/store/builder/types";
 import type { IHtmlChildElement } from "./types";
 
 interface IExtendedHtmlElement extends Omit<IHtmlChildElement, "childNodes" | "styles"> {
@@ -39,7 +39,20 @@ const insertHtmlIntoTemplate = (body: string, siteTitle?: string, siteDescriptio
           src: url("data:font/woff2;charset=utf-8;base64,${InterBase64}");
         }
         body { font-family: 'Inter', sans-serif; }
-        ul, ol { list-style-position: inside; }
+        ul, ol { 
+          list-style-position: outside; 
+          padding-left: 1.5em;
+          margin: 0;
+        }
+        ol li, ul li {
+          margin-bottom: 0.2em;
+          display: list-item;
+          list-style-position: outside;
+        }
+        div ol, div ul {
+          list-style-position: outside;
+          padding-left: 1.5em;
+        }
         .page-layout { display: flex; flex-direction: column; min-height: 100%; }
         iframe { border: 0; }
       </style>
@@ -210,7 +223,7 @@ const processBlock = (blockId: string, components: {[key: string]: IBlock}): IEx
   let finalStyles: Record<string, string | number> = { ...block.style };
 
   switch (block.type) {
-  case "container": {
+  case BLOCK_TYPES.CONTAINER: {
     tag = "div";
     childNodes = block.childrenIds.map(childId => processBlock(childId, components));
       
@@ -229,18 +242,18 @@ const processBlock = (blockId: string, components: {[key: string]: IBlock}): IEx
     break;
   }
 
-  case "page":
+  case BLOCK_TYPES.PAGE:
     return processPageBlock(blockId, block, components);
 
-  case "text":
+  case BLOCK_TYPES.TEXT:
     tag = "div";
     break;
 
-  case "heading":
+  case BLOCK_TYPES.HEADING:
     tag = `h${block.props.level || 2}`;
     break;
 
-  case "button":
+  case BLOCK_TYPES.BUTTON:
     if (!finalStyles.width) finalStyles.width = "auto";
     if (!finalStyles.display) finalStyles.display = "inline-block";
     if (!finalStyles.cursor) finalStyles.cursor = "pointer";
@@ -284,7 +297,7 @@ const processBlock = (blockId: string, components: {[key: string]: IBlock}): IEx
     }
     break;
 
-  case "image":
+  case BLOCK_TYPES.IMAGE:
     tag = "img";
     attributes = {
       src: (block.props.src as string) || "",
@@ -293,7 +306,7 @@ const processBlock = (blockId: string, components: {[key: string]: IBlock}): IEx
     content = undefined; 
     break;
 
-  case "video": {
+  case BLOCK_TYPES.VIDEO: {
     tag = "iframe";
     let src = (block.props.src as string) || "";
     const videoIdMatch = src.match(/(?:v=|youtu\.be\/|\/embed\/)([^&?/]+)/);
@@ -310,12 +323,12 @@ const processBlock = (blockId: string, components: {[key: string]: IBlock}): IEx
     break;
   }
 
-  case "divider":
+  case BLOCK_TYPES.DIVIDER:
     tag = "hr";
     content = undefined;
     break;
 
-  case "input":
+  case BLOCK_TYPES.INPUT:
     tag = "input";
     attributes = {
       type: "text",
@@ -324,7 +337,7 @@ const processBlock = (blockId: string, components: {[key: string]: IBlock}): IEx
     content = undefined; 
     break;
 
-  case "link":
+  case BLOCK_TYPES.LINK:
     tag = "a";
     content = (block.props.text as string) || "Link";
     attributes = {
@@ -332,7 +345,7 @@ const processBlock = (blockId: string, components: {[key: string]: IBlock}): IEx
     };
     break;
 
-  case "quote": {
+  case BLOCK_TYPES.QUOTE: {
     tag = "blockquote";
     content = undefined; 
     const qText = (block.props.text as string) || "";
@@ -350,7 +363,12 @@ const processBlock = (blockId: string, components: {[key: string]: IBlock}): IEx
     break;
   }
 
-  case "list": {
+  case BLOCK_TYPES.LIST: {
+    tag = "div"; 
+    break;
+  }
+
+  case BLOCK_TYPES.NUM_LIST: {
     tag = "div"; 
     break;
   }

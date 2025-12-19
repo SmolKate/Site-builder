@@ -1,7 +1,7 @@
 import { useAppSelector, useAppDispatch } from "@/store";
 import { updateComponent } from "@/store/builder/builderSlice";
 import { getAllComponents, selectSelectedComponent, selectSelectedId } from "@/store/builder";
-import { type SectionVariant, type IBlock } from "@/store/builder/types";
+import { type SectionVariant, type IBlock, BLOCK_TYPES } from "@/store/builder/types";
 import {
   PROPERTIES_CONFIG,
   type FieldTarget,
@@ -25,18 +25,19 @@ const fromCssValue = (val: unknown) => {
 
 const getBlockLabel = (block: IBlock): string => {
   const typeMap: Record<string, string> = {
-    container: "Контейнер",
-    text: "Текст",
-    heading: "Заголовок",
-    button: "Кнопка",
-    image: "Изображение",
-    video: "Видео",
-    divider: "Разделитель",
-    quote: "Цитата",
-    list: "Список",
-    input: "Поле ввода",
-    link: "Ссылка",
-    page: "Страница"
+    [BLOCK_TYPES.CONTAINER]: "Контейнер",
+    [BLOCK_TYPES.TEXT]: "Текст",
+    [BLOCK_TYPES.HEADING]: "Заголовок",
+    [BLOCK_TYPES.BUTTON]: "Кнопка",
+    [BLOCK_TYPES.IMAGE]: "Изображение",
+    [BLOCK_TYPES.VIDEO]: "Видео",
+    [BLOCK_TYPES.DIVIDER]: "Разделитель",
+    [BLOCK_TYPES.QUOTE]: "Цитата",
+    [BLOCK_TYPES.LIST]: "Список",
+    [BLOCK_TYPES.NUM_LIST]: "Нумерованный список",
+    [BLOCK_TYPES.INPUT]: "Поле ввода",
+    [BLOCK_TYPES.LINK]: "Ссылка",
+    [BLOCK_TYPES.PAGE]: "Страница"
   };
 
   const typeName = typeMap[block.type] || block.type;
@@ -158,14 +159,14 @@ export const PropertiesPanel = () => {
   const specificFields = PROPERTIES_CONFIG.specific[block.type] || [];
 
   const allFields = [...commonFields, ...specificFields].filter((field) => {
-    if (block.type === "divider") return true;
+    if (block.type === BLOCK_TYPES.DIVIDER) return true;
     const isOnGrid = block.parentId === null;
     const resizableProps = ["width", "height", "minHeight"];
     if (isOnGrid && field.target === "style" && resizableProps.includes(field.key)) {
       return false;
     }
 
-    if (block.type === "button") {
+    if (block.type === BLOCK_TYPES.BUTTON) {
       const actionType = block.props.actionType;
       if (actionType === "none") {
         if (field.key === "actionValue" || field.key === "openInNewTab") return false;
@@ -177,7 +178,7 @@ export const PropertiesPanel = () => {
 
     return true;
   }).map(field => {
-    if (block.type === "button" && field.key === "actionValue") {
+    if (block.type === BLOCK_TYPES.BUTTON && field.key === "actionValue") {
       const actionType = block.props.actionType;
 
       if (actionType === "anchor") {

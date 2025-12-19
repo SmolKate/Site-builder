@@ -1,4 +1,4 @@
-import { type BlockType } from "@/store/builder/types";
+import { type BlockType, BLOCK_TYPES } from "@/store/builder/types";
 
 export type FieldType = "color" | "number" | "text" | "select";
 export type FieldTarget = "style" | "props" | "variant";
@@ -49,7 +49,7 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
     },
   ],
   specific: {
-    container: [
+    [BLOCK_TYPES.CONTAINER]: [
       {
         type: "select",
         label: "Тип макета",
@@ -88,7 +88,7 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
         ] 
       }
     ],
-    page: [
+    [BLOCK_TYPES.PAGE]: [
       { 
         type: "select", 
         label: "Сайдбар", 
@@ -112,7 +112,7 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
       { type: "color", label: "Фон Footer", key: "footerBg", target: "style" },
       { type: "color", label: "Фон Sidebar", key: "sidebarBg", target: "style" },
     ],
-    image: [
+    [BLOCK_TYPES.IMAGE]: [
       { type: "text", label: "URL изображения", key: "src", target: "props" },
       { type: "text", label: "Alt текст", key: "alt", target: "props" },
       { 
@@ -122,7 +122,7 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
         target: "style"
       },
     ],
-    heading: [
+    [BLOCK_TYPES.HEADING]: [
       {
         type: "select",
         label: "Уровень",
@@ -148,7 +148,7 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
         ],
       },
     ],
-    button: [
+    [BLOCK_TYPES.BUTTON]: [
       { type: "text", label: "Текст кнопки", key: "text", target: "props" },
       { 
         type: "number", 
@@ -190,7 +190,7 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
       { type: "color", label: "Цвет текста", key: "color", target: "style" },
     ],
     
-    text: [
+    [BLOCK_TYPES.TEXT]: [
       { type: "color", label: "Цвет текста", key: "color", target: "style" },
       { 
         type: "select", 
@@ -206,12 +206,12 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
       }
     ],
 
-    video: [
+    [BLOCK_TYPES.VIDEO]: [
       { type: "text", label: "Ссылка YouTube", key: "src", target: "props" },
       { type: "number", label: "Ширина", key: "width", target: "style" },
       { type: "number", label: "Высота", key: "height", target: "style" },
     ],
-    divider: [
+    [BLOCK_TYPES.DIVIDER]: [
       { 
         type: "number", 
         label: "Ширина (X)", 
@@ -225,17 +225,18 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
         target: "style"
       }
     ],
-    quote: [
+    [BLOCK_TYPES.QUOTE]: [
       { type: "text", label: "Текст цитаты", key: "text", target: "props" },
       { type: "text", label: "Автор", key: "author", target: "props" },
       { type: "color", label: "Цвет текста", key: "color", target: "style" },
     ],
-    list: [{ type: "color", label: "Цвет текста", key: "color", target: "style" }],
-    input: [
+    [BLOCK_TYPES.LIST]: [{ type: "color", label: "Цвет текста", key: "color", target: "style" }],
+    [BLOCK_TYPES.NUM_LIST]: [{ type: "color", label: "Цвет текста", key: "color", target: "style" }],
+    [BLOCK_TYPES.INPUT]: [
       { type: "text", label: "Placeholder", key: "placeholder", target: "props" },
       { type: "color", label: "Цвет границы", key: "borderColor", target: "style" },
     ],
-    link: [
+    [BLOCK_TYPES.LINK]: [
       { type: "text", label: "Текст ссылки", key: "text", target: "props" },
       { type: "text", label: "Адрес (href)", key: "href", target: "props" },
       { type: "color", label: "Цвет", key: "color", target: "style" },

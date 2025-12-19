@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 
 import type { DragEndEvent, DragStartEvent} from "@dnd-kit/core";
 import type { BlockType, ILayoutItem } from "@/store/builder/types";
+import { BLOCK_TYPES } from "@/store/builder/types";
 
 import { useAppSelector, useAppDispatch } from "@/store";
 import { useFetchSiteByIdQuery, useUpdateSiteMutation } from "@/store/sites";
@@ -59,7 +60,7 @@ export const Constructor = () => {
   const { 
     setNodeRef: setCanvasRef,
     isOver: isOverCanvas,
-  } = useDroppable({ id: "canvas-root", data: { accept: ["container", "page"] }});
+  } = useDroppable({ id: "canvas-root", data: { accept: [BLOCK_TYPES.CONTAINER, BLOCK_TYPES.PAGE] }});
   
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
@@ -108,7 +109,7 @@ export const Constructor = () => {
     const draggedType = active.data.current.type as string;
     const overData = over?.data.current as { accept?: string[] } | undefined;
 
-    if ((draggedType === "container" || draggedType === "page") && 
+    if ((draggedType === BLOCK_TYPES.CONTAINER || draggedType === BLOCK_TYPES.PAGE) && 
         (!over || !overData?.accept)) {
       dispatch(addSection(draggedType as BlockType));
       return;
@@ -171,13 +172,13 @@ export const Constructor = () => {
               ref={setCanvasRef}
               className={clsx(
                 "builder__canvas-area", 
-                {"builder__canvas-area--active": isOverCanvas && draggedType === "container"},
+                {"builder__canvas-area--active": isOverCanvas && draggedType === BLOCK_TYPES.CONTAINER},
               )}
               style={{ 
                 backgroundColor: siteBackgroundColor 
               }} 
             >
-              {isOverCanvas && draggedType === "container" && (
+              {isOverCanvas && draggedType === BLOCK_TYPES.CONTAINER && (
                 <div className="builder__drop-hint">
                   {constructorMessages.dropBlock}
                 </div>
