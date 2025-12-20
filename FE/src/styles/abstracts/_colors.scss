@@ -1,55 +1,24 @@
-@use "variables" as *;
+@use 'variables' as *;
 
 :root {
   color-scheme: light;
 
   // --- Фоны ---
   --bg-app: #{$white-soft};
-
-  --main-bg-app: 
-    radial-gradient(
-      circle at 0% 0%, 
-      #{rgba($brand-purple-light, 0.10)} 0%, 
-      #{rgba($white, 0.3)} 50%
-    ),
-
-    radial-gradient(
-      circle at 120% 70%, 
-      #{rgba($accent-pink, 0.20)} 0%, 
-      transparent 35%
-    ),
-
-    radial-gradient(
-      circle at 95% 95%, 
-      #{rgba($accent-cyan, 0.05)} 10%, 
-      transparent 50%
-    ),
-
-    radial-gradient(
-      circle at 5% 85%, 
-      #{rgba($accent-blue, 0.10)} 0%, 
-      transparent 35%
-    ),
-
-    linear-gradient(
-      180deg, 
-      #{$white} 0%, 
-      #{$white-soft} 100%
-    );
-
-  --bg-surface:  #{rgba($white-off, 0.1)};
+  --bg-surface: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(243, 243, 243, 0.1) 100%
+  );
   --bg-form-secondary: #{$purple-light};
   --bg-pagination: #{$white-soft};
   --bg-pagination-hover: #{$purple-light};
 
   --brand-primary-color: #{$brand-blue-light};
-  --brand-primary-color-transparent: #{rgba($brand-blue-light, 0.2)};
-  --bg-sort: rgba(240, 246, 255);
 
   // --- Текст ---
   --text-primary: #{$black-text};
   --text-secondary: #{rgba($black-text, 0.7)};
-  --text-tertiary: #{rgba($brand-blue-mid, 0.9)};
   --text-inverse: #{$white};
   --text-on-primary: #{$white};
   --text-form-secondary: #{$brand-purple-border};
@@ -57,17 +26,19 @@
 
   // --- Градиентная обводка (для миксина) ---
   --border-glass-gradient: linear-gradient(
-    155deg,
-    rgba(231, 237, 255, 0.05),
-    rgba(255, 255, 255, 0)
+    65deg,
+    rgba(124, 159, 255, 0.15),
+    rgba(175, 228, 255, 0.05)
   );
-  --border-blue-gradient: linear-gradient(90deg, #{$brand-purple-light}, #{$brand-purple-border});
+  --border-blue-gradient: linear-gradient(
+    90deg,
+    #{$brand-purple-light},
+    #{$brand-purple-border}
+  );
 
   // --- Обводки ---
   --border-color-default: #{$brand-purple-border};
-  --border-color-default-transparent: #{rgba($grey-soft, 0.2)};
   --border-color-btn: rgba(127, 141, 209, 0.2);
-  --border-color-input-search: rgba(127, 141, 209, 0.2);
 
   // --- Статусы ---
   --color-error: #{$error};
@@ -94,17 +65,20 @@
   );
   // --- Градиент для особой кнопки ---
   --gradient-special: linear-gradient(
-    45deg,
-    #{$accent-blue} -70%,
-    #{$accent-cyan} -30%,
-    #{$accent-blue} 50%,
-    #{$accent-pink} 120%
+    40deg,
+    #{$accent-blue} -50%,
+    #{$accent-cyan} 10%,
+    #{$accent-blue} 70%,
+    #{$accent-pink} 110%
   );
 
   // --- Градиент для основной кнопки (Синий -> Фиолетовый/Светло-синий) ---
-  --gradient-btn-primary: linear-gradient(135deg, #{$brand-blue-mid} 0%, #{$brand-blue-light} 100%);
+  --gradient-btn-primary: linear-gradient(
+    135deg,
+    #{$brand-blue-mid} 0%,
+    #{$brand-blue-light} 100%
+  );
 
-  --gradient-btn-secondary: linear-gradient(135deg, #{$grey-soft} 0%, #{$grey-soft} 100%);
   // --- Навигационные пилюли ---
   --border-color-nav-pill: #{rgba($brand-purple-light, 0.35)};
   --bg-nav-pill: #{rgba($brand-purple-light, 0.12)};
@@ -127,44 +101,40 @@
   --shadow-form-secondary: 0 4px 14px 0 #{rgba($brand-purple-border, 0.4)};
 }
 
-html[data-theme="dark"] {
+html[data-theme='dark'] {
   color-scheme: dark;
 
-  --bg-app: radial-gradient(circle at center, #{$brand-blue-mid} 0%, #{$brand-blue-deep} 100%);
-
-  --main-bg-app: 
-      radial-gradient(circle at 0% 15%, #{rgba($brand-blue-light, 0.75)} 0%, #{rgba($brand-blue-deep, 0.45)} 50%),
-      radial-gradient(circle at 95% 5%, #{rgba($accent-pink, 0.20)} 5%, #{rgba($brand-blue-deep, 0.25)} 55%),
-      radial-gradient(circle at 90% 110%, #{rgba($brand-purple-light, 0.45)} 0%, #{rgba($brand-blue-deep, 0.25)} 40%),
-      radial-gradient(circle at 0% 125%, #{rgba($accent-cyan, 0.55)} 0%, #{rgba($brand-blue-deep, 0.75)} 40%),
-      radial-gradient(circle at center, #{$brand-blue-deep} 0%, #{$dark-surface} 100%);
-
-  --bg-surface: #{rgba($white-off, 0.025)};
+  --bg-app: radial-gradient(
+    circle at center,
+    #{$brand-blue-mid} 0%,
+    #{$brand-blue-deep} 100%
+  );
+  --bg-surface: #{rgba($dark-surface, 0.5)};
   --bg-pagination: #171a38;
   --bg-pagination-hover: #171a38;
 
-  --brand-primary-color: #{$brand-purple-light};
-  --brand-primary-color-transparent: #{rgba($brand-purple-light, 0.2)};
-  --bg-sort: rgba(24, 27, 57);
+  --brand-primary-color: #{$purple-light};
 
   --text-primary: #{$white-soft};
   --text-secondary: #{$light-text};
-  --text-tertiary: #{$light-text};
   --text-inverse: #{$black-text};
   --text-on-primary: #{$white-soft};
   --text-pagination: #{$white-soft};
 
   // --- Градиентная обводка (для миксина) ---
   --border-glass-gradient: linear-gradient(
-    155deg,
-    rgba(194, 210, 255, 0.05),
-    rgba(175, 228, 255, 0)
+    145deg,
+    rgba(124, 159, 255, 0.25),
+    rgba(175, 228, 255, 0.05)
   );
   --border-color-default: #{$grey-soft};
   --border-color-btn: rgba(255, 255, 255, 0.1);
-  --border-color-input-search: rgba(255, 255, 255, 0.1);
 
-  --gradient-btn-primary: linear-gradient(135deg, #{$brand-blue-mid} 0%, #{$brand-blue-light} 100%);
+  --gradient-btn-primary: linear-gradient(
+    135deg,
+    #{$brand-blue-mid} 0%,
+    #{$brand-blue-light} 100%
+  );
 
   --border-color-nav-pill: #{rgba($white-soft, 0.25)};
   --bg-nav-pill: #{rgba($white-soft, 0.08)};

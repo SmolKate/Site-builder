@@ -1,14 +1,12 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "@/config";
 import type { IUser } from "@/utils/types";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { getAuth, removeAuth, removeUser, setAuth, setUser } from "@/utils/helpers";
 import { FirebaseError } from "firebase/app";
-import { authApiErrors } from "@/locales";
-import { usersApiSlice } from "../users/api";
-import { sitesApiSlice } from "../sites/api";
+import { getAuth, removeAuth, removeUser, setAuth, setUser } from "@/utils/helpers";
 
+// Тип для ответа при авторизации
 interface ILoginResponse {
   uid: string;
   email: string;
@@ -20,26 +18,16 @@ interface ILoginProps {
   password: string;
 }
 
-interface IRegisterProps {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
-
-interface IAuthError {
-  message: string;
-  code: string;
-}
-
 export const authApiSlice = createApi({
   reducerPath: "authApi",
   baseQuery: fakeBaseQuery(),
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
-    registerUser: builder.mutation<{ uid: string }, IRegisterProps>({
-      async queryFn(userData, api) {
+    // Регистрация пользователя (создание в Authentication + Firestore)
+    registerUser: builder.mutation<{ uid: string }, IUser & { password: string }>({
+      async queryFn(userData) {
         try {
+          // Создаем пользователя в Firebase Authentication
           const userCredential = await createUserWithEmailAndPassword(
             auth,
             userData.email,
@@ -47,41 +35,35 @@ export const authApiSlice = createApi({
           );
           const user = userCredential.user;
 
+          //  Создаем запись в Firestore
           const userDoc: IUser = {
             email: userData.email,
             firstName: userData.firstName,
             lastName: userData.lastName,
             sites: [],
-            avatarURL: `https://api.dicebear.com/9.x/avataaars/svg?seed=${(Math.random() + 1)
-              .toString(36)
-              .substring(7)}`,
-            createdAt: Timestamp.now().toMillis(),
-            updatedAt: Timestamp.now().toMillis(),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
           };
 
           await setDoc(doc(db, "users", user.uid), userDoc);
 
-          setUser(user.uid);
-          setAuth();
-          api.dispatch(usersApiSlice.util.invalidateTags(["CurrentUser"]));
-          api.dispatch(sitesApiSlice.util.invalidateTags(["Sites"]));
           return { data: { uid: user.uid } };
         } catch (error) {
-          const { message, code } = error as IAuthError;
-
           return {
             error: {
-              message,
-              code,
+              message: "Ошибка регистрации пользователя:",
+              error,
             },
           };
         }
       },
       invalidatesTags: ["Auth"],
     }),
+    // Авторизация пользователя
     loginUser: builder.mutation<ILoginResponse, ILoginProps>({
-      async queryFn(credentials, api) {
+      async queryFn(credentials) {
         try {
+          // Авторизуем пользователя через Firebase Authentication
           const userCredential = await signInWithEmailAndPassword(
             auth,
             credentials.email,
@@ -90,6 +72,7 @@ export const authApiSlice = createApi({
 
           const user = userCredential.user;
 
+          // Получаем дополнительные данные пользователя из Firestore
           const userDoc = await getDoc(doc(db, "users", user.uid));
           let userData = null;
 
@@ -98,8 +81,6 @@ export const authApiSlice = createApi({
             setUser(user.uid);
             setAuth();
           }
-          api.dispatch(usersApiSlice.util.invalidateTags(["CurrentUser"]));
-          api.dispatch(sitesApiSlice.util.invalidateTags(["Sites"]));
 
           return {
             data: {
@@ -109,48 +90,29 @@ export const authApiSlice = createApi({
             },
           };
         } catch (error) {
-          const { message, code } = error as IAuthError;
-          let errorMessage = authApiErrors.loginPrefix;
+          let errorMessage = "Ошибка авторизации:";
 
+          // Проверяем, является ли ошибка FirebaseError
           if (error instanceof FirebaseError) {
+            // Более конкретные сообщения об ошибках
             switch (error.code) {
-              case "auth/user-not-found":
-                errorMessage = authApiErrors.notFound;
-                break;
-              case "auth/wrong-password":
-                errorMessage = authApiErrors.wrongPassword;
-                break;
-              default:
-                errorMessage = `${authApiErrors.loginPrefix} ${error.code}`;
+            case "auth/user-not-found":
+              errorMessage = "Пользователь не найден";
+              break;
+            case "auth/wrong-password":
+              errorMessage = "Неверный пароль";
+              break;
+            default:
+              errorMessage = `Ошибка авторизации: ${error.code}`;
             }
           } else if (error instanceof Error) {
-            errorMessage = message;
+            // Обычная JavaScript ошибка
+            errorMessage = error.message;
           }
 
           return {
             error: {
               message: errorMessage,
-              code,
-            },
-          };
-        }
-      },
-      invalidatesTags: ["Auth"],
-    }),
-
-    logoutUser: builder.mutation<void, void>({
-      async queryFn(_, api) {
-        try {
-          await signOut(auth);
-          removeAuth();
-          removeUser();
-          api.dispatch(usersApiSlice.util.invalidateTags(["CurrentUser"]));
-          api.dispatch(sitesApiSlice.util.invalidateTags(["Sites"]));
-          return { data: undefined };
-        } catch (error) {
-          return {
-            error: {
-              message: authApiErrors.logout,
               error,
             },
           };
@@ -159,6 +121,27 @@ export const authApiSlice = createApi({
       invalidatesTags: ["Auth"],
     }),
 
+    // Выход пользователя
+    logoutUser: builder.mutation<void, void>({
+      async queryFn() {
+        try {
+          await signOut(auth);
+          removeAuth();
+          removeUser();
+          return { data: undefined };
+        } catch (error) {
+          return {
+            error: {
+              message: "Ошибка выхода:",
+              error,
+            },
+          };
+        }
+      },
+      invalidatesTags: ["Auth"],
+    }),
+
+    // Проверка статуса аутентификации
     getAuthStatus: builder.query<{ isAuth: boolean }, void>({
       queryFn: () => {
         const isAuth = getAuth();

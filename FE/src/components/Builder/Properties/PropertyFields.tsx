@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
 import { type PropertyField, type FieldTarget } from "@/config/builder/propertiesConfig";
 import { type SectionVariant } from "@/store/builder/types";
-import "./PropertyFields.scss";
 
 type StyleValue = string | number | undefined;
 type PropValue = unknown;
@@ -14,66 +12,39 @@ interface FieldProps {
 }
 
 export const ColorField = ({ field, value, onChange }: FieldProps) => {
-  const isTransparent = !value || value === "transparent" || value === "rgba(0, 0, 0, 0)";
-  const inputValue = isTransparent || typeof value !== "string" ? "#ffffff" : value;
+  const stringValue = typeof value === "string" ? value : String(value || field.defaultValue || "#ffffff");
   
   return (
-    <div className="color-field">
+    <div className="color-input-wrapper">
       <input 
         type="color" 
-        className="color-field__input"
-        value={inputValue}
+        value={stringValue}
         onChange={(e) => onChange(field.key, e.target.value, field.target)}
       />
-
-      <span className="color-field__value">
-        {isTransparent ? "Прозрачный" : inputValue}
-      </span>
-
-      {!isTransparent && (
-        <button 
-          className="color-field__reset-btn"
-          onClick={() => onChange(field.key, "transparent", field.target)}
-          title="Сделать прозрачным"
-          aria-label="Сбросить цвет"
-        >
-          ✕
-        </button>
-      )}
+      <span>{stringValue}</span>
     </div>
   );
 };
 
 export const NumberField = ({ field, value, onChange }: FieldProps) => {
-  const [localValue, setLocalValue] = useState(() => {
-    const parsed = parseFloat(String(value));
-    return isNaN(parsed) ? "" : String(parsed);
-  });
-
-  useEffect(() => {
-    const parsedProp = parseFloat(String(value));
-    const propNum = isNaN(parsedProp) ? 0 : parsedProp;
-    const localNum = localValue === "" ? 0 : parseFloat(localValue);
-
-    if (propNum !== localNum) {
-      setLocalValue(String(propNum));
-    }
-  }, [value, localValue]);
-
+  const numericValue = typeof value === "number" 
+    ? value 
+    : parseInt(String(value)) || 0; 
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
-    setLocalValue(rawValue);
+    
     const cleanNumber = rawValue === "" ? 0 : Number(rawValue);
+
     onChange(field.key, `${cleanNumber}px`, field.target);
   };
 
   return (
     <input 
       type="number" 
-      className="property-input"
-      value={localValue}
+      min={0}
+      value={numericValue}
       onChange={handleInputChange} 
-      placeholder="0" 
     />
   );
 };
@@ -84,10 +55,8 @@ export const TextField = ({ field, value, onChange }: FieldProps) => {
   return (
     <input 
       type="text" 
-      className="property-input"
       value={stringValue}
       onChange={(e) => onChange(field.key, e.target.value, field.target)}
-      placeholder={String(field.defaultValue || "")}
     />
   );
 };
@@ -97,7 +66,6 @@ export const SelectField = ({ field, value, onChange }: FieldProps) => {
   
   return (
     <select 
-      className="property-input"
       value={stringValue}
       onChange={(e) => onChange(field.key, e.target.value, field.target)}
     >
@@ -110,6 +78,7 @@ export const SelectField = ({ field, value, onChange }: FieldProps) => {
   );
 };
 
+// Главный компонент поля
 interface PropertyFieldComponentProps {
   field: PropertyField;
   value: StyleValue | PropValue | VariantValue;

@@ -1,67 +1,32 @@
-import { useEffect, useState, type ChangeEvent } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { orderBy } from "lodash";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { mainPageMessages } from "@/locales";
 import { useFetchSitesQuery, useAddSiteMutation, useDeleteSiteMutation } from "@/store/sites";
 import type { ISelectedPage, ISiteDTO } from "@/utils/types";
+import { RaPopover } from "@/components/Popover";
+import { RaDialog } from "@/components/Dialog";
 import { siteSchema, type SiteFormData } from "@/utils/helpers";
-import { InputField, Button, Pagination, Loader, Dropdown, SearchInputField } from "@/ui";
-import { LSize, LVariant } from "@/ui/Loader";
-import { TButtonSize, TButtonVariant, TVariant } from "@/ui/types";
+import { InputField, PasswordField, Button, Pagination } from "@/ui";
+import { TVariant } from "@/ui/types";
+
 import { paginate } from "@/utils";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
-import { useDebounce } from "@/utils/hooks";
-import { useGetCurrentUserQuery, useUpdateUserMutation } from "@/store/users";
-import { RaDialog } from "@/components/Dialog";
-import { MainDialogContent } from "./MainDialogContent";
-import { MAIN_SITES } from "@/locales/mainPage";
-import gridlyLogo from "@/assets/icons/gridly-logo.svg";
-import { GearIcon } from "@radix-ui/react-icons";
-import { FormDialogContent } from "./FormDialogContent";
 import "./styles.scss";
 
 export function MainPage() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [page, setPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
-  const debouncedSearchQuery = useDebounce(searchQuery);
-  const [sortAlg, setSortAlg] = useState("alphabet-asc");
-  const [accessError, setAccessError] = useState<null | string>(null);
   const { data: sites, isLoading } = useFetchSitesQuery();
   const [addSite] = useAddSiteMutation();
   const [deleteSite] = useDeleteSiteMutation();
-  const [updateUser] = useUpdateUserMutation();
-  const { data: currentUser } = useGetCurrentUserQuery();
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const [site, setSite] = useState<{ id: string; title: string, description?: string}>({ id: "", title: "" });
-  const [isFormDialog, setIsFormDialog] = useState(false);
+  const pageCount = sites && Math.ceil(sites.length / ITEMS_PER_PAGE);
+  const sitesCrop = sites && paginate(sites, page, ITEMS_PER_PAGE);
 
-  const iter = sortAlg.split("-")[0];
-  const order = sortAlg.split("-")[1];
-  const sortedSites = orderBy(
-    sites,
-    iter === "alphabet" ? "title" : "createdAt",
-    order === "asc" ? "asc" : "desc"
-  );
-  const filteredSites = sortedSites?.filter((site) =>
-    site?.title?.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
-  );
-  const pageCount = Math.ceil(filteredSites.length / ITEMS_PER_PAGE);
-  const sitesCrop = paginate(filteredSites, page, ITEMS_PER_PAGE);
+  const handleDeleteSite = (siteId: string) => {
+    deleteSite(siteId);
+  };
 
   const handlePageChange = ({ selected }: ISelectedPage) => {
     setPage(selected + 1);
-  };
-
-  const handleSortSites = (alg: string) => {
-    setSortAlg(alg);
-  };
-
-  const handleSearchQuery = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
   };
 
   const createdAt = (site: ISiteDTO) => new Date(site.createdAt).toLocaleDateString("ru-RU");
@@ -82,114 +47,58 @@ export function MainPage() {
     }
   }, [isSubmitSuccessful, reset]);
 
-  useEffect(() => {
-    if (location.state?.unauthorizedRedirect) {
-      setAccessError(location.state?.message);
-      navigate(location.pathname, {
-        state: {},
-        replace: true,
-      });
-    }
-  }, [location.key]);
-
-  // eslint-disable-next-line space-before-function-paren
-  const onSubmit = async (data: SiteFormData) => {
+  const onSubmit = (data: SiteFormData) => {
     const newSite: Omit<ISiteDTO, "id"> = {
       title: data.title,
       description: data.description,
       createdAt: new Date().toISOString(),
       published: false,
     };
-    const siteContent = { components: {}, layout: [] };
-    const { data: idSite } = await addSite({ newSite, siteContent });
 
-    if (currentUser && idSite) {
-      updateUser({ uid: currentUser.uid!, updates: { sites: idSite } });
-      navigate(`/sites/${idSite}`);
-    }
-  };
-
-  const onTitleChange = (e: React.MouseEvent<HTMLDivElement>, siteInfo: ISiteDTO) => {
-    setSite({ id: siteInfo.id, title: siteInfo.title, description: siteInfo.description });
-    e.stopPropagation();
-    setIsFormDialog(true);
+    addSite(newSite);
   };
 
   return (
     <div className="main-page">
       <header className="main-page__header">
-        <img src={gridlyLogo} alt="Gridly logo" className="main-page__logo" />
-        <p className="main-page__subtitle">{mainPageMessages.subtitle}</p>
+        <h1 className="main-page__title">Site Builder</h1>
+        <p className="main-page__subtitle">Панель управления проектами</p>
       </header>
 
-      {accessError && <p className="auth-page__error">{accessError}</p>}
-
-      <RaDialog
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        title={mainPageMessages.confirmDelete.title}
-        content={
-          <MainDialogContent
-            site={site}
-            onDelete={deleteSite}
-            onClose={() => setOpenDialog(false)}
-          />
-        }
-      />
-      <RaDialog
-        open={isFormDialog}
-        onClose={() => setIsFormDialog(false)}
-        title={mainPageMessages.confirmChange.title}
-        content={
-          <FormDialogContent
-            site={site}
-            onClose={() => setIsFormDialog(false)}
-          />
-        }
-      />
+      <RaPopover />
+      <RaDialog />
 
       <main className="main-page__content">
         <div className="create-card">
-          <h2 className="create-card__title">{mainPageMessages.createCard.title}</h2>
+          <h2 className="create-card__title">Создать новый сайт</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="create-card__form">
             <InputField
               register={register}
               errors={errors}
               fieldName="title"
-              placeholder={mainPageMessages.createCard.titlePlaceholder}
-              variant={TVariant.SECONDARY}
+              placeholder="Название проекта"
             />
-            <InputField
+            <PasswordField
               register={register}
               errors={errors}
               fieldName="description"
-              placeholder={mainPageMessages.createCard.descriptionPlaceholder}
+              placeholder="Краткое описание"
               variant={TVariant.SECONDARY}
             />
-            <Button
-              buttonText={mainPageMessages.createCard.submit}
-              type="submit"
-              disabled={!isValid || isSubmitting}
-            />
+            <Button buttonText="Создать сайт" type="submit" disabled={!isValid || isSubmitting} />
           </form>
         </div>
 
         <div className="sites-section">
           <div className="sites-section__header">
-            <h2 className="sites-section__title">{mainPageMessages.sitesSection.title}</h2>
-          </div>
-          <div className="sites-section__query">
-            <SearchInputField value={searchQuery} onChange={handleSearchQuery} />
-            <Dropdown sortAlg={sortAlg} onSortSites={handleSortSites} />
+            <h2 className="sites-section__title">Мои сайты</h2>
           </div>
 
           {isLoading ? (
-            <div className="sites-section__loading">
-              <Loader variant={LVariant.DOTS} size={LSize.LG} />
-            </div>
+            <h2>Загрузка...</h2>
           ) : sitesCrop?.length === 0 ? (
             <div className="sites-section__empty">
-              <p>{mainPageMessages.sitesSection.empty}</p>
+              <p>Нет сайтов для отображения. Создайте свой первый проект!</p>
             </div>
           ) : (
             <div className="sites-section__grid">
@@ -198,9 +107,7 @@ export function MainPage() {
                   <div className="site-card__info">
                     <h3 className="site-card__title">{site.title}</h3>
                     <p className="site-card__desc">{site.description}</p>
-                    <div className="site-card__settings-btn" onClick={(e) => onTitleChange(e, site)}>
-                      <GearIcon className="site-card__settings-icon" />
-                    </div>
+
                     <div className="site-card__meta">
                       <span className="site-card__date">{createdAt(site)}</span>
                       <span
@@ -208,29 +115,18 @@ export function MainPage() {
                           site.published ? "status-badge--published" : "status-badge--draft"
                         }`}
                       >
-                        {site.published
-                          ? mainPageMessages.sitesSection.status.live
-                          : mainPageMessages.sitesSection.status.draft}
+                        {site.published ? "Live" : "Draft"}
                       </span>
                     </div>
                   </div>
+
                   <div className="site-card__actions">
-                    <Button
-                      buttonText={MAIN_SITES.actions.primaryButton}
-                      variant={TButtonVariant.PRIMARY}
-                      size={TButtonSize.SMALL}
-                      onClick={() => navigate(`/sites/${site.id}`)}
-                    />
-                    <Button
-                      buttonText={MAIN_SITES.actions.secondaryButton}
-                      variant={TButtonVariant.DANGER}
-                      size={TButtonSize.SMALL}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSite({ id: site.id, title: site.title });
-                        setOpenDialog(true);
-                      }}
-                    />
+                    <button
+                      onClick={() => handleDeleteSite(site.id)}
+                      className="ui-btn ui-btn--danger ui-btn--sm"
+                    >
+                      Удалить
+                    </button>
                   </div>
                 </div>
               ))}
@@ -238,7 +134,7 @@ export function MainPage() {
           )}
         </div>
 
-        {pageCount > 0 && (
+        {pageCount && (
           <Pagination onPageChange={handlePageChange} pageCount={pageCount} page={page} />
         )}
       </main>

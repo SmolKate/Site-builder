@@ -1,21 +1,25 @@
 @mixin glass-container {
   position: relative;
 
+  // 1. Фон и Размытие
   background: var(--bg-surface);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
 
-  border-radius: var(--radius-lg);
+  // 2. Форма
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-surface);
 
+  // Убираем стандартную границу
   border: none;
 
+  // 3. Градиентная рамка через ::before
   &::before {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    padding: var(--border-width-md, 1px);
+    padding: var(--border-width-sm, 1px);
     background: var(--border-glass-gradient);
     -webkit-mask:
       linear-gradient(#fff 0 0) content-box,
@@ -67,17 +71,11 @@
   line-height: 1.5;
 }
 
-@mixin text-extra-small {
-  font-size: var(--font-size-xs);
-  color: var(--text-secondary);
-  line-height: 1.2;
-}
-
 @mixin text-gradient-blue {
-  background: var(--border-blue-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+	background: var(--border-blue-gradient);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
 }
 
 @mixin btn-base {
@@ -101,14 +99,9 @@
   background: transparent;
 
   &:disabled {
-    opacity: 0.3;
+    opacity: 0.6;
     cursor: not-allowed;
-
-    &:hover {
-      background: none;
-      border-color: var(--border-color-nav-pill);
-      color: var(--text-primary);
-    }
+    filter: grayscale(1);
   }
 
   &:hover:not(:disabled) {
@@ -120,3 +113,4 @@
     transform: translateY(0);
   }
 }
+

@@ -2,10 +2,10 @@ import React from "react";
 import { useAppSelector, useAppDispatch } from "@/store";
 import { selectComponentById } from "../../../store/builder";
 import { updateSectionDimensions, selectComponent } from "@/store/builder/builderSlice";
-import { ROW_HEIGHT } from "@/utils/constants";
+import { ROW_HEIGHT_ENUM } from "@/utils/constants";
 import { CanvasSection } from "./CanvasSection";
-import { PageSection } from "./PageSection";
-import { type ILayoutItem, BLOCK_TYPES } from "@/store/builder/types";
+import { type ILayoutItem } from "@/store/builder/types";
+
 interface GridSectionProps {
   item: ILayoutItem;
 }
@@ -25,26 +25,16 @@ export const GridSection = ({ item }: GridSectionProps) => {
   };
 
   const handleContentResize = (contentHeight: number) => {
-    const neededRows = Math.ceil(contentHeight / ROW_HEIGHT);
-    const minRows = 2; 
+    const MARGIN_Y = 0;
+    const totalNeededPx = contentHeight;
+    const neededRows = Math.ceil(totalNeededPx / (ROW_HEIGHT_ENUM + MARGIN_Y));
+    const minRows = 1;
     const targetRows = Math.max(neededRows, minRows);
 
     if (targetRows > item.h) {
       dispatch(updateSectionDimensions({ i: item.i, h: targetRows }));
     }
   };
-
-  if (block.type === BLOCK_TYPES.PAGE) {
-    return (
-      <PageSection
-        id={item.i}
-        block={block}
-        isSelected={isSelected}
-        onSelect={handleSelect}
-        onContentResize={handleContentResize}
-      />
-    );
-  }
 
   return (
     <CanvasSection

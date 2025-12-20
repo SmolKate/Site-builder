@@ -1,32 +1,19 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
-import {
-  deleteUser,
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-  updatePassword,
-} from "firebase/auth";
+import { deleteUser } from "firebase/auth";
 import { getUser, removeAuth, removeUser } from "@/utils/helpers";
 import type { IUser } from "@/utils/types";
 import { db, auth } from "@/config";
-import { usersApiErrors } from "@/locales";
-import { sitesApiSlice } from "../sites/api";
 
 interface IUpdateUserProps {
-  uid: string | undefined;
-  updates: Partial<
-    Omit<IUser, "sites"> & {
-      sites?: string;
-      password?: string;
-      currentPassword?: string;
-    }
-  >;
+  uid: string;
+  updates: Partial<IUser>;
 }
 
 export const usersApiSlice = createApi({
   reducerPath: "usersApi",
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["Users", "Auth", "CurrentUser"],
+  tagTypes: ["Users", "Auth"],
   endpoints: (builder) => ({
     getUsers: builder.query<IUser[], void>({
       async queryFn() {
@@ -40,7 +27,7 @@ export const usersApiSlice = createApi({
         } catch (error) {
           return {
             error: {
-              message: usersApiErrors.fetchUsers,
+              message: "Ошибка получения данных о пользователях:",
               error,
             },
           };
@@ -53,7 +40,9 @@ export const usersApiSlice = createApi({
       async queryFn() {
         try {
           const userUid = getUser();
+
           if (userUid) {
+            // Получаем дополнительные данные пользователя из Firestore
             const userDoc = await getDoc(doc(db, "users", userUid));
             let userData = null;
 
@@ -71,72 +60,20 @@ export const usersApiSlice = createApi({
         } catch (error) {
           return {
             error: {
-              message: usersApiErrors.fetchUsers,
+              message: "Ошибка получения данных о пользователях:",
               error,
             },
           };
         }
       },
-      providesTags: ["CurrentUser"],
+      providesTags: ["Users"],
     }),
 
+    // Редактирование пользователя
     updateUser: builder.mutation<void, IUpdateUserProps>({
-      async queryFn({ uid, updates }, api) {
+      async queryFn({ uid, updates }) {
         try {
-          const userRef = doc(db, "users", uid!);
-          const userDoc = await getDoc(userRef);
-          if (!userDoc.exists()) {
-            return {
-              error: {
-                message: usersApiErrors.notFound,
-              },
-            };
-          }
-          const existingUserData = userDoc.data() as IUser;
-          const currentUser = auth.currentUser;
-
-          if (!currentUser) {
-            throw new Error(usersApiErrors.unauthorized);
-          }
-          if (currentUser?.uid !== uid) {
-            return {
-              error: {
-                message: usersApiErrors.forbidden,
-              },
-            };
-          }
-
-          if (updates.password && updates.currentPassword) {
-            try {
-              const credential = EmailAuthProvider.credential(
-                existingUserData.email,
-                updates.currentPassword
-              );
-              await reauthenticateWithCredential(currentUser, credential);
-
-              await updatePassword(currentUser, updates.password);
-
-              delete updates.password;
-            } catch (error: unknown) {
-              return {
-                error: {
-                  message: usersApiErrors.changePassword,
-                  error,
-                },
-              };
-            }
-          }
-
-          if ("sites" in updates) {
-            const sites = userDoc.data()?.sites;
-            sites.push(updates.sites);
-            if (updates.sites) {
-              updates = { ...updates, sites: sites };
-            }
-
-            api.dispatch(sitesApiSlice.util.invalidateTags(["Sites"]));
-          }
-
+          const userRef = doc(db, "users", uid);
           await updateDoc(userRef, {
             ...updates,
             updatedAt: new Date().toISOString(),
@@ -146,19 +83,21 @@ export const usersApiSlice = createApi({
         } catch (error) {
           return {
             error: {
-              message: usersApiErrors.updateUser,
+              message: "Ошибка обновления пользователя:",
               error,
             },
           };
         }
       },
-      invalidatesTags: ["Users", "CurrentUser"],
+      invalidatesTags: ["Users"],
     }),
     deleteUser: builder.mutation<void, string>({
       async queryFn(userId) {
         try {
+          // Удаляем из Firestore
           await deleteDoc(doc(db, "users", userId));
 
+          // Удаляем из Authentication:
           const user = auth.currentUser;
           if (user && user.uid === userId) {
             await deleteUser(user);
@@ -169,7 +108,7 @@ export const usersApiSlice = createApi({
         } catch (error) {
           return {
             error: {
-              message: usersApiErrors.deleteUser,
+              message: "Ошибка удаления пользователя:",
               error,
             },
           };

@@ -1,11 +1,10 @@
 @use "@/styles/abstracts/mixins" as mix;
-@use "@/styles/abstracts/breakpoints" as *;
 
 .builder {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - var(--header-height));
-  
+  height: 100vh;
+
   &__body {
     display: flex;
     flex: 1;
@@ -15,14 +14,31 @@
     gap: var(--space-md);
   }
 
-  &__components-panel {
+  &__drawer {
     @include mix.glass-container;
-    border-radius: var(--radius-lg);
+
+    position: absolute;
+    left: calc(var(--sidebar-left) + var(--space-2xl));
     width: var(--sidebar-left-width);
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+
+    z-index: 1;
+
+    transition:
+      transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.25s ease,
+      visibility 0s linear 0.25s;
+    will-change: transform, opacity;
+
+    transform: translateX(-20px);
+    opacity: 0;
+    visibility: hidden;
+
+    &.is-open {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+    }
   }
 
   &__sidebar-right {
@@ -56,15 +72,13 @@
 
   &__canvas-area {
     flex: 1;
-    overflow-x: hidden;
-    scrollbar-color: rgba(120, 110,	255, 0.5) transparent;
+    overflow: auto;
     position: relative;
 
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
     background-color: var(--bg-app);
     height: 100%;
     width: 100%;
-    max-width: 1200px;
 
     background-image: radial-gradient(var(--border-color-default) 1px, transparent 1px);
     background-size: 34px 34px;
@@ -73,18 +87,6 @@
       background-color: rgba(33, 150, 243, 0.05);
     }
 
-    &::-webkit-scrollbar {
-      width: 8px;
-      scrollbar-width: thin;
-      }
-      &::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      &::-webkit-scrollbar-thumb {
-        background-color: rgba(120, 110, 255, 0.3);
-        border-radius: 4px;
-      }
-      
     &::before {
       content: "";
       position: absolute;
@@ -99,10 +101,6 @@
     &--active::before {
       border-color: #2196f3;
       background: rgba(33, 150, 243, 0.05);
-    }
-
-    @media (max-width: $bp-xl) {
-      overflow-x: auto;
     }
   }
 
@@ -126,7 +124,6 @@
     min-height: 100%;
     background: transparent;
     position: relative;
-    
   }
 
   &__drag-overlay {
@@ -139,9 +136,7 @@
     pointer-events: none;
     z-index: 100;
     border-radius: var(--radius-md);
-    
   }
-  
   &__empty-state {
     position: absolute;
     top: 50%;
@@ -154,28 +149,4 @@
     border-radius: 12px;
     pointer-events: none;
   }
-
-  &__controls {
-    display: flex;
-    flex-direction: column;
-    flex: 1;       
-    min-width: 0;  
-    width: 100%;
-    
-  
-  }
-}
-
-.ProseMirror {
-  outline: none;
-  min-height: inherit; 
-  height: 100%;
-}
-
-.ProseMirror p.is-empty::before {
-  color: #adb5bd;
-  content: "Введите текст...";
-  float: left;
-  height: 0;
-  pointer-events: none;
 }
