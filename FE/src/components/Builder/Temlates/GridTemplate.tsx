@@ -12,9 +12,7 @@ export const GridTemplate = ({ childrenIds, columns }: Props) => {
         display: "grid", 
         gridTemplateColumns: `repeat(${columns}, 1fr)`, 
         gap: "15px",
-        width: "100%",
-        alignItems: "center",
-        minWidth: 0,
+        alignItems: "start"
       }}
     >
       {childrenIds.map((id) => (

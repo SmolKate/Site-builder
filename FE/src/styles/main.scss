@@ -1,15 +1,15 @@
-@use 'reset';
-@use 'fonts';
+@use "reset";
+@use "fonts";
 
-@use 'abstracts/variables';
-@use 'abstracts/colors';
-@use 'abstracts/borders';
-@use 'abstracts/text';
-@use 'abstracts/spacing';
-@use 'abstracts/mixins';
-@use 'abstracts/breakpoints';
+@use "abstracts/variables";
+@use "abstracts/colors";
+@use "abstracts/borders";
+@use "abstracts/text";
+@use "abstracts/spacing";
+@use "abstracts/mixins";
+@use "abstracts/breakpoints";
 
-@use 'vendor/radix';
+@use "vendor/radix";
 
 * {
   box-sizing: border-box;
@@ -18,16 +18,12 @@
 }
 
 html {
-  background: var(--main-bg-app); 
-  background-attachment: fixed;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background: var(--bg-app);
 }
 
 body {
   font-family: fonts.$font-inter;
   color: var(--text-primary);
-  height: 100%;
   min-height: 100vh;
   transition:
     background 0.3s ease,
@@ -63,10 +59,7 @@ select {
   -webkit-text-fill-color: transparent;
 }
 
-
-.app-loader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+:focus-visible {
+  outline: 2px solid var(--radix-primary-color, #3c2da2);
+  outline-offset: 2px;
 }

@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import {
   TButtonSize,
   TButtonVariant,
@@ -27,7 +26,7 @@ const Button = (props: IButtonProps) => {
 
   return (
     <button
-      className={clsx(className, "ui-button",  `ui-button--${variant}`, `ui-button--${size}`)}
+      className={`ui-button ui-button--${variant} ui-button--${size} ${className}`}
       {...restProps}
     >
       {buttonText}

@@ -1,15 +1,12 @@
 :root {
-  --layout-max-width: 1600px; // Максимальная ширина лейаута
+  --layout-max-width: 1440px; // Максимальная ширина лейаута
   --header-height: 54px; // Высота шапки
   --header-padding-y: var(--space-xs); // Вертикальный внутренний отступ шапки
   --input-height: 48px; // Высота инпутов
   --selector-height: 40px; // Высота селекторов
   --button-min-height: 28px;
   --sidebar-left: 96px; // Узкая панель инструментов слева
+  --sidebar-left-width: 240px; // Панель слоев/виджетов
+  --sidebar-right-width: 250px; // Панель свойств (Inspector)
   --auth-form-width: 700px; // Ширина форм входа и регистрации
-  --sidebar-left-collapsed: 96px; // Узкая панель инструментов слева
-  --sidebar-left-width: 352px; // Панель слоев/виджетов
-  --sidebar-right-width: 454px; // Панель свойств (Inspector)
-  --radio-button-size: 15px; // Размер радиокнопки
-  --site-card-width: 510px; // Ширина карточки сайта
 }

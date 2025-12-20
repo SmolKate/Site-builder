@@ -1,26 +1,13 @@
 import React from "react";
 import { useDraggable } from "@dnd-kit/core";
-import {
-  ButtonIcon,
-  TextIcon,
-  BoxIcon,
+import { 
+  ButtonIcon, 
+  TextIcon, 
+  BoxIcon, 
   HeadingIcon,
   ImageIcon,
-  VideoIcon,
-  Link2Icon,
-  DividerHorizontalIcon,
-  QuoteIcon,
-  ListBulletIcon,
-} from "@radix-ui/react-icons";
-import { ListOrdered } from 'lucide-react';
-import { Button } from "@/ui";
-import { TButtonSize } from "@/ui/types";
-import { componentsPanel } from "@/locales";
+} from "@radix-ui/react-icons"; 
 import "./ComponentsPanel.scss";
-import { getSiteBackgroundColor } from "@/store/builder";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { setSiteBackgroundColor } from "@/store/builder/builderSlice";
-import { BLOCK_TYPES } from "@/store/builder/types";
 
 interface DraggableItemProps {
   type: string;
@@ -28,26 +15,21 @@ interface DraggableItemProps {
   icon: React.ReactNode;
 }
 
-interface ComponentsPanelProps {
-  onSiteSave?: () => void;
-  onSiteUpload?: () => void;
-}
-
 const DraggableItem = ({ type, label, icon }: DraggableItemProps) => {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `sidebar-${type}`,
-    data: { type },
+    data: { type }
   });
 
   return (
-    <div
-      ref={setNodeRef}
+    <div 
+      ref={setNodeRef} 
       className="component-card"
       style={{
         opacity: isDragging ? 0.5 : 1,
-        pointerEvents: isDragging ? "none" : "auto",
+        pointerEvents: isDragging ? "none" : "auto", 
       }}
-      {...listeners}
+      {...listeners} 
       {...attributes}
     >
       {icon}
@@ -56,122 +38,25 @@ const DraggableItem = ({ type, label, icon }: DraggableItemProps) => {
   );
 };
 
-export const ComponentsPanel = ({ onSiteSave, onSiteUpload }: ComponentsPanelProps) => {
-  const t = componentsPanel;
-  const dispatch = useAppDispatch();
-  const siteBackgroundColor = useAppSelector(getSiteBackgroundColor);
-  const isTransparent = siteBackgroundColor === "transparent" || !siteBackgroundColor;
-
+export const ComponentsPanel = () => {
   return (
     <div className="components-panel">
-      <div className="components-panel__header">
-        <div className="components-panel__actions">
-          <Button
-            buttonText={t.buttons.save}
-            size={TButtonSize.SMALL}
-            onClick={onSiteSave}
-            className="components-panel__btn"
-          />
-          <Button
-            buttonText={t.buttons.download}
-            size={TButtonSize.SMALL}
-            onClick={onSiteUpload}
-            className="components-panel__btn"
-          />
-        </div>
-      </div>
-
       <div className="components-panel__content">
-        <div className="components-panel__section-title">{t.sections.layout}</div>
+        <div className="components-panel__section-title">Макет</div>
         <div className="components-panel__grid">
-          <DraggableItem
-            type={BLOCK_TYPES.CONTAINER}
-            label={t.components.container}
-            icon={<BoxIcon width={24} height={24} />}
-          />
+          <DraggableItem type="container" label="Секция" icon={<BoxIcon width={24} height={24} />} />
         </div>
 
-        <div className="components-panel__section-title">{t.sections.typography}</div>
+        <div className="components-panel__section-title">Типографика</div>
         <div className="components-panel__grid">
-          <DraggableItem
-            type={BLOCK_TYPES.TEXT}
-            label={t.components.text}
-            icon={<TextIcon width={24} height={24} />}
-          />
-          <DraggableItem
-            type={BLOCK_TYPES.HEADING}
-            label={t.components.heading}
-            icon={<HeadingIcon width={24} height={24} />}
-          />
+          <DraggableItem type="text" label="Текст" icon={<TextIcon width={24} height={24} />} />
+          <DraggableItem type="heading" label="Заголовок" icon={<HeadingIcon width={24} height={24} />} />
         </div>
 
-        <div className="components-panel__section-title">{t.sections.basic}</div>
+        <div className="components-panel__section-title">Основные</div>
         <div className="components-panel__grid">
-          <DraggableItem
-            type={BLOCK_TYPES.IMAGE}
-            label={t.components.image}
-            icon={<ImageIcon width={24} height={24} />}
-          />
-          <DraggableItem
-            type={BLOCK_TYPES.BUTTON}
-            label={t.components.button}
-            icon={<ButtonIcon width={24} height={24} />}
-          />
-          <DraggableItem
-            type={BLOCK_TYPES.LINK}
-            label={t.components.link}
-            icon={<Link2Icon width={24} height={24} />}
-          />
-        </div>
-
-        <div className="components-panel__section-title">{t.sections.elements}</div>
-        <div className="components-panel__grid">
-          <DraggableItem
-            type={BLOCK_TYPES.DIVIDER}
-            label={t.components.divider}
-            icon={<DividerHorizontalIcon width={24} height={24} />}
-          />
-          <DraggableItem
-            type={BLOCK_TYPES.QUOTE}
-            label={t.components.quote}
-            icon={<QuoteIcon width={24} height={24} />}
-          />
-          <DraggableItem
-            type={BLOCK_TYPES.LIST}
-            label={t.components.list}
-            icon={<ListBulletIcon width={24} height={24} />}
-          />
-          <DraggableItem
-            type={BLOCK_TYPES.NUM_LIST}
-            label={t.components.numList}
-            icon={<ListOrdered width={24} height={24} />}
-          />
-        </div>
-      </div>
-      <div className="components-panel__footer">
-        <label className="components-panel__color-label">{t.components.siteBG}</label>
-        <div className="components-panel__color-wrapper">
-          <input 
-            type="color" 
-            value={isTransparent ? "#ffffff" : siteBackgroundColor}
-            onChange={(e) => dispatch(setSiteBackgroundColor(e.target.value))}
-            className="components-panel__color-input"
-            title={t.components.chooseColor}
-          />
-          
-          <span className="components-panel__color-value">
-            {isTransparent ? t.components.transparent : siteBackgroundColor}
-          </span>
-
-          {!isTransparent && (
-            <button
-              onClick={() => dispatch(setSiteBackgroundColor("transparent"))}
-              className="components-panel__reset-btn"
-              title={t.components.makeTransparent}
-            >
-              ✕
-            </button>
-          )}
+          <DraggableItem type="button" label="Кнопка" icon={<ButtonIcon width={24} height={24} />} />
+          <DraggableItem type="image" label="Изображение" icon={<ImageIcon width={24} height={24} />} />
         </div>
       </div>
     </div>
