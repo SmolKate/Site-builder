@@ -35,3 +35,8 @@ export const Site = lazy(() =>
     default: module.Site,
   })),
 );
+export const SitesList = lazy(() =>
+  import("./SitesList").then((module) => ({
+    default: module.SitesList,
+  })),
+);

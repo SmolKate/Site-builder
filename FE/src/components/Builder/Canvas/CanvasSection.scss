@@ -1,28 +1,26 @@
 @use "@/styles/abstracts/mixins" as mix;
 
 .canvas-section {
-  min-width: 0;
-  width: 100%;
+  min-height: fit-content;
   height: 100%;
+  width: 100%;
   box-sizing: border-box;
   position: relative;
   display: flex;
   align-items: center;
-
-  transition:
-    outline 0.1s ease,
-    background-color 0.2s ease;
-
+  
+  transition: outline 0.1s ease, background-color 0.2s ease;
+  
   outline: 1px dashed transparent;
 
   &--hovered {
-    z-index: 100;
+    z-index: 100; 
     outline: 1px dashed var(--border-color-default);
   }
 
   &--selected {
     outline: 2px solid var(--brand-primary-color);
-    z-index: 101;
+    z-index: 101; 
   }
 
   &--over {
@@ -33,22 +31,22 @@
 
   &__handle {
     position: absolute;
-    bottom: 0;
+    bottom: calc(-1 * var(--space-xl));
     left: 0;
-    z-index: 10;
-
+    bottom: 0;
+    
     display: flex;
     align-items: center;
-    gap: var(--space-xs);
-
-    height: var(--space-xl);
-    padding: 0 var(--space-md);
-
+    gap: var(--space-xs); 
+    
+    height: var(--space-xl); 
+    padding: 0 var(--space-md); 
+    
     background-color: var(--brand-primary-color);
-    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0 ;
+    
     cursor: move;
-
+    
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease-in-out;
@@ -60,13 +58,13 @@
   }
 
   &__handle-icon {
-    color: var(--text-inverse);
+    color: var(--text-inverse); 
     display: flex;
   }
 
   &__handle-divider {
     width: 1px;
-    height: 12px;
+    height: 12px; 
     background-color: color-mix(in srgb, var(--text-inverse) 40%, transparent);
   }
 
@@ -77,30 +75,24 @@
     transition: color 0.2s;
 
     &:hover {
-      color: var(--color-error);
+      color: var(--color-error); 
     }
   }
 
-&__content {
+  &__content {
     width: 100%;
-    min-height: 100%;
-    box-sizing: border-box; 
     display: flex;
-    gap: 10px;
-    align-items: stretch; 
-    justify-content: stretch;
-    min-width: 0;
-    
+    justify-content: center;
   }
 
   &__placeholder {
     margin: 0;
-    padding: var(--space-xs);
+    padding: var(--space-sm);
     text-align: center;
     width: 80%;
-    @include mix.text-extra-small;
-
-    border: 2px dotted var(--border-color-btn);
+    @include mix.text-small;
+    
+    border: 2px dashed var(--border-color-default);
     border-radius: var(--radius-md);
     pointer-events: none;
   }
@@ -109,29 +101,14 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-
+    
     display: flex;
     align-items: center;
     justify-content: center;
-
+    
     color: var(--brand-primary-color);
     font-weight: var(--font-weight-bold);
     background: color-mix(in srgb, var(--text-inverse) 80%, transparent);
     backdrop-filter: blur(2px);
-  }
-
-  &__dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    z-index: 1;
-
-    transform: translate3d(-50%, -50%, 0);
-  }
-
-  &__dialog-buttons {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-sm);
   }
 }

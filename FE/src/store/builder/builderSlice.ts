@@ -4,29 +4,16 @@ import {
   type IBlock,
   type ILayoutItem,
   type BlockType,
-  BLOCK_TYPES,
 } from "./types";
 import {
   BLOCK_DEFAULTS,
-  DEFAULT_PAGE_LAYOUT,
   DEFAULT_SECTION_LAYOUT,
 } from "@/config/builder/blocks";
-
-interface ISiteConstructor {
-  layout: ILayoutItem[];
-  components: {[key: string]: IBlock};
-  siteTitle: string;
-  siteDescription: string;
-  siteBackgroundColor?: string;
-}
 
 const initialState: BuilderState = {
   components: {},
   layout: [],
   selectedId: null,
-  siteTitle: "",
-  siteDescription: "",
-  siteBackgroundColor: "transparent",
 };
 
 const getAllDescendantIds = (
@@ -68,48 +55,24 @@ export const builderSlice = createSlice({
   initialState,
   reducers: {
     addSection: {
-      prepare: (type: BlockType = BLOCK_TYPES.CONTAINER) => {
+      prepare: () => {
         const id = crypto.randomUUID();
-        return { payload: { id, type } };
+        return { payload: { id } };
       },
-      reducer: (state, action: PayloadAction<{ id: string; type: BlockType }>) => {
-        const { id, type } = action.payload;
+      reducer: (state, action: PayloadAction<{ id: string }>) => {
+        const { id } = action.payload;
 
-        state.components[id] = createBlockData(id, type);
+        state.components[id] = createBlockData(id, "container");
 
-        const defaultLayout = type === BLOCK_TYPES.PAGE 
-          ? DEFAULT_PAGE_LAYOUT
-          : DEFAULT_SECTION_LAYOUT;
-    
         state.layout.push({
           i: id,
-          ...defaultLayout,
+          ...DEFAULT_SECTION_LAYOUT,
         });
       },
     },
+
     updateLayout: (state, action: PayloadAction<ILayoutItem[]>) => {
       state.layout = action.payload;
-    },
-
-    setSiteBackgroundColor: (state, action: PayloadAction<string>) => {
-      state.siteBackgroundColor = action.payload;
-    },
-
-    updateSiteConstructor: (state, action: PayloadAction<ISiteConstructor>) => {
-      const {layout, components, siteTitle, siteDescription, siteBackgroundColor} = action.payload;
-      state.layout = layout;
-      state.components = components;
-      state.siteTitle = siteTitle;
-      state.siteDescription = siteDescription;
-      state.siteBackgroundColor = siteBackgroundColor || "transparent";
-    },
-
-    resetSiteConstructor: (state) => {
-      state.layout = [];
-      state.components = {};
-      state.siteTitle = "";
-      state.siteDescription = "";
-      state.siteBackgroundColor = "transparent";
     },
 
     addBlockToContainer: {
@@ -157,7 +120,7 @@ export const builderSlice = createSlice({
 
       if (!component) return;
 
-      if (component.type === BLOCK_TYPES.CONTAINER || component.type === BLOCK_TYPES.PAGE) {
+      if (component.type === "container") {
         state.layout = state.layout.filter((l) => l.i !== idToDelete);
       }
 
@@ -200,14 +163,11 @@ export const builderSlice = createSlice({
 export const {
   addSection,
   updateLayout,
-  updateSiteConstructor,
   addBlockToContainer,
   selectComponent,
   updateComponent,
   deleteComponent,
   updateSectionDimensions,
-  resetSiteConstructor,
-  setSiteBackgroundColor,
 } = builderSlice.actions;
 
 export default builderSlice.reducer;

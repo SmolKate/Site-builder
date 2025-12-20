@@ -4,22 +4,16 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Header } from "./Header";
-import { Provider } from "react-redux";
-import { store } from "@/store";
 
 const mockAuthState: { isAuthenticated: boolean } = { isAuthenticated: false };
 const mockLogoutUser = vi.fn();
 
-vi.mock("@/store/auth", async (importOriginal) => {
-  const actual = (await importOriginal()) as object;
-  return {
-    ...actual,
-    useGetAuthStatusQuery: () => ({
-      data: { isAuth: mockAuthState.isAuthenticated },
-    }),
-    useLogoutUserMutation: () => [mockLogoutUser],
-  };
-});
+vi.mock("@/store/auth", () => ({
+  useGetAuthStatusQuery: () => ({
+    data: mockAuthState.isAuthenticated,
+  }),
+  useLogoutUserMutation: () => [mockLogoutUser],
+}));
 
 const renderHeader = (options?: { isAuthenticated?: boolean; initialEntries?: string[] }) => {
   const { isAuthenticated = false, initialEntries = ["/login"] } = options || {};
@@ -27,62 +21,54 @@ const renderHeader = (options?: { isAuthenticated?: boolean; initialEntries?: st
   mockAuthState.isAuthenticated = isAuthenticated;
 
   return render(
-    <Provider store={store}>
+    <ThemeProvider>
       <MemoryRouter initialEntries={initialEntries}>
-        <ThemeProvider>
-          <Header />
-        </ThemeProvider>
+        <Header />
       </MemoryRouter>
-    </Provider>
+    </ThemeProvider>
   );
 };
 
 describe("Header", () => {
-  test("рендерит навигационные ссылки", () => {
+  test("renders navigation items", () => {
     renderHeader();
 
-    expect(screen.getByText(/Главная/i)).toBeInTheDocument();
-    expect(screen.getByText(/Профиль/i)).toBeInTheDocument();
-    const loginLinks = screen.getAllByText(/Войти/i);
-    expect(loginLinks.length).toBeGreaterThan(0);
+    expect(screen.getByText(/Main/i)).toBeInTheDocument();
+    expect(screen.getByText(/Profile/i)).toBeInTheDocument();
+    expect(screen.getByText(/Login page/i)).toBeInTheDocument();
   });
 
-  test("подсвечивает ссылку 'Войти' на роуте /login", () => {
+  test("highlights Login page link when on /login route", () => {
     renderHeader({ initialEntries: ["/login"] });
 
-    const loginElements = screen.getAllByText(/Войти/i);
-
-    const activeLink = loginElements.find((el) => el.tagName === "A");
-
-    expect(activeLink).toBeInTheDocument();
-    expect(activeLink).toHaveClass("auth-header__link--pill-active");
+    const loginPageLink = screen.getByText(/Login page/i);
+    expect(loginPageLink).toHaveClass("auth-header__link--pill-active");
   });
 
-  test("показывает кнопки Войти и Зарегистрироваться, когда пользователь не авторизован", () => {
+  test("shows login and register buttons when user is not authenticated", () => {
     renderHeader({ isAuthenticated: false });
 
-    const loginButton = screen.getByRole("button", { name: /Войти/i });
-    expect(loginButton).toBeInTheDocument();
-
-    expect(screen.getByRole("button", { name: /Зарегистироваться/i })).toBeInTheDocument();
-
-    expect(screen.queryByText(/Выйти/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^Login$/i })).toBeInTheDocument();
+    expect(screen.getByText(/Register/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Logout/i)).not.toBeInTheDocument();
   });
 
-  test("показывает кнопку Выйти, когда пользователь авторизован", () => {
+  test("shows logout button when user is authenticated", () => {
     renderHeader({ isAuthenticated: true });
 
-    expect(screen.getByRole("button", { name: /Выйти/i })).toBeInTheDocument();
-
-    expect(screen.queryByRole("button", { name: /Зарегистироваться/i })).not.toBeInTheDocument();
+    expect(screen.getByText(/Logout/i)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^Login$/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/Register/i)).not.toBeInTheDocument();
   });
 
-  test("кнопка переключения темы кликается без ошибок", () => {
+  test("toggles theme label on click", () => {
     renderHeader();
 
-    const toggleButton = screen.getByRole("button", { name: /Переключить на/i });
+    const toggleButton = screen.getByRole("button", { name: /Light|Dark/i });
+    const initialText = toggleButton.textContent;
+
     fireEvent.click(toggleButton);
 
-    expect(toggleButton).toBeInTheDocument();
+    expect(toggleButton.textContent).not.toBe(initialText);
   });
 });
