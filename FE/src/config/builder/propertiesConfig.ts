@@ -1,4 +1,4 @@
-import { type BlockType, BLOCK_TYPES } from "@/store/builder/types";
+import { type BlockType } from "@/store/builder/types";
 
 export type FieldType = "color" | "number" | "text" | "select";
 export type FieldTarget = "style" | "props" | "variant";
@@ -40,216 +40,89 @@ export const PROPERTIES_CONFIG: BlockPropertiesConfig = {
       target: "style",
       defaultValue: 0,
     },
-    {
-      type: "number",
-      label: "Внешний отступ (px)",
-      key: "margin",
-      target: "style",
-      defaultValue: 0,
-    },
   ],
   specific: {
-    [BLOCK_TYPES.CONTAINER]: [
+    container: [
       {
         type: "select",
-        label: "Тип макета",
+        label: "Макет",
         key: "variant",
         target: "variant",
         options: [
-          { value: "default", label: "Стек (Flex)" },
-          { value: "two-columns", label: "Сетка (2 колонки)" },
-          { value: "three-columns", label: "Сетка (3 колонки)" },
-        ],
-      },
-      
-      { 
-        type: "select", 
-        label: "По горизонтали (X)", 
-        key: "align_x", 
-        target: "style", 
-        options: [
-          {value: "start", label: "Слева"}, 
-          {value: "center", label: "По центру"}, 
-          {value: "end", label: "Справа"},
-          {value: "stretch", label: "Растянуть"} 
-        ] 
-      },
-
-      { 
-        type: "select", 
-        label: "По вертикали (Y)", 
-        key: "align_y", 
-        target: "style", 
-        options: [
-          {value: "start", label: "Сверху"}, 
-          {value: "center", label: "По центру"},
-          {value: "end", label: "Снизу"},
-          {value: "space-between", label: "Распределить"}, 
-        ] 
-      }
-    ],
-    [BLOCK_TYPES.PAGE]: [
-      { 
-        type: "select", 
-        label: "Сайдбар", 
-        key: "hasSidebar", 
-        target: "props",
-        options: [{value: "1", label: "Показать"}, {value: "0", label: "Скрыть"}]
-      },
-      { type: "text", label: "Ширина сайдбара (px/%)", key: "sidebarWidth", target: "style" },
-      {
-        type: "select",
-        label: "Макет центра",
-        key: "variant",
-        target: "variant",
-        options: [
-          { value: "default", label: "1 колонка" },
+          { value: "default", label: "Вертикальный стек" },
           { value: "two-columns", label: "2 колонки" },
           { value: "three-columns", label: "3 колонки" },
-        ]
-      },
-      { type: "color", label: "Фон Header", key: "headerBg", target: "style" },
-      { type: "color", label: "Фон Footer", key: "footerBg", target: "style" },
-      { type: "color", label: "Фон Sidebar", key: "sidebarBg", target: "style" },
-    ],
-    [BLOCK_TYPES.IMAGE]: [
-      { type: "text", label: "URL изображения", key: "src", target: "props" },
-      { type: "text", label: "Alt текст", key: "alt", target: "props" },
-      { 
-        type: "number", 
-        label: "Ширина (px/%)", 
-        key: "width", 
-        target: "style"
+        ],
       },
     ],
-    [BLOCK_TYPES.HEADING]: [
+    image: [
+      {
+        type: "text",
+        label: "URL изображения",
+        key: "src",
+        target: "props",
+        defaultValue: "https://via.placeholder.com/400x250",
+      },
+      {
+        type: "text",
+        label: "Альтернативный текст",
+        key: "alt",
+        target: "props",
+        defaultValue: "Новое изображение",
+      },
+    ],
+    heading: [
       {
         type: "select",
-        label: "Уровень",
+        label: "Уровень заголовка",
         key: "level",
         target: "props",
         options: [
-          { value: "1", label: "H1" },
-          { value: "2", label: "H2" },
-          { value: "3", label: "H3" },
+          { value: "1", label: "H1 - Главный заголовок" },
+          { value: "2", label: "H2 - Заголовок секции" },
+          { value: "3", label: "H3 - Подзаголовок" },
+          { value: "4", label: "H4 - Малый заголовок" },
+          { value: "5", label: "H5 - Очень малый заголовок" },
+          { value: "6", label: "H6 - Лейбл" },
         ],
         defaultValue: "2",
       },
-      { type: "color", label: "Цвет", key: "color", target: "style" },
+      {
+        type: "color",
+        label: "Цвет текста",
+        key: "color",
+        target: "style",
+        defaultValue: "#000000",
+      },
       {
         type: "select",
         label: "Выравнивание",
         key: "textAlign",
         target: "style",
         options: [
-          { value: "left", label: "Left" },
-          { value: "center", label: "Center" },
-          { value: "right", label: "Right" },
-        ],
-      },
-    ],
-    [BLOCK_TYPES.BUTTON]: [
-      { type: "text", label: "Текст кнопки", key: "text", target: "props" },
-      { 
-        type: "number", 
-        label: "Ширина (px/%)", 
-        key: "width", 
-        target: "style"
-      },
-      {
-        type: "select",
-        label: "Действие по клику",
-        key: "actionType",
-        target: "props",
-        options: [
-          { value: "none", label: "Нет действия" },
-          { value: "link", label: "Открыть ссылку (URL)" },
-          { value: "anchor", label: "Скролл к блоку (ID)" },
-          { value: "email", label: "Отправить Email" },
-        ],
-        defaultValue: "none",
-      },
-      { 
-        type: "text", 
-        label: "Значение", 
-        key: "actionValue", 
-        target: "props",
-        defaultValue: "" 
-      },
-      {
-        type: "select",
-        label: "Открыть в новой вкладке",
-        key: "openInNewTab",
-        target: "props",
-        options: [
-          { value: "0", label: "Нет" },
-          { value: "1", label: "Да" },
-        ],
-        defaultValue: "0",
-      },
-      { type: "color", label: "Цвет текста", key: "color", target: "style" },
-    ],
-    
-    [BLOCK_TYPES.TEXT]: [
-      { type: "color", label: "Цвет текста", key: "color", target: "style" },
-      { 
-        type: "select", 
-        label: "Выравнивание", 
-        key: "textAlign", 
-        target: "style",
-        options: [
           { value: "left", label: "Слева" },
           { value: "center", label: "По центру" },
           { value: "right", label: "Справа" },
-          { value: "justify", label: "По ширине" },
-        ]
-      }
-    ],
-
-    [BLOCK_TYPES.VIDEO]: [
-      { type: "text", label: "Ссылка YouTube", key: "src", target: "props" },
-      { type: "number", label: "Ширина", key: "width", target: "style" },
-      { type: "number", label: "Высота", key: "height", target: "style" },
-    ],
-    [BLOCK_TYPES.DIVIDER]: [
-      { 
-        type: "number", 
-        label: "Ширина (X)", 
-        key: "width", 
-        target: "style" 
-      },
-      { 
-        type: "number", 
-        label: "Высота/Толщина (Y)", 
-        key: "height", 
-        target: "style"
-      }
-    ],
-    [BLOCK_TYPES.QUOTE]: [
-      { type: "text", label: "Текст цитаты", key: "text", target: "props" },
-      { type: "text", label: "Автор", key: "author", target: "props" },
-      { type: "color", label: "Цвет текста", key: "color", target: "style" },
-    ],
-    [BLOCK_TYPES.LIST]: [{ type: "color", label: "Цвет текста", key: "color", target: "style" }],
-    [BLOCK_TYPES.NUM_LIST]: [{ type: "color", label: "Цвет текста", key: "color", target: "style" }],
-    [BLOCK_TYPES.INPUT]: [
-      { type: "text", label: "Placeholder", key: "placeholder", target: "props" },
-      { type: "color", label: "Цвет границы", key: "borderColor", target: "style" },
-    ],
-    [BLOCK_TYPES.LINK]: [
-      { type: "text", label: "Текст ссылки", key: "text", target: "props" },
-      { type: "text", label: "Адрес (href)", key: "href", target: "props" },
-      { type: "color", label: "Цвет", key: "color", target: "style" },
-      {
-        type: "select",
-        label: "Подчеркивание",
-        key: "textDecoration",
-        target: "style",
-        options: [
-          { value: "none", label: "Нет" },
-          { value: "underline", label: "Да" },
         ],
+        defaultValue: "left",
       },
     ],
+    button: [
+      {
+        type: "text",
+        label: "Текст кнопки",
+        key: "text",
+        target: "props",
+        defaultValue: "Кнопка",
+      },
+      {
+        type: "color",
+        label: "Цвет текста",
+        key: "color",
+        target: "style",
+        defaultValue: "#000000",
+      },
+    ],
+    text: [],
   },
 };

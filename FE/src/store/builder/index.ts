@@ -10,7 +10,5 @@ export const {
   updateComponent,
   deleteComponent,
   updateSectionDimensions,
-  updateSiteConstructor,
-  resetSiteConstructor,
 } = builderSlice.actions;
 export default builderSlice.reducer;

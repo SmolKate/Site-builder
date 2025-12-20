@@ -1,69 +1,49 @@
 .renderer-wrapper {
   position: relative;
-  min-height: 20px;
-  max-width: 100%;
-  overflow: hidden;
-  flex-shrink: 1;
-  min-width: 0;
-
+  min-height: 20px; 
+  
   outline: 1px dashed transparent;
-  outline-offset: -2px;
+  outline-offset: -2px; 
   transition: outline 0.2s ease;
-
-  &:hover {
+  
+&:hover {
     z-index: 100;
-    outline: 1px dashed var(--border-color-default);
+    outline: 1px dashed var(--border-color-default); 
   }
 
   &--selected {
-    z-index: 101;
+    outline: 2px solid var(--brand-primary-color);
+    z-index: 101; 
   }
 
   &__delete-btn {
     position: absolute;
-    bottom: 0;
+    bottom: -24px;
     left: 0;
-    z-index: 102;
-
+    z-index: 102; 
+    
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 4px;
-
+    
     height: var(--space-xl);
     padding: 0 var(--space-xs);
-
-    background-color: var(--color-error);
+    
+    background-color: #2196f3;
     color: white;
-
+    
     border: none;
-    border-radius: var(--radius-sm) var(--radius-sm) 0 0 ;
-
+    border-radius:  0 0 var(--radius-sm) var(--radius-sm);
+    
     cursor: pointer;
     font-size: var(--font-size-xs);
-
+    
     opacity: 0;
     animation: fadeIn 0.2s forwards;
   }
 }
 
-.renderer__dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index: 1;
-
-  transform: translate3d(-50%, -50%, 0);
-}
-
-.renderer__dialog-buttons {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-sm);
-}
-
 @keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
+  to { opacity: 1; }
 }

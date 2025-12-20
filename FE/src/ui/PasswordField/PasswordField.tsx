@@ -48,7 +48,11 @@ const PasswordField = <TFieldValues extends FieldValues>(
 
   return (
     <div className={`field__wrapper ${variantClassName} ${wrapperClassName}`}>
-      {label && <label htmlFor={fieldName}>{label}</label>}
+      {label && (
+        <label htmlFor={fieldName} className="text-gradient-special field__label">
+          {label}
+        </label>
+      )}
       <PasswordToggleField.Root>
         <div className="field__input-root">
           <PasswordToggleField.Input
@@ -63,11 +67,7 @@ const PasswordField = <TFieldValues extends FieldValues>(
           </PasswordToggleField.Toggle>
         </div>
       </PasswordToggleField.Root>
-      {error && (
-        <div className={`field__error ${errorClassName}`} data-testid="input-error-text">
-          {error}
-        </div>
-      )}
+      {error && <div className={`field__error ${errorClassName}`} data-testid="input-error-text">{error}</div>}
     </div>
   );
 };

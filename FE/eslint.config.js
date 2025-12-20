@@ -5,19 +5,17 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import pluginPrettier from "eslint-plugin-prettier";
 import importPlugin from "eslint-plugin-import";
+// import pluginJest from "eslint-plugin-jest";
 
 export default [
-  {
-    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
-  },
-  {
-    ignores: ["dist", "node_modules", "coverage"],
-  },
+  { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx,spec.ts,test.ts}"] },
+  { ignores: ["dist"] },
   {
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
+        // ...pluginJest.environments.globals.globals,
       },
     },
   },
@@ -42,7 +40,11 @@ export default [
       "react-refresh": reactRefresh,
       prettier: pluginPrettier,
       import: importPlugin,
+      jest: pluginJest,
     },
+  },
+
+  {
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
       indent: ["error", 2],
@@ -54,6 +56,11 @@ export default [
       "linebreak-style": ["error", "unix"],
       ...importPlugin.configs.recommended.rules,
       "import/no-cycle": "error",
+      "jest/no-disabled-tests": "warn",
+      "jest/no-focused-tests": "error",
+      "jest/no-identical-title": "error",
+      "jest/prefer-to-have-length": "warn",
+      "jest/valid-expect": "error",
     },
   },
 ];

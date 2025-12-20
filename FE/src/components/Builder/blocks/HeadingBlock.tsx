@@ -37,7 +37,7 @@ export const HeadingBlock = ({ block, readOnly = false }: Props) => {
     onBlur: ({ editor }) => {
       dispatch(updateComponent({
         id: block.id,
-        changes: { content: editor.getText() }
+        changes: { content: editor.getHTML() }
       }));
     },
   });
@@ -57,15 +57,7 @@ export const HeadingBlock = ({ block, readOnly = false }: Props) => {
   if (!editor) return null;
 
   return (
-    <div 
-      className="heading-block-wrapper"
-      style={{ 
-        minWidth: "60px",   
-        cursor: "text",
-        ...block.style 
-      }}
-      onClick={() => editor.commands.focus()} 
-    >
+    <div style={{ ...block.style }} className="heading-block-wrapper">
       <EditorContent editor={editor} />
     </div>
   );

@@ -2,7 +2,6 @@
 
 .profile-wrapper {
   @include mix.flex-center;
-  margin-top: var(--space-4xl);
 }
 
 .profile-card {
@@ -63,38 +62,4 @@
     line-height: 1;
     font-weight: var(--font-weight-medium);
   }
-}
-
-.dialog-email {
-  margin-bottom: var(--space-lg);
-
-  &__label {
-    margin-bottom: var(--space-xxs);
-  }
-
-  &__content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    color: var(--text-secondary);
-  }
-  
-  &__icon:hover {
-    cursor: pointer;
-  }
-}
-
-.dialog-checkbox {
-  margin-right: var(--space-md);
-
-  cursor: pointer;
-
-  &__label {
-    user-select: none;
-    cursor: pointer;
-  }
-}
-
-.dialog-change-pass {
-  margin-bottom: var(--space-sm);
 }
